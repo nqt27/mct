@@ -1,0 +1,1 @@
+<span><img src="assets\images\logo-dark.png" alt="" height="36"></span>

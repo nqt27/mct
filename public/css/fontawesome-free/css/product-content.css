@@ -1,0 +1,126 @@
+.container{
+    display: flex;
+    
+    font-family: 'Arial', sans-serif;
+}
+
+.content-left{
+    margin-right: 50px;
+    padding-left: 15px;
+}
+.content-left__title-cate span{
+    color: #000;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center; 
+    margin-bottom: 20px;
+}
+
+.cow{
+    list-style-type : none;
+    box-shadow: 0 0 0 1px #e1e1e1;
+    border-radius: 10px;
+    padding: 0;
+}
+
+
+.content-left__item-cate .cate-item_link {
+    text-decoration: none;    
+    color: #222222;
+    font-family: 'Arial', sans-serif;
+    padding-left : 10px;
+    
+}
+.cate-item_link:hover{
+    color : red;
+}
+
+
+
+.content-right{
+    flex: 1;
+    display : grid;
+}
+
+.sort-item{
+    display: flex;
+    
+    justify-content: flex-end;
+    
+    padding-right: 40px;
+    padding-top: 10px;
+
+    padding-bottom: 40px;
+    font-size : 20px;
+}
+
+.sort-item_title{
+    margin-top : 5px;
+    margin-right: 10px;
+}
+.option-sort {
+    display: inline-block;
+    margin-left: 20px;
+    
+}
+.options-sort select {
+    transform: scale(1);
+    padding: 8px 12px; 
+}
+.product-item{
+    display: grid;
+    padding-right : 40px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 65px;
+}
+
+.item{
+    overflow: hidden;
+    width: 300px;
+    height: 400px;
+    box-shadow: 0 0 0 1px #e1e1e1;
+    border-radius: 10px;
+}
+
+.item a img{
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.item:hover img {
+    transform: scale(1.03); /* Tăng kích thước lên 103% */
+}
+
+.item-name{
+    display: block;
+    margin-top : 10px;
+    font-family: 'Arial', sans-serif;   
+    text-align: center; 
+
+}
+.item-price{
+    margin-left : 210px;
+    color : red;
+}
+
+.btn-toolbar {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    margin-top: 20px; /* Khoảng cách 20px với phần tử phía trên */
+}
+
+.btn-group {
+    transform: scale(1.2); /* Phóng to 120% */
+}
+
+.next-page{
+    margin-top : 30px;
+    margin-left : 40%;
+}
+.next-page a{
+    color :  #000;
+}
+
