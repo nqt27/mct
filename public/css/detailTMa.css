@@ -1,0 +1,120 @@
+:root {
+    --main-bg: #1e1e1e;
+    --card-bg: #2c2c2c;
+    --text-light: #ffffff;
+    --accent: #e63946;
+    --highlight: #f1c40f;
+}
+
+.ct-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+    background-color: var(--main-bg);
+    margin-top: 10px;
+}
+
+.ct-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ct-cover {
+    flex: 1 1 300px;
+}
+
+.ct-cover img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.ct-info {
+    flex: 2 1 400px;
+}
+
+.ct-info h1 {
+    font-family: "Creepster", cursive;
+    font-size: 2.5rem;
+    color: var(--highlight);
+    margin-bottom: 1rem;
+}
+
+.ct-meta {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.ct-info p {
+    margin-bottom: 1rem;
+    color: var(--text-light);
+}
+
+.ct-btn {
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.ct-btn:hover {
+    background: #b02a37;
+}
+
+.ct-episode-list {
+    margin-bottom: 2rem;
+}
+
+.ct-episode-list h2,
+.ct-related h2 {
+    margin-bottom: 1rem;
+    color: var(--highlight);
+    font-size: 1.5rem;
+}
+
+.ct-episode {
+    background: var(--card-bg); /* giữ nền tối */
+    color: var(--text-light); /* chữ sáng */
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.ct-related {
+    margin-top: 2rem;
+}
+
+.ct-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.ct-related-card {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.ct-related-card img {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .ct-detail {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,152 @@
+:root {
+    --color-bg: #121212;
+    --color-text: #f5f5f5;
+    --color-accent: #f1c40f;
+    --color-muted: #aaa;
+    --color-card-bg: #1e1e1e;
+    --font-title: "Creepster", cursive;
+}
+
+body {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.library-header {
+    text-align: center;
+    padding: 1rem;
+    font-size: 2rem;
+    font-family: var(--font-title);
+    color: var(--color-accent);
+    background: #000;
+}
+
+.library-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+}
+
+.library-search {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    justify-content: center; /* Căn giữa nếu ít card */
+}
+
+.library-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    position: relative;
+    max-width: 270px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@keyframes spookyHover {
+    0% {
+        transform: translateY(-8px) scale(1.02) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-9px) scale(1.02) rotate(-1deg);
+    }
+    100% {
+        transform: translateY(-8px) scale(1.02) rotate(1deg);
+    }
+}
+
+.library-card:hover {
+    animation: spookyHover 0.6s ease-in-out infinite alternate;
+}
+/* .library-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    filter: brightness(0.8) saturate(0.8);
+} */
+
+.library-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+    pointer-events: none;
+}
+
+.library-card:hover::after {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.library-card img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4; /* Tỉ lệ ảnh cố định, ví dụ 3:4 */
+    object-fit: cover;
+}
+
+.library-card__info {
+    padding: 1rem;
+}
+
+.library-card__info h3 {
+    font-family: var(--font-title); /* Dùng font Creepster */
+    font-size: 1.3rem; /* Nhỉnh hơn chút */
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+    letter-spacing: 2px; /* Khoảng cách chữ */
+    color: var(--color-accent);
+    text-shadow: 2px 2px 0 #000, /* Bóng đen đổ chồng */ -2px -2px 0 #000,
+        2px -2px 0 #000, -2px 2px 0 #000, 0 0 6px var(--color-accent),
+        /* Glow vàng */ 0 0 10px var(--color-accent);
+    transition: text-shadow 0.3s ease;
+}
+
+/* Khi hover vào title, glow sẽ mạnh hơn để “ma quái” hơn */
+.library-card__info h3:hover {
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000,
+        -2px 2px 0 #000, 0 0 10px var(--color-accent),
+        0 0 15px var(--color-accent), 0 0 20px var(--color-accent);
+}
+
+.library-card__meta {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.pagination button {
+    background: #2c2c2c;
+    border: none;
+    color: var(--color-text);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background: var(--color-accent);
+    color: #000;
+}
+
+@media (max-width: 600px) {
+    .library-card__info h3 {
+        font-size: 1rem;
+    }
+}

@@ -1,10 +1,14 @@
 <div class="home-content-3 v-wrap-full">
     <marquee behavior="scroll" scrollamount="8" direction="left">
         <ul>
-            <li><img style="float: none;" title="3-3" src="https://demo.zland.vn/56/uploads/3-3.jpg" alt="3-3" width="269" height="92"></li>
-            <li><img style="float: none;" title="2-5" src="https://demo.zland.vn/56/uploads/2-5.jpg" alt="2-5" width="291" height="104"></li>
-            <li><img style="float: none;" title="logo16" src="https://demo.zland.vn/56/uploads/logo16.png" alt="logo16" width="222" height="74"></li>
-            <li><img style="float: none;" title="5-1" src="https://demo.zland.vn/56/uploads/5-1.jpg" alt="5-1" width="257" height="80"></li>
+            <li><img style="float: none;" title="3-3" src="https://demo.zland.vn/56/uploads/3-3.jpg" alt="3-3"
+                    width="269" height="92"></li>
+            <li><img style="float: none;" title="2-5" src="https://demo.zland.vn/56/uploads/2-5.jpg" alt="2-5"
+                    width="291" height="104"></li>
+            <li><img style="float: none;" title="logo16" src="https://demo.zland.vn/56/uploads/logo16.png"
+                    alt="logo16" width="222" height="74"></li>
+            <li><img style="float: none;" title="5-1" src="https://demo.zland.vn/56/uploads/5-1.jpg" alt="5-1"
+                    width="257" height="80"></li>
         </ul>
     </marquee>
 </div>
@@ -61,30 +65,40 @@
                                             <input type="hidden" name="type" value="order">
                                             <input type="hidden" name="url" value="https://demo.zland.vn/56/">
                                             <div class="v-form-item v-form-item-name v-form-item-text">
-                                                <div class="v-form-item-title">Họ và tên <span class="v-form-require"> * </span></div>
+                                                <div class="v-form-item-title">Họ và tên <span class="v-form-require"> *
+                                                    </span></div>
 
                                                 <div class="v-form-item-content">
-                                                    <input type="text" required="" class="v-form-field-type-text form-text" placeholder="Họ và tên" value="" name="name">
+                                                    <input type="text" required=""
+                                                        class="v-form-field-type-text form-text" placeholder="Họ và tên"
+                                                        value="" name="name">
                                                 </div>
                                             </div>
                                             <div class="v-form-item v-form-item-phone v-form-item-text">
-                                                <div class="v-form-item-title">Số điện thoại <span class="v-form-require"> * </span></div>
+                                                <div class="v-form-item-title">Số điện thoại <span
+                                                        class="v-form-require"> * </span></div>
 
                                                 <div class="v-form-item-content">
-                                                    <input type="text" required="" class="v-form-field-type-text form-text" placeholder="Số điện thoại" value="" name="phone">
+                                                    <input type="text" required=""
+                                                        class="v-form-field-type-text form-text"
+                                                        placeholder="Số điện thoại" value="" name="phone">
                                                 </div>
                                             </div>
                                             <div class="v-form-item v-form-item-email v-form-item-text">
-                                                <div class="v-form-item-title">Email <span class="v-form-require"> * </span></div>
+                                                <div class="v-form-item-title">Email <span class="v-form-require"> *
+                                                    </span></div>
 
                                                 <div class="v-form-item-content">
-                                                    <input type="text" required="" class="v-form-field-type-text form-text" placeholder="Email" value="" name="email">
+                                                    <input type="text" required=""
+                                                        class="v-form-field-type-text form-text" placeholder="Email"
+                                                        value="" name="email">
                                                 </div>
                                             </div>
                                             <div class="v-form-item v-form-item-submit">
                                                 <div class="v-form-item-title"></div>
                                                 <div class="v-form-item-content">
-                                                    <input name="v-submit" class="form-submit" type="submit" value="Tải về">
+                                                    <input name="v-submit" class="form-submit" type="submit"
+                                                        value="Tải về">
                                                 </div>
                                             </div>
                                         </form>
@@ -92,8 +106,7 @@
 
                                 </div>
 
-                                <script>
-                                </script>
+                                <script></script>
                             </div>
                         </div>
                     </div>
@@ -113,7 +126,10 @@
 
 
                             <div class="block-content">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29793.018643990756!2d105.75155940129605!3d21.027590603919084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454bab9b67e93%3A0xbbe16aced529963f!2zTeG7uSDEkMOsbmgsIE5hbSBU4burIExpw6ptLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1529287706193" width="275" height="450" frameborder="0" style="border: 0px; height: 193.5px;" allowfullscreen=""></iframe>
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29793.018643990756!2d105.75155940129605!3d21.027590603919084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454bab9b67e93%3A0xbbe16aced529963f!2zTeG7uSDEkMOsbmgsIE5hbSBU4burIExpw6ptLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1529287706193"
+                                    width="275" height="450" frameborder="0"
+                                    style="border: 0px; height: 193.5px;" allowfullscreen=""></iframe>
                             </div>
                         </div>
                     </div>

@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AllTMaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogoController;
 use App\Http\Controllers\MenuAudioController;
 use App\Http\Controllers\MenuDichVuController;
 use App\Http\Controllers\DichVuController;
 use App\Http\Controllers\AudioController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\DetailTMaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
@@ -91,6 +94,9 @@ Route::get('/', function () {
     return app(HomeController::class)->index();
 })->name('home');
 Route::post('/', [HomeController::class, 'handleForm'])->name('submit.form');
+Route::get('/detail-TMa', [DetailTMaController::class, 'index'])->name('detailTMa.index');
+Route::get('/all-TMa', [AllTMaController::class, 'index'])->name('allTMa.index');
+Route::get('/blog-TMa', [BlogController::class, 'index'])->name('blogTMa.index');
 Route::get('/{slug}', [HomeController::class, 'detail'])->where('slug', '^(?!admin|blog|about|contact).*')->name('detail');
 Route::post('/audio/play/{id}', [AudioController::class, 'playAudio']);
 
