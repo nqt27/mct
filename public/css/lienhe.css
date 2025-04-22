@@ -1,0 +1,68 @@
+:root {
+    --bg-contact: #0f0f0f;
+    --text-contact: #f9f9f9;
+    --accent-contact: #ffc20e;
+    --card-contact: #1e1e1e;
+    --border-contact: #333;
+    --font-contact: Arial, sans-serif;
+}
+#contact-root {
+    background: var(--bg-contact);
+    color: var(--text-contact);
+    font-family: var(--font-contact);
+    max-width: 700px;
+    margin: auto;
+    padding: 2rem;
+    margin-top: 20px;
+}
+#contact-root h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--accent-contact);
+    margin-bottom: 2rem;
+}
+.contact-form {
+    background: var(--card-contact);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+.contact-form label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.7rem;
+    background: #151515;
+    border: 1px solid var(--border-contact);
+    border-radius: 4px;
+    color: var(--text-contact);
+}
+.contact-form button {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--accent-contact);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.contact-form button:hover {
+    background: #cc2e2e;
+}
+.contact-info {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: #aaa;
+}
+@media (max-width: 600px) {
+    #contact-root h2 {
+        font-size: 2rem;
+    }
+}

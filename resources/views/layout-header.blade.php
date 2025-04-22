@@ -19,11 +19,14 @@
     <link rel="stylesheet" href="{{ asset('css/detailTMa.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/blogdetail.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/review.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/lienhe.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/dvsx.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/allTMa.css') }}" type="text/css">
     <title>Sun Group | Bất động sản</title>
 </head>
 
 <body>
+
 
     <header class="snake-top-view">
         <article class="logo">
@@ -56,10 +59,10 @@
                             @endforeach
                         </ul>
                     </li>
-                    <li class="menu-item" par="2"><a href="">Dịch vụ sản xuất</a></li>
+                    <li class="menu-item" par="2"><a href="{{ route('dvsx.index') }}">Dịch vụ sản xuất</a></li>
                     <li class="menu-item" par="14"><a href="{{ route('review.index') }}">Review</a></li>
                     <li class="menu-item" par="17"><a href="{{ route('blogTMa.index') }}">Blog</a></li>
-                    <li class="menu-item" par="14"><a href="">Liên hệ</a></li>
+                    <li class="menu-item" par="14"><a href="{{ route('lienhe.index') }}">Liên hệ</a></li>
                 </ul>
             </nav>
         </article>
@@ -82,10 +85,10 @@
 
 
     <script>
-        function toggleShow() {
-            var el = document.getElementById("box");
-            el.classList.toggle("show");
-        }
+        // function toggleShow() {
+        //     var el = document.getElementById("box");
+        //     el.classList.toggle("show");
+        // }
 
         // Search functionality
         const searchBox = document.getElementById('box');

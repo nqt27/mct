@@ -9,9 +9,12 @@
 }
 #blog-root {
     background: var(--bg);
-    color: var(--text);
-    padding: 4rem 1rem;
+
     font-family: var(--font-main);
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+    margin-top: 20px;
 }
 #blog-root .haunted-blog-header {
     font-family: var(--font-title);

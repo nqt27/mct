@@ -1,4 +1,18 @@
 @include('layout-header')
+
+<!-- QUẢNG CÁO TEST (KHÔNG TÍNH TIỀN, CHỈ DÙNG ĐỂ XEM GIAO DIỆN) -->
+{{-- <div style="margin: 20px 0; text-align: center;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9584109307122135"
+        crossorigin="anonymous"></script>
+    <!-- quảng cáo -->
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9584109307122135" data-ad-slot="5221647872"
+        data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div> --}}
+
+
 <div class="container" style="margin-bottom: 30px;">
     <section class="snake-slider">
         <div class="carousel-container">
