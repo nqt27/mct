@@ -10,7 +10,7 @@
             <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
                 alt="">
             <div class="library-card__info">
-                <h3>Ngôi Nhà Hoang</h3>
+                <h3>ma</h3>
                 <div class="library-card__meta">👁 1234 | 📅 2024-03-02</div>
             </div>
         </a>
@@ -18,7 +18,7 @@
             <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
                 alt="">
             <div class="library-card__info">
-                <h3>Ngôi Nhà Hoang</h3>
+                <h3>quỷ</h3>
                 <div class="library-card__meta">👁 1234 | 📅 2024-03-02</div>
             </div>
         </div>

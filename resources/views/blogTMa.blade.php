@@ -7,7 +7,7 @@
             <div class="haunted-blog-card-content">
                 <h3>Truyền Thuyết Làng Hoang</h3>
                 <p>Những lời đồn về bóng ma xuất hiện cuối đêm trong ngôi làng vắng...</p>
-                <a href="#">Đọc tiếp →</a>
+                <a href="{{ route('blogdetail.index') }}">Đọc tiếp →</a>
             </div>
         </article>
         <article class="haunted-blog-card">

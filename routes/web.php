@@ -9,8 +9,10 @@ use App\Http\Controllers\MenuDichVuController;
 use App\Http\Controllers\DichVuController;
 use App\Http\Controllers\AudioController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogDetailController;
 use App\Http\Controllers\DetailTMaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
 
@@ -96,7 +98,9 @@ Route::get('/', function () {
 Route::post('/', [HomeController::class, 'handleForm'])->name('submit.form');
 Route::get('/detail-TMa', [DetailTMaController::class, 'index'])->name('detailTMa.index');
 Route::get('/all-TMa', [AllTMaController::class, 'index'])->name('allTMa.index');
+Route::get('/blog-detail', [BlogDetailController::class, 'index'])->name('blogdetail.index');
 Route::get('/blog-TMa', [BlogController::class, 'index'])->name('blogTMa.index');
+Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/{slug}', [HomeController::class, 'detail'])->where('slug', '^(?!admin|blog|about|contact).*')->name('detail');
 Route::post('/audio/play/{id}', [AudioController::class, 'playAudio']);
 

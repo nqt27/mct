@@ -17,11 +17,14 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/blogTMa.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/detailTMa.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/blogdetail.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/review.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/allTMa.css') }}" type="text/css">
     <title>Sun Group | Bất động sản</title>
 </head>
 
 <body>
+
     <header class="snake-top-view">
         <article class="logo">
             <a href="/">
@@ -54,21 +57,113 @@
                         </ul>
                     </li>
                     <li class="menu-item" par="2"><a href="">Dịch vụ sản xuất</a></li>
-                    <li class="menu-item" par="14"><a href="">Review</a></li>
+                    <li class="menu-item" par="14"><a href="{{ route('review.index') }}">Review</a></li>
                     <li class="menu-item" par="17"><a href="{{ route('blogTMa.index') }}">Blog</a></li>
                     <li class="menu-item" par="14"><a href="">Liên hệ</a></li>
                 </ul>
             </nav>
         </article>
         <article class="snake-search">
-            <input type="text" id="box" placeholder="Search anything..." class="search__box">
+            <input type="text" id="box" placeholder="Tìm kiếm ..." class="search__box">
             <i class="fas fa-search search__icon" id="icon" onclick="toggleShow()"></i>
         </article>
+        <!-- Modal hiển thị kết quả -->
+        <div id="modal" class="story-modal hidden">
+            <div class="story-modal__content">
+                <span class="story-modal__close" onclick="closeModal()">&times;</span>
+                <div id="results" class="story-modal__results"></div>
+                <div id="view-all" class="story-modal__view-all hidden">
+                    <a href="{{ route('allTMa.index') }}">Xem tất cả</a>
+                </div>
+            </div>
+        </div>
 
     </header>
+
+
     <script>
         function toggleShow() {
             var el = document.getElementById("box");
             el.classList.toggle("show");
         }
+
+        // Search functionality
+        const searchBox = document.getElementById('box');
+        const modal = document.getElementById('modal');
+        const resultsDiv = document.getElementById('results');
+        const viewAllDiv = document.getElementById('view-all');
+
+        // Collect data from allTMa page
+        function collectStoriesData() {
+            const stories = [];
+            const cards = document.querySelectorAll('.library-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3')?.textContent || '';
+                const meta = card.querySelector('.library-card__meta')?.textContent || '';
+                const image = card.querySelector('img')?.src || '';
+                const link = card.getAttribute('href') || '#';
+
+                // Extract views and date from meta text
+                const viewsMatch = meta.match(/👁 (\d+)/);
+                const dateMatch = meta.match(/📅 ([\d-]+)/);
+
+                stories.push({
+                    title,
+                    views: viewsMatch ? viewsMatch[1] : '0',
+                    date: dateMatch ? dateMatch[1] : '',
+                    image,
+                    link
+                });
+            });
+
+            return stories;
+        }
+
+        // Initialize stories data
+        let stories = [];
+        document.addEventListener('DOMContentLoaded', () => {
+            stories = collectStoriesData();
+        });
+
+        searchBox.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+
+            if (searchTerm.length > 0) {
+                modal.classList.remove('hidden');
+                const filteredStories = stories.filter(story =>
+                    story.title.toLowerCase().includes(searchTerm)
+                );
+
+                if (filteredStories.length > 0) {
+                    resultsDiv.innerHTML = filteredStories.map(story => `
+                        <a href="${story.link}" class="search-result-item">
+                            <img src="${story.image}" alt="${story.title}">
+                            <div class="search-result-info">
+                                <h4>${story.title}</h4>
+                                <div class="search-result-meta">👁 ${story.views} | 📅 ${story.date}</div>
+                            </div>
+                        </a>
+                    `).join('');
+                    viewAllDiv.classList.add('hidden');
+                } else {
+                    resultsDiv.innerHTML = '<p>Không tìm thấy kết quả</p>';
+                    viewAllDiv.classList.remove('hidden');
+                }
+            } else {
+                modal.classList.add('hidden');
+            }
+        });
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            searchBox.value = '';
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
     </script>

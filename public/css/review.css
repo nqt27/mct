@@ -1,0 +1,80 @@
+:root {
+    --bg-review: #121212;
+    --card-review: #1f1f1f;
+    --text-review: #f0f0f0;
+    --accent-review: #e74c3c;
+    --border-review: #333;
+    --font-review: Arial, sans-serif;
+}
+#review-root {
+    background-color: var(--bg-review);
+    color: var(--text-review);
+    font-family: var(--font-review);
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 20px;
+}
+#review-root h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--accent-review);
+}
+.review-form {
+    background: var(--card-review);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+.review-form label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}
+.review-form input,
+.review-form textarea,
+.review-form select {
+    width: 100%;
+    padding: 0.6rem;
+    background: #181818;
+    border: 1px solid var(--border-review);
+    border-radius: 4px;
+    color: var(--text-review);
+}
+.review-form button {
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.5rem;
+    background: var(--accent-review);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.review-form button:hover {
+    background: #c0392b;
+}
+.review-list {
+    margin-top: 3rem;
+}
+.review-card {
+    background: var(--card-review);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-review);
+}
+.review-card h4 {
+    margin: 0 0 0.5rem;
+}
+.review-card p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+@media (max-width: 600px) {
+    #review-root h2 {
+        font-size: 2rem;
+    }
+}
