@@ -1026,6 +1026,7 @@ img.scale-05:hover {
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
 }
+
 /* Tablet */
 @media (max-width: 1024px) {
     .slide-group {

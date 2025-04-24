@@ -83,8 +83,217 @@
 
     </header>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        // 1. Fetch story data from allTMa page
+        async function fetchStoriesData() {
+            try {
+                const response = await fetch('{{ route('allTMa.index') }}');
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const stories = [];
+                doc.querySelectorAll('.card').forEach(card => {
+                    const linkEl = card.querySelector('a');
+                    const title = linkEl.querySelector('h3')?.textContent.trim() || '';
+                    const imgSrc = linkEl.querySelector('img')?.src || '';
+                    const metaEls = linkEl.querySelectorAll('p');
+                    let views = '0',
+                        date = '';
+                    metaEls.forEach(p => {
+                        const txt = p.textContent;
+                        if (txt.includes('Lượt xem')) {
+                            views = txt.split(':')[1]?.trim();
+                        }
+                        if (txt.includes('Phát hành')) {
+                            date = txt.split(':')[1]?.trim();
+                        }
+                    });
+                    const link = linkEl.getAttribute('href') || '#';
+                    stories.push({
+                        title,
+                        imgSrc,
+                        views,
+                        date,
+                        link
+                    });
+                });
+                return stories;
+            } catch (error) {
+                console.error('Error fetching stories:', error);
+                return [];
+            }
+        }
+
+        // 2. Initialize variables
+        let stories = [];
+        const searchBox = document.getElementById('box');
+        const modal = document.getElementById('modal');
+        const resultsDiv = document.getElementById('results');
+        const viewAllDiv = document.getElementById('view-all');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            stories = await fetchStoriesData();
+        });
+
+        // 3. Handle search input
+        searchBox.addEventListener('input', e => {
+            const term = e.target.value.trim().toLowerCase();
+            if (!term) {
+                modal.classList.add('hidden');
+                return;
+            }
+            modal.classList.remove('hidden');
+
+            const filtered = stories.filter(s => s.title.toLowerCase().includes(term));
+            if (filtered.length) {
+                resultsDiv.innerHTML = filtered.map(s => `
+                    <a href="${s.link}" class="search-result-item">
+                        <img src="${s.imgSrc}" alt="${s.title}">
+                        <div class="search-result-info">
+                            <h4>${s.title}</h4>
+                            <div class="search-result-meta">👁 ${s.views} | 📅 ${s.date}</div>
+                        </div>
+                    </a>
+                `).join('');
+                viewAllDiv.classList.add('hidden');
+            } else {
+                resultsDiv.innerHTML = '<p>Không tìm thấy kết quả</p>';
+                viewAllDiv.classList.remove('hidden');
+            }
+        });
+
+        // 4. Close modal
+        function closeModal() {
+            modal.classList.add('hidden');
+            searchBox.value = '';
+        }
+
+        // 5. Close modal when clicking outside
+        window.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
+    </script>
+
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll(".carousel .card");
+            const prevButton = document.querySelector(".arrow-left");
+            const nextButton = document.querySelector(".arrow-right");
+            const indicatorContainer = document.querySelector(".carousel-indicator");
+            const carousel = document.querySelector(".carousel");
+
+            let currentIndex = 0;
+            let startX = 0; // Startpunkt för touch
+
+            createIndicators();
+            updateCarousel();
+            setInterval(nextImage, 3000); // Chuyển slide mỗi 3 giây
+            // Lägg till event listeners
+            carousel.addEventListener("touchstart", handleTouchStart, false);
+            carousel.addEventListener("touchend", handleTouchEnd, false);
+            nextButton.addEventListener("click", nextImage);
+            prevButton.addEventListener("click", prevImage);
+
+            cards.forEach((card, index) => {
+                card.addEventListener("click", () => {
+                    if (index === currentIndex) {
+                        // card.dataset.flipped = card.dataset.flipped === "true" ? "false" : "true";
+                        updateCarousel();
+                    }
+                });
+            });
+
+            function createIndicators() {
+                indicatorContainer.innerHTML = ""; // Rensa gamla indikatorer
+
+                cards.forEach((_, index) => {
+                    const indicator = document.createElement("span");
+                    indicator.classList.add("indicator");
+                    indicator.dataset.index = index;
+                    indicator.addEventListener("click", () => goToImage(index));
+                    indicatorContainer.appendChild(indicator);
+                });
+
+                updateIndicators();
+            }
+
+            function updateCarousel() {
+                cards.forEach((card, index) => {
+                    let distance = (index - currentIndex + cards.length) % cards.length;
+                    let scale = distance === 0 ? 1 : 0.8;
+                    let xOffset = distance === 1 ? 50 : distance === cards.length - 1 ? -50 : 0;
+                    let zIndex = distance === 0 ? 10 : 5;
+
+                    card.style.opacity = distance > 1 && distance < cards.length - 1 ? "0" : "1";
+                    card.style.pointerEvents = distance === 0 ? "auto" : "none";
+
+                    const isFlipped = card.dataset.flipped === "true";
+                    card.style.transform =
+                        `translateX(${xOffset}px) scale(${scale}) rotateY(${isFlipped ? 180 : 0}deg)`;
+                    card.style.zIndex = zIndex;
+                });
+
+                updateIndicators();
+            }
+
+            function updateIndicators() {
+                document.querySelectorAll(".indicator").forEach((dot, index) => {
+                    dot.classList.toggle("active", index === currentIndex);
+                });
+            }
+
+            function goToImage(index) {
+                currentIndex = index;
+                resetAllFlippedCards();
+                updateCarousel();
+            }
+
+            function nextImage() {
+                currentIndex = (currentIndex + 1) % cards.length;
+                resetAllFlippedCards();
+                updateCarousel();
+            }
+
+            function prevImage() {
+                currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                resetAllFlippedCards();
+                updateCarousel();
+            }
+
+            function resetAllFlippedCards() {
+                cards.forEach(card => (card.dataset.flipped = "false"));
+            }
+
+            function handleTouchStart(event) {
+                startX = event.touches[0].clientX;
+            }
+
+            function handleTouchEnd(event) {
+                let diffX = startX - event.changedTouches[0].clientX;
+
+                if (diffX > 50) nextImage();
+                else if (diffX < -50) prevImage();
+            }
+        });
+    </script>
+
+    <script>
+        $(".hover").mouseleave(
+            function() {
+                $(this).removeClass("hover");
+            }
+        );
+    </script>
+
+    <script>
+        wrapnav();
+        slideAudio();
+    </script>
+    {{-- <script>
         // function toggleShow() {
         //     var el = document.getElementById("box");
         //     el.classList.toggle("show");
@@ -169,4 +378,7 @@
                 closeModal();
             }
         });
-    </script>
+    </script> --}}
+</body>
+
+</html>

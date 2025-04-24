@@ -1,58 +1,61 @@
-
 function wrapnav() {
     $(document).ready(function () {
-        $('.v-toggle-menu').on('click', function () {
+        $(".v-toggle-menu").on("click", function () {
             // Toggle class "active" cho menu
-            $('.snake-menu').toggleClass('show');
+            $(".snake-menu").toggleClass("show");
 
             // Toggle class "active" cho nút
-            $(this).toggleClass('active');
+            $(this).toggleClass("active");
         });
         const animatedEls = document.querySelectorAll(".animation-content");
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // Khi phần tử vào viewport, thêm class "fadeIn" để áp dụng hiệu ứng xuất hiện
-                    entry.target.classList.add("animated", "fadeIn");
-                    entry.target.classList.remove("fadeOut"); // Đảm bảo rằng không có hiệu ứng fadeOut
-                } else {
-                    // Khi phần tử ra khỏi viewport, thêm class "fadeOut" để áp dụng hiệu ứng biến mất
-                    entry.target.classList.add("animated", "fadeOut");
-                    entry.target.classList.remove("fadeIn"); // Đảm bảo rằng không có hiệu ứng fadeIn
-                }
-            });
-        }, {
-            threshold: 0.5
-        }); // 50% của phần tử phải hiện lên mới kích hoạt hiệu ứng
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Khi phần tử vào viewport, thêm class "fadeIn" để áp dụng hiệu ứng xuất hiện
+                        entry.target.classList.add("animated", "fadeIn");
+                        entry.target.classList.remove("fadeOut"); // Đảm bảo rằng không có hiệu ứng fadeOut
+                    } else {
+                        // Khi phần tử ra khỏi viewport, thêm class "fadeOut" để áp dụng hiệu ứng biến mất
+                        entry.target.classList.add("animated", "fadeOut");
+                        entry.target.classList.remove("fadeIn"); // Đảm bảo rằng không có hiệu ứng fadeIn
+                    }
+                });
+            },
+            {
+                threshold: 0.5,
+            }
+        ); // 50% của phần tử phải hiện lên mới kích hoạt hiệu ứng
 
         animatedEls.forEach((el) => observer.observe(el));
 
-        $('.menu-item.drop').hover(
+        $(".menu-item.drop").hover(
             function () {
-                $(this).children('.sub-menu').stop(true, true).fadeIn(500); // Hiển thị chậm hơn (500ms)
+                $(this).children(".sub-menu").stop(true, true).fadeIn(500); // Hiển thị chậm hơn (500ms)
             },
             function () {
-                $(this).children('.sub-menu').stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
+                $(this).children(".sub-menu").stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
             }
         );
-        $('.menu-item2.drop').hover(
+        $(".menu-item2.drop").hover(
             function () {
-                $(this).children('.sub-menu2').stop(true, true).fadeIn(500); // Hiển thị chậm hơn (500ms)
+                $(this).children(".sub-menu2").stop(true, true).fadeIn(500); // Hiển thị chậm hơn (500ms)
             },
             function () {
-                $(this).children('.sub-menu2').stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
+                $(this).children(".sub-menu2").stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
             }
         );
         $(window).scroll(function () {
-            if ($(this).scrollTop() > 50) { // Khi người dùng cuộn trang xuống hơn 50px
-                $('.snake-top-view').addClass('fixed-menu');
+            if ($(this).scrollTop() > 50) {
+                // Khi người dùng cuộn trang xuống hơn 50px
+                $(".snake-top-view").addClass("fixed-menu");
                 // $('.main-menu').addClass('container');
-                $('.snake-top-view').addClass('wrap-nav');
+                $(".snake-top-view").addClass("wrap-nav");
             } else {
-                $('.snake-top-view').removeClass('fixed-menu');
-                // $('.main-menu').removeClass('container');    
-                $('.snake-top-view').removeClass('wrap-nav');
+                $(".snake-top-view").removeClass("fixed-menu");
+                // $('.main-menu').removeClass('container');
+                $(".snake-top-view").removeClass("wrap-nav");
             }
         });
     });
@@ -66,7 +69,9 @@ function slideAudio() {
 
         const dotsContainer = $(".slider-dots");
         for (let i = 0; i < totalSlides; i++) {
-            dotsContainer.append(`<div class="dot ${i === 0 ? "active" : ""}"></div>`);
+            dotsContainer.append(
+                `<div class="dot ${i === 0 ? "active" : ""}"></div>`
+            );
         }
 
         $(".next-btn").click(() => navigate(1));
@@ -78,7 +83,8 @@ function slideAudio() {
         });
 
         function navigate(direction) {
-            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            currentSlide =
+                (currentSlide + direction + totalSlides) % totalSlides;
             goToSlide(currentSlide);
         }
 
@@ -130,30 +136,31 @@ function slideAudio() {
 
         const $bokehBackground = $("#bokeh-background");
         const numBokeh = 25;
-        const colors = [{
-            start: "rgba(255, 69, 0, .6)",
-            end: "rgba(255, 69, 0, 0.25)"
-        },
-        {
-            start: "rgba(255, 0, 0, .6)",
-            end: "rgba(255, 0, 0, 0.25)"
-        },
-        {
-            start: "rgba(255, 165, 0, .6)",
-            end: "rgba(255, 165, 0, 0.25)"
-        },
-        {
-            start: "rgba(255, 20, 147, .6)",
-            end: "rgba(255, 20, 147, 0.25)"
-        },
-        {
-            start: "rgba(238, 130, 238, .6)",
-            end: "rgba(238, 130, 238, 0.25)"
-        },
-        {
-            start: "rgba(148, 0, 211, .6)",
-            end: "rgba(148, 0, 211, 0.25)"
-        }
+        const colors = [
+            {
+                start: "rgba(255, 69, 0, .6)",
+                end: "rgba(255, 69, 0, 0.25)",
+            },
+            {
+                start: "rgba(255, 0, 0, .6)",
+                end: "rgba(255, 0, 0, 0.25)",
+            },
+            {
+                start: "rgba(255, 165, 0, .6)",
+                end: "rgba(255, 165, 0, 0.25)",
+            },
+            {
+                start: "rgba(255, 20, 147, .6)",
+                end: "rgba(255, 20, 147, 0.25)",
+            },
+            {
+                start: "rgba(238, 130, 238, .6)",
+                end: "rgba(238, 130, 238, 0.25)",
+            },
+            {
+                start: "rgba(148, 0, 211, .6)",
+                end: "rgba(148, 0, 211, 0.25)",
+            },
         ];
 
         for (let i = 0; i < numBokeh; i++) {
@@ -173,7 +180,7 @@ function slideAudio() {
                 top: `${top}%`,
                 background: background,
                 animationDelay: animationDelay,
-                animationDuration: animationDuration
+                animationDuration: animationDuration,
             });
 
             $bokehBackground.append($bokeh);
