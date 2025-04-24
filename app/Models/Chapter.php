@@ -9,9 +9,21 @@ class Chapter extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['audio_id', 'chuong', 'audio_url', 'thoiluong'];
+    protected $fillable = [
+        'audio_id',
+        'chapter_number',
+        'title',
+        'audio_path',
+        'duration',
+        'views',
+        'status'
+    ];
 
-    public function story()
+    protected $casts = [
+        'status' => 'boolean'
+    ];
+
+    public function audio()
     {
         return $this->belongsTo(Audio::class);
     }

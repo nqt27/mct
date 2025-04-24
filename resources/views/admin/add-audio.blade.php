@@ -24,12 +24,33 @@
             </div>
             <div class="row">
                 <div class="col-md-7">
+                    <!-- Audio Type Selection -->
                     <div class="card card-border-color card-border-color-primary">
                         <div class="card-header bg-info">
-                            <h3 class="card-title text-white mb-0">Trạng thái</h3>
+                            <h3 class="card-title text-white mb-0">Loại Audio</h3>
                         </div>
                         <div class="card-body">
-                            <form style="width: 100%;" id="audio-info-form" method="post" action="{{ route('audio.store') }}">
+                            <div class="form-group" style="justify-content: space-between; align-items: center;">
+                                <label style="padding: 0" class="col-12 col-sm-3 col-form-label">
+                                    <strong>Audio nhiều tập</strong>
+                                </label>
+                                <div style="padding: 0" class="col-12 col-sm-8 col-lg-6">
+                                    <div class="switch-button switch-button-success switch-button-xs">
+                                        <input type="checkbox" class="status-checkbox" data-switch="success" name="is_series" id="is_series">
+                                        <label for="is_series" data-on-label="Yes" data-off-label="No"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Info Form -->
+                    <div class="card card-border-color card-border-color-primary">
+                        <div class="card-header bg-info">
+                            <h3 class="card-title text-white mb-0">Thông tin cơ bản</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="audio-info-form" method="post" action="{{ route('audio.store') }}">
                                 @csrf
                                 <div class="form-group row">
                                     <label class="col-sm-3 control-label">Đường dẫn mẫu</label>
@@ -83,7 +104,35 @@
                                     </div>
                                 </div>
 
+                                <!-- Single Audio File Upload -->
+                                <div class="form-group row single-audio">
+                                    <label class="col-md-3 control-label">File Audio</label>
+                                    <div class="col-md-9">
+                                        <input type="file" class="form-control" name="audio_file" accept="audio/*">
+                                        <div class="audio-preview"></div>
+                                    </div>
+                                </div>
 
+                                <!-- Series Chapters -->
+                                <div class="series-chapters" style="display:none">
+                                    <div id="chapters-container">
+                                        <div class="chapter-entry">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 control-label">Chapter 1</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control mb-2"
+                                                        name="chapter_titles[]" placeholder="Tên chapter">
+                                                    <input type="file" class="form-control"
+                                                        name="chapter_files[]" accept="audio/*">
+                                                    <div class="audio-preview"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-info mt-2" id="add-chapter">
+                                        <i class="fas fa-plus"></i> Thêm chapter
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -183,24 +232,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="card card-border-color card-border-color-primary">
-                        <div class="card-header bg-info">
-                            <h3 class="card-title text-white mb-0">Trạng thái</h3>
-                        </div>
-                        <div class="card-body">
-                            <div id="custom-preview1" class="custom-preview" style="margin: 20px;display: flex;flex-wrap: wrap;justify-content: center;">
-                                <!-- Các ảnh preview sẽ hiển thị ở đây -->
-                            </div>
-                            <form style="max-width: 100%" method="post" action="{{route('audio.store')}}" enctype="multipart/form-data" class="dropzone dz-clickable col-12 col-sm-8 col-lg-8" id="my-dropzone1">
-                                @csrf
-                                <div class="dz-message">
-                                    <div class="icon"><span class="mdi mdi-cloud-upload"></span></div>
-                                    <h4>Kéo thả hình vào đây</h4>
-                                    <div class="dropzone-mobile-trigger needsclick"></div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -227,144 +259,195 @@
 
 <!-- Dropzone -->
 <script>
+    // Disable auto discover for all elements
     Dropzone.autoDiscover = false;
-    $(document).ready(function() {
 
-        // Khởi tạo Dropzone cho phần tử đầu tiên
-        var myDropzone = new Dropzone("#my-dropzone", {
-            maxFiles: 1, // Chỉ cho phép tải lên một ảnh
-            autoProcessQueue: false, // Ngừng tự động tải lên khi có ảnh
-            paramName: "image", // Tên trường khi gửi lên server
+    // Declare myDropzone in global scope
+    var myDropzone;
+
+    $(document).ready(function() {
+        $(document).ready(function() {
+            // Handle parent category change
+            $('#select-parent').on('change', function() {
+                const parentId = $(this).val();
+                const childSelect = $('#select-child');
+
+                // Clear existing options
+                childSelect.empty();
+                childSelect.append('<option value="">Chọn thể loại</option>');
+
+                if (parentId) {
+                    // Get subcategories via AJAX
+                    $.ajax({
+                        url: '/admin/get-subcategories/' + parentId,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.subcategories && response.subcategories.length > 0) {
+                                response.subcategories.forEach(function(subcategory) {
+                                    childSelect.append(`<option value="${subcategory.id}">${subcategory.ten}</option>`);
+                                });
+                                childSelect.prop('disabled', false);
+                            } else {
+                                childSelect.prop('disabled', true);
+                            }
+                        },
+                        error: function() {
+                            childSelect.prop('disabled', true);
+                        }
+                    });
+                } else {
+                    childSelect.prop('disabled', true);
+                }
+            });
+        });
+
+        // Initialize dropzone
+        myDropzone = new Dropzone("#my-dropzone", {
+            maxFiles: 1,
+            autoProcessQueue: false,
+            paramName: "image",
             uploadMultiple: false,
-            autoDiscover: false,
             previewsContainer: "#custom-preview",
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-
             init: function() {
-                var myDropzone = this;
-
-
-
-                // Khi thêm một ảnh mới, xóa ảnh cũ nếu có
-                myDropzone.on("addedfile", function(file) {
-                    // Xóa ảnh cũ nếu có
+                this.on("addedfile", function(file) {
+                    // Clear old preview
                     var previewContainer = document.getElementById("custom-preview");
-                    previewContainer.innerHTML = ""; // Xóa tất cả ảnh cũ trong preview
+                    previewContainer.innerHTML = "";
 
-                    // Tạo phần tử img cho preview của ảnh mới
+                    // Create new preview image
                     var previewImage = document.createElement("img");
-                    previewImage.src = URL.createObjectURL(file); // URL ảnh preview
+                    previewImage.src = URL.createObjectURL(file);
                     previewImage.alt = file.name;
                     previewImage.className = "custom-preview-image";
 
-                    // Thêm ảnh mới vào vùng custom preview
+                    // Add new preview
                     previewContainer.appendChild(previewImage);
-                    if (myDropzone.files.length > 1) {
-                        myDropzone.removeFile(myDropzone.files[0]); // Xóa ảnh cũ
+
+                    // Remove old file if exists
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
                     }
                 });
             }
         });
 
-        // Khởi tạo Dropzone cho phần tử thứ hai
-        var myDropzone1 = new Dropzone("#my-dropzone1", {
-            autoProcessQueue: false, // Tắt tự động gửi Dropzone
-            paramName: "images", // Đặt paramName cho ảnh
-            addRemoveLinks: true, // Thêm link xóa ảnh
-            autoDiscover: false,
-            previewTemplate: `
-                <div class="dz-preview dz-image-preview">
-                    <div class="dz-image"><img data-dz-thumbnail /></div>
-                    
-                </div>
-            `,
-            previewsContainer: "#custom-preview1",
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-
-
+        // Toggle series/single audio sections
+        $('#is_series').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('.single-audio').hide();
+                $('.series-chapters').show();
+            } else {
+                $('.single-audio').show();
+                $('.series-chapters').hide();
+            }
         });
 
-        // Xử lý sự kiện khi nhấn nút submit
-        $('#submit-all').on('click', function(e) {
-            e.preventDefault(); // Ngăn chặn hành động submit mặc định
 
-            console.log(myDropzone1.getAcceptedFiles());
-            // Tạo đối tượng FormData từ form1
+
+        // Initial binding for audio preview
+        $('input[name="audio_file"], input[name="chapter_files[]"]').on('change', function() {
+            handleAudioPreview(this);
+        });
+
+        // Form submission handler
+        $('#submit-all').on('click', function(e) {
+            e.preventDefault();
             var formData = new FormData($('#audio-info-form')[0]);
 
-            // Lấy dữ liệu từ form SEO
-            $('#audio-seo-form').find('input, select, textarea').each(function() {
-                if (this.name) {
-                    formData.append(this.name, $(this).val());
-                }
-            });
-            // Lấy dữ liệu từ form trạng thái
-            $('#audio-status-form').find('input').each(function() {
-                if (this.name) {
-                    formData.append(this.name, $(this).prop('checked') ? 1 : 0);
-                }
-            });
-            // Lấy dữ liệu ảnh chính từ Dropzone
-            var file = myDropzone.getAcceptedFiles()[0];
+            // Add form data...
+            // ...existing form data collection...
 
-            if (file) {
-                formData.append("image", file);
+            // Add series data
+            if ($('#is_series').is(':checked')) {
+                $('.chapter-entry').each(function(index) {
+                    const title = $(this).find('input[name="chapter_titles[]"]').val();
+                    const file = $(this).find('input[name="chapter_files[]"]')[0].files[0];
+
+                    if (title) formData.append(`chapter_titles[${index}]`, title);
+                    if (file) formData.append(`chapter_files[${index}]`, file);
+                });
             }
 
-
-            // Duyệt qua tất cả các file được chọn trong Dropzone1 và thêm vào FormData
-            myDropzone1.getAcceptedFiles().forEach(function(file, i) {
-                formData.append('images[]', file);
-
-
-            });
-
-
-            // Hiển thị tất cả các key trong FormData(tùy chọn)
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]); // pair[0] là key, pair[1] là value
-            }
-
-            // Gửi request AJAX với FormData đã gộp
-            $.ajax({
-                url: '/admin/addaudio', // Đường dẫn route
-                method: 'POST',
-                data: formData,
-                processData: false, // Không xử lý dữ liệu
-                contentType: false, // Không thiết lập kiểu content type
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    // Hiển thị thông báo thành công
-                    Swal.fire({
-                        title: 'Thành công!',
-                        text: 'Dữ liệu đã được gửi thành công.',
-                        icon: 'success',
-                        timer: 1000, // Thời gian tự động đóng sau 1 giây
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        window.location.href = '/admin/audio';
-                    });
-
-                    // Xóa tất cả các tệp sau khi gửi thành công
-                    myDropzone.removeAllFiles();
-                    myDropzone1.removeAllFiles();
-
-                },
-                error: function(xhr) {
-                    // Xử lý khi lỗi xảy ra
-                    alert('Error submitting form');
-                }
-            });
+            // ...rest of your AJAX submission code...
         });
+
+        // Initialize other features
     });
 </script>
 
+<script>
+    function handleAudioPreview(input) {
+        const file = input.files[0];
+        const previewContainer = $(input).siblings('.audio-preview');
+
+        if (file) {
+            // Clear existing preview
+            previewContainer.empty();
+
+            // Create audio preview element
+            const audioPreview = `
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <strong class="text-primary">${file.name}</strong>
+                        <button type="button" class="btn btn-sm btn-danger remove-preview">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <audio controls style="width:100%">
+                        <source src="${URL.createObjectURL(file)}" type="${file.type}">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        `;
+
+            // Show preview
+            previewContainer.html(audioPreview);
+            previewContainer.show();
+
+            // Handle remove button click
+            previewContainer.find('.remove-preview').click(function(e) {
+                e.preventDefault();
+                $(input).val(''); // Clear file input
+                previewContainer.empty(); // Remove preview
+            });
+        } else {
+            previewContainer.hide();
+        }
+    }
+
+    $(document).ready(function() {
+        // Initial binding for existing file inputs
+        $('input[name="audio_file"], input[name="chapter_files[]"]').on('change', function() {
+            handleAudioPreview(this);
+        });
+
+        // Update chapter addition to include preview handler
+        $('#add-chapter').click(function() {
+            const chapterCount = $('.chapter-entry').length + 1;
+            const chapterHtml = `
+            <div class="chapter-entry">
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">Chapter ${chapterCount}</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control mb-2" 
+                               name="chapter_titles[]" placeholder="Tên chapter">
+                        <input type="file" class="form-control" 
+                               name="chapter_files[]" accept="audio/*"
+                               onchange="handleAudioPreview(this)">
+                        <div class="audio-preview"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+            $('#chapters-container').append(chapterHtml);
+        });
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         //-initialize the javascript
@@ -372,6 +455,27 @@
         selectMenu('{{$menu}}');
     });
 </script>
-</body>
 
-</html>
+<!-- Add this CSS to your existing styles or in a style tag -->
+<style>
+    .audio-preview {
+        display: none;
+    }
+
+    .audio-preview .card {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+
+    .audio-preview audio {
+        outline: none;
+    }
+
+    .audio-preview audio::-webkit-media-controls-panel {
+        background-color: #ffffff;
+    }
+
+    .remove-preview {
+        padding: 0.25rem 0.5rem;
+    }
+</style>

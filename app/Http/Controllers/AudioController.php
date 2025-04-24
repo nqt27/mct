@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Audio;
-use App\Models\Menu;
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
+use App\Models\Chapter;
 use App\Models\TheLoai;
+use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AudioController extends Controller
 {
@@ -22,333 +22,197 @@ class AudioController extends Controller
         $audio = Audio::all();
         return view('admin.audio',  ['audio' => $audio, 'menu' => $menu, 'selectmenu' => $selectmenu]);
     }
+
     public function add()
     {
-        $menu = TheLoai::with('submenu') // Lấy menu cha
-            ->whereNull('parent_id') // Lấy luôn menu con
-            ->orderBy('position') // Sắp xếp theo vị trí
+        $menu = TheLoai::with('submenu')
+            ->whereNull('parent_id')
+            ->orderBy('position')
             ->get();
-
-        return view('admin.add-audio', ['menu' => $menu]);
+        return view('admin.add-audio', compact('menu'));
     }
+
     public function store(Request $request)
     {
-        // Kiểm tra dữ liệu đầu vào
-        $validatedData = $request->validate([
-            'slug' => 'nullable|string|max:255',
-            'ten' => 'nullable|string|max:255',
-            'tacgia' => 'nullable|string|max:255',
-            'tomtat' => 'nullable|string',
-            'menu_id' => 'required|integer|exists:theloai,id',
-            'menu_id2' => 'nullable|integer|exists:theloai,id',
-            'keyword_focus' => 'nullable|string|max:255',
-            'seo_title' => 'nullable|string|max:255',
-            'seo_keywords' => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string',
-            'display' => 'boolean',
-            'moi' => 'boolean',
-            'nghenhieu' => 'boolean',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+        try {
+            // Validate the request
+            $validated = $request->validate([
+                'ten' => 'required|string|max:255',
+                'slug' => 'required|string|unique:audio,slug',
+                'tacgia' => 'required|string',
+                'tomtat' => 'nullable|string',
+                'menu_id' => 'required|exists:theloai,id',
+                'menu_id2' => 'nullable|exists:theloai,id',
+                'image' => 'required|image',
+                'audio_file' => $request->boolean('is_series') ? 'nullable' : 'required',
+                'chapter_files.*' => $request->boolean('is_series') ? 'required' : 'nullable',
+                'chapter_titles.*' => $request->boolean('is_series') ? 'required|string' : 'nullable',
+                'is_series' => 'required|in:0,1,true,false', // Accept more formats
+                'keyword_focus' => 'nullable|string',
+                'seo_title' => 'nullable|string',
+                'seo_keywords' => 'nullable|string',
+                'seo_description' => 'nullable|string',
+                'display' => 'boolean',
+                'moi' => 'boolean',
+                'nghenhieu' => 'boolean'
+            ], [
+                'ten.required' => 'Tên audio là bắt buộc',
+                'slug.required' => 'Slug là bắt buộc',
+                'slug.unique' => 'Slug đã tồn tại',
+                'tacgia.required' => 'Tác giả là bắt buộc',
+                'menu_id.required' => 'Danh mục là bắt buộc',
+                'image.required' => 'Ảnh là bắt buộc',
+                'audio_file.required' => 'File audio là bắt buộc cho audio đơn',
+                'chapter_files.*.required' => 'File audio là bắt buộc cho mỗi chapter',
+                'chapter_titles.*.required' => 'Tên chapter là bắt buộc'
+            ]);
 
-        // Tạo sản phẩm mới
-        $audio = new Audio();
+            // Create new audio record
+            $audio = new Audio();
 
-        // Đường dẫn logo watermark
-        $logoPath = public_path('uploads/images/logo.png');
-        $logo = Image::make($logoPath)
-            ->resize(100, 100, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            // Basic info
+            $audio->fill([
+                'ten' => $request->ten,
+                'slug' => $request->slug,
+                'tacgia' => $request->tacgia,
+                'tomtat' => $request->tomtat,
+                'theloai_id' => $request->menu_id2 ?? $request->menu_id,
+                'is_series' => $request->boolean('is_series'),
+                'keyword_focus' => $request->keyword_focus,
+                'seo_title' => $request->seo_title,
+                'seo_keywords' => $request->seo_keywords,
+                'seo_description' => $request->seo_description,
+                'display' => $request->boolean('display'),
+                'moi' => $request->boolean('moi'),
+                'nghenhieu' => $request->boolean('nghenhieu'),
+                'luot_nghe' => 0
+            ]);
 
-        // Xử lý ảnh chính nếu có
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = 'main_' . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = public_path('uploads/images/' . $imageName);
+            // Handle main image
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = 'main_' . time() . '.' . $image->getClientOriginalExtension();
 
-            // Resize và đóng dấu logo
-            $img = Image::make($image)
-                ->resize(600, 600, function ($constraint) {
+                // Add watermark
+                $img = Image::make($image);
+                $watermark = Image::make(public_path('uploads/images/logo.png'));
+                $watermark->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->resize(600, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })
-                ->insert($logo, 'top-right', 20, 20)
-                ->save($imagePath);
+                    ->insert($watermark, 'bottom-right', 10, 10)
+                    ->save(public_path('uploads/images/' . $imageName));
 
-            $audio->image = $imageName;
-        }
-
-        // Xử lý nhiều ảnh (images[]) nếu có
-        $imagesArray = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $imageName = 'sub_' . time() . '_' . $file->getClientOriginalName();
-                $imagePath = public_path('uploads/images/' . $imageName);
-
-                // Resize và đóng dấu logo
-                $img = Image::make($file)
-                    ->resize(600, 600, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->insert($logo, 'top-right', 10, 10)
-                    ->save($imagePath);
-
-                $imagesArray[] = $imageName;
+                $audio->image = $imageName;
             }
 
-            $audio->filenames = $imagesArray; // Lưu dưới dạng JSON
+
+
+            // Handle single episode audio
+            if (!$request->boolean('is_series') && $request->hasFile('audio_file')) {
+                $audioFile = $request->file('audio_file');
+                $audioName = time() . '_' . Str::slug($request->ten) . '.' . $audioFile->getClientOriginalExtension();
+                $audioFile->storeAs('public/audios', $audioName);
+                $audio->audio_path = $audioName;
+            }
+
+            $audio->save();
+
+            // Handle series chapters
+            if ($request->boolean('is_series') && $request->hasFile('chapter_files')) {
+                foreach ($request->file('chapter_files') as $index => $file) {
+                    $chapterNumber = $index + 1;
+                    $chapterTitle = $request->input('chapter_titles')[$index] ?? "Chapter {$chapterNumber}";
+                    $audioName = time() . '_chapter_' . $chapterNumber . '_' . Str::slug($chapterTitle) . '.' . $file->getClientOriginalExtension();
+
+                    $file->storeAs('public/audios/chapters', $audioName);
+
+                    $audio->chapters()->create([
+                        'chapter_number' => $chapterNumber,
+                        'title' => $chapterTitle,
+                        'audio_path' => $audioName,
+                        'status' => true
+                    ]);
+                }
+
+                $audio->update(['total_chapters' => count($request->file('chapter_files'))]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Audio đã được thêm thành công'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi validation',
+                'errors' => $e->errors(),
+                'request_data' => $request->all() // Add this to see what data was sent
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Lưu các dữ liệu khác
-        $audio->slug = $request->input('slug');
-        $audio->ten = $request->input('ten');
-        $audio->tacgia = $request->input('tacgia');
-        $audio->tomtat = $request->input('tomtat');
-        $audio->theloai_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
-        $audio->keyword_focus = $request->input('keyword_focus');
-        $audio->seo_title = $request->input('seo_title');
-        $audio->seo_keywords = $request->input('seo_keywords');
-        $audio->seo_description = $request->input('seo_description');
-        $audio->display = $request->boolean('display');
-        $audio->nghenhieu = $request->boolean('nghenhieu');
-        $audio->moi = $request->boolean('moi');
-
-        // Lưu sản phẩm vào database
-        $audio->save();
-
-        return response()->json(['message' => 'Sản phẩm đã được thêm thành công']);
     }
-    public function deleteAll(Request $request)
+
+    public function edit($id)
     {
-        // Lấy danh sách các ID từ yêu cầu
-        $ids = $request->input('ids');
-
-        // Kiểm tra nếu có ID nào được chọn
-        if (is_array($ids) && count($ids) > 0) {
-            // Lấy danh sách sản phẩm theo ID
-            $audio = Audio::whereIn('id', $ids)->get();
-
-            foreach ($audio as $audio) {
-                // Xóa ảnh chính nếu có
-                if ($audio->image) {
-                    $imagePath = public_path('uploads/images/' . $audio->image);
-                    if (File::exists($imagePath)) {
-                        File::delete($imagePath);
-                    }
-                }
-
-                // Xóa ảnh phụ nếu có
-                if ($audio->images) {
-                    $images = json_decode($audio->images, true);
-                    if (is_array($images)) {
-                        foreach ($images as $image) {
-                            $imagePath = public_path('uploads/images/' . $image);
-                            if (File::exists($imagePath)) {
-                                File::delete($imagePath);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Xóa sản phẩm khỏi cơ sở dữ liệu
-            Audio::whereIn('id', $ids)->delete();
-
-            return response()->json(['success' => 'Đã xóa thành công các mục đã chọn!']);
-        }
-
-        return response()->json(['error' => 'Không có mục nào được chọn.'], 400);
+        $audio = Audio::with(['chapters', 'theloai'])->findOrFail($id);
+        $menu = TheLoai::with('submenu')
+            ->whereNull('parent_id')
+            ->orderBy('position')
+            ->get();
+        return view('admin.edit-audio', compact('audio', 'menu'));
     }
 
+    public function update(Request $request, $id)
+    {
+        // Similar validation and logic as store method
+        // But handle existing files differently
+    }
 
     public function destroy($id)
     {
-        // Tìm sản phẩm bằng ID
-        $audio = Audio::where('id', $id)->first();
-        if (!$audio) {
-            return response()->json(['message' => 'Sản phẩm không tồn tại'], 404);
-        }
+        try {
+            $audio = Audio::findOrFail($id);
 
-        // Xóa ảnh chính nếu có
-        if ($audio->image) {
-            $imagePath = public_path('uploads/images/' . $audio->image);
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
+            // Delete main image
+            if ($audio->image) {
+                Storage::delete('public/uploads/images/' . $audio->image);
             }
-        }
 
-        // Xóa các ảnh khác nếu có
-        if ($audio->images) {
-            $images = json_decode($audio->images, true); // Parse chuỗi JSON
-            if (is_array($images)) {
-                foreach ($images as $image) {
-                    $imagePath = public_path('uploads/images/' . $image);
-                    if (File::exists($imagePath)) {
-                        File::delete($imagePath);
-                    }
+            // Delete additional images
+            if ($audio->images) {
+                foreach ($audio->images as $image) {
+                    Storage::delete('public/uploads/images/' . $image);
                 }
             }
-        }
 
-        // Xóa sản phẩm
-        $audio->delete();
-
-        // Redirect lại trang danh sách sản phẩm với thông báo thành công
-        return redirect()->route('audio.index')->with('success', 'audio deleted successfully.');
-    }
-    public function show($id)
-    {
-        $audio = Audio::where('id', $id)->first();
-
-        if (!$audio) {
-            return redirect()->back()->with('error', 'audio not found.');
-        }
-
-        return view('home-page.audio-detail', ['mois' => $audio, 'audio' => Audio::take(4)->get()]);
-    }
-    public function show_update($id)
-    {
-        $audio = Audio::where('id', $id)->first();
-
-        // Lấy menu con đã chọn
-        $selectedMenu = TheLoai::find($audio->menu_id);
-
-        // Lấy menu cha và các menu con liên quan
-        $menu = TheLoai::whereNull('parent_id')
-            ->with('submenu')
-            ->get();
-
-
-        return view('admin.show-update', ['audio' => $audio, 'menu' => $menu, 'selectedMenu' => $selectedMenu]);
-    }
-    public function update(Request $request, $id)
-    { // Kiểm tra dữ liệu đầu vào
-        $validatedData = $request->validate([
-            'slug' => 'nullable|string|max:255',
-            'ten' => 'nullable|string|max:255',
-            'tacgia' => 'nullable|string|max:255',
-            'tomtat' => 'nullable|string',
-            'menu_id' => 'required|integer|exists:theloai,id',
-            'menu_id2' => 'nullable|integer|exists:theloai,id',
-            'keyword_focus' => 'nullable|string|max:255',
-            'seo_title' => 'nullable|string|max:255',
-            'seo_keywords' => 'nullable|string|max:255',
-            'seo_description' => 'nullable|string',
-            'display' => 'boolean',
-            'moi' => 'boolean',
-            'nghenhieu' => 'boolean',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-        // Tạo sản phẩm mới
-        $audio = Audio::findOrFail($id);
-        // Đường dẫn logo watermark
-        $logoPath = public_path('uploads/images/logo.png');
-        $logo = Image::make($logoPath)
-            ->resize(100, 100, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-        // Xóa dữ liệu cũ trong cột `images`
-        // Xử lý nhiều ảnh (images[]) nếu có
-        $imagesArray = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $imageName = 'sub_' . time() . '_' . $file->getClientOriginalName();
-                $imagePath = public_path('uploads/images/' . $imageName);
-                // Resize và đóng dấu logo
-                $img = Image::make($file)
-                    ->resize(600, 600, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->insert($logo, 'top-right', 10, 10)
-                    ->save($imagePath);
-                $imagesArray[] = $imageName;
+            // Delete audio files
+            if ($audio->is_series) {
+                foreach ($audio->chapters as $chapter) {
+                    Storage::delete('public/audios/chapters/' . $chapter->audio_path);
+                }
+            } else {
+                Storage::delete('public/audios/' . $audio->audio_path);
             }
 
-            $audio->images = $imagesArray;
+            $audio->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Audio đã được xóa thành công'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Lưu các dữ liệu cơ bản
-        if ($request->hasFile('image')) {
-            // Store the moi image
-            $image = $request->file('image');
-            $imageName = 'main_' . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = public_path('uploads/images/' . $imageName);
-            // Resize và đóng dấu logo
-            $img = Image::make($file)
-                ->resize(600, 600, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->insert($logo, 'top-right', 10, 10)
-                ->save($imagePath);
-
-            $audio->image = $imageName;
-        }
-
-        $audio->slug = $request->input('slug');
-        $audio->ten = $request->input('ten');
-        $audio->tacgia = $request->input('tacgia');
-        $audio->tomtat = $request->input('tomtat');
-        $audio->theloai_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
-        $audio->keyword_focus = $request->input('keyword_focus');
-        $audio->seo_title = $request->input('seo_title');
-        $audio->seo_keywords = $request->input('seo_keywords');
-        $audio->seo_description = $request->input('seo_description');
-        $audio->display = $request->boolean('display');
-        $audio->nghenhieu = $request->boolean('nghenhieu');
-        $audio->moi = $request->boolean('moi');
-
-
-
-        // Lưu sản phẩm vào database
-        $audio->save();
-
-        return redirect()->route('audio.index')->with('success', 'audio updated successfully.');
     }
-    public function update_status(Request $request, $id)
-    {
-        $request->validate([
-            'display' => 'nullable|boolean',
-            'nghenhieu' => 'nullable|boolean',
-            'moi' => 'nullable|boolean',
-        ]);
-
-        $audio = Audio::findOrFail($id);
-
-        // Cập nhật các trạng thái
-        $audio->display = $request->input('display');
-        $audio->nghenhieu = $request->input('nghenhieu');
-        $audio->moi = $request->input('moi');
-
-        $audio->save();
-
-        return response()->json(['success' => 'audio status updated successfully!']);
-    }
-    public function playAudio($id)
-    {
-        $audio = Audio::findOrFail($id);
-        $audio->increment('luot_nghe'); // Tăng lượt nghe lên 1
-        return response()->json(['success' => true, 'luot_nghe' => $audio->luot_nghe]);
-    }
-    //     public function search(Request $request)
-    //     {
-    //         $query = $request->input('kw');
-    //         $menu = Menu::all();
-    //         $mois = mois::where('title', 'LIKE', "%{$query}%")->get();
-    //         if (!$mois) {
-    //             return redirect()->back()->with('error', 'audio not found.');
-    //         }
-
-    //         return view('home-page.mois', [
-    //             'categories' => $categories,
-    //             'audio' => $audio
-    //         ]);
-    //     }
-
 }

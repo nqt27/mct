@@ -41,7 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/addsubmenu', [MenuAudioController::class, 'addSub'])->name('menu.addSub');
     Route::post('/admin/updateOrder', [MenuAudioController::class, 'updateOrder'])->name('menu.updateOrder');
     Route::get('/admin/submenu/{id}', [MenuAudioController::class, 'submenu'])->name('menu.submenu');
-    Route::get('/get-subcategories', [MenuAudioController::class, 'getSubcategories']);
+
+    Route::get('/admin/get-subcategories/{parent_id}', function ($parent_id) {
+        $subcategories = App\Models\TheLoai::where('parent_id', $parent_id)->get();
+        return response()->json(['subcategories' => $subcategories]);
+    })->name('get.subcategories');
 
 
     ///////////   audioS   /////////////////////////
@@ -107,4 +111,3 @@ Route::get('/lienhe', [LienHeController::class, 'index'])->name('lienhe.index');
 Route::get('/dvsx', [DichVuSXController::class, 'index'])->name('dvsx.index');
 Route::get('/{slug}', [HomeController::class, 'detail'])->where('slug', '^(?!admin|blog|about|contact).*')->name('detail');
 Route::post('/audio/play/{id}', [AudioController::class, 'playAudio']);
-
