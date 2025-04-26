@@ -34,23 +34,206 @@
 
     <section class="ct-related">
         <h2>Truyện Liên Quan</h2>
+
         <div class="ct-related-grid">
-            <div class="ct-related-card">
-                <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2024/T10/biet-thu-ma-am-nghe-truyen-ma-audio-nguyen-huy.jpg"
-                    alt="Truyện 1" />
-                <div>Hành Lang Ký Túc Xá</div>
+            <div class="container" style="margin-bottom: 30px;">
+                <section class="snake-content">
+                    <div class="slider-container">
+                        <div class="slider">
+                            <div class="slide-group active">
+                                <div class="card" data-tilt>
+                                    <a href="{{ route('detailTMa.index') }}">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 2" alt="Audio 2">
+                                        <h3>Audio 2</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 3" alt="Audio 3">
+                                        <h3>Audio 3</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 4" alt="Audio 4">
+                                        <h3>Audio 4</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 2" alt="Audio 2">
+                                        <h3>Audio 2</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 3" alt="Audio 3">
+                                        <h3>Audio 3</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 4" alt="Audio 4">
+                                        <h3>Audio 4</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 2" alt="Audio 2">
+                                        <h3>Audio 2</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 3" alt="Audio 3">
+                                        <h3>Audio 3</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 4" alt="Audio 4">
+                                        <h3>Audio 4</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 2" alt="Audio 2">
+                                        <h3>Audio 2</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 3" alt="Audio 3">
+                                        <h3>Audio 3</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 4" alt="Audio 4">
+                                        <h3>Audio 4</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 2" alt="Audio 2">
+                                        <h3>Audio 2</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 3" alt="Audio 3">
+                                        <h3>Audio 3</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                                <div class="card" data-tilt>
+                                    <a href="#">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 4" alt="Audio 4">
+                                        <h3>Audio 4</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="ct-related-card">
-                <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2024/T10/biet-thu-ma-am-nghe-truyen-ma-audio-nguyen-huy.jpg"
-                    alt="Truyện
-                    2" />
-                <div>Đèn Dầu Không Tắt</div>
-            </div>
-            <div class="ct-related-card">
-                <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2024/T10/biet-thu-ma-am-nghe-truyen-ma-audio-nguyen-huy.jpg"
-                    alt="Truyện 3" />
-                <div>Lời Nguyền Búp Bê</div>
-            </div>
+        </div>
+        <div class="ct-more">
+            <a title="Mới nhất" href="{{ route('allTMa.index') }}">
+                <div class="text_container">
+                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
+                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
+                </div>
+            </a>
         </div>
     </section>
 </div>
