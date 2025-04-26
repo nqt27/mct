@@ -1,171 +1,118 @@
 @include('layout-header')
-<div class="container" style="margin-bottom: 30px;">
-    <section class="snake-audio-content">
-        <div class="content-left-item audio-flex-content">
-            <div class="slider-container">
-                <div class="app-container">
-                    <div id="volume">
-                        <button id="muteBtn"><i class="fas fa-volume-up"></i></button>
-                        <div id="volume-bar">
-                            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-                            <div id="volumeIndicator" class="volume-indicator"></div>
-                        </div>
-                    </div>
-                    <img id="albumArt" src="" alt="{{$audio->ten}}">
-                    <div id="fade"></div>
-                    <div id="uiWrap">
-                        <div class="audio-info">
-                            <div class="track-info">
-                                <div id="trackTitle"></div>
-                                <div id="bandName"></div>
-                                <button id="likeBtn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="seek-bar">
-                                <input type="range" id="seekSlider" min="0" step="1" value="0">
-                                <div id="bufferingIndicator" class="buffering-indicator"></div>
-                                <div id="seekIndicator" class="seek-indicator"></div>
-                                <div id="currentTime">0:00</div>
-                                <div id="trackTime">0:00</div>
-                            </div>
-                        </div>
-                        <div class="audio-controls">
-                            <div class="playSkip">
-                                <button id="loopBtn"><i class="fas fa-redo"></i></button>
-                                <button id="prevBtn"><i class="fas fa-step-backward"></i></button>
-                                <button id="playPauseBtn" data-id="{{ $audio->id }}"><i class="fas fa-play"></i></button>
-                                <button id="nextBtn"><i class="fas fa-step-forward"></i></button>
-                                <button id="shuffleBtn"><i class="fas fa-random"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="audio-info">
-                <div class="audio-info-header">
-                    <h6>Linh dị</h6>
-                    <h1>{{$audio->ten}}</h1>
-                    <h6>Tác giả: Duy Võ</h6>
+<div class="ct-container">
+    <section class="ct-detail">
+        <div class="ct-cover">
+            <section class="snake-audio-content">
+                <div class="slider-container">
+                    <div class="app-container">
+                        <div id="volume">
+                            <button id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                            <div id="volume-bar">
+                                <input type="range" id="volumeSlider" min="0" max="1" step="0.01"
+                                    value="1">
+                                <div id="volumeIndicator" class="volume-indicator"></div>
+                            </div>
+                        </div>
+                        <img id="albumArt" src="" alt="{{ $audio->ten }}">
+                        <div id="fade"></div>
+                        <div id="uiWrap">
+                            <div class="audio-info">
+                                <div class="track-info">
+                                    <div id="trackTitle"></div>
+                                    <div id="bandName"></div>
+                                    <button id="likeBtn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="seek-bar">
+                                    <input type="range" id="seekSlider" min="0" step="1" value="0">
+                                    <div id="bufferingIndicator" class="buffering-indicator"></div>
+                                    <div id="seekIndicator" class="seek-indicator"></div>
+                                    <div id="currentTime">0:00</div>
+                                    <div id="trackTime">0:00</div>
+                                </div>
+                            </div>
+                            <div class="audio-controls">
+                                <div class="playSkip">
+                                    <button id="loopBtn"><i class="fas fa-redo"></i></button>
+                                    <button id="prevBtn"><i class="fas fa-step-backward"></i></button>
+                                    <button id="playPauseBtn" data-id="{{ $audio->id }}"><i
+                                            class="fas fa-play"></i></button>
+                                    <button id="nextBtn"><i class="fas fa-step-forward"></i></button>
+                                    <button id="shuffleBtn"><i class="fas fa-random"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="audio-info-content">
-                    <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{ $audio->luot_nghe }}</p>
-                    <p><i class="fa-solid fa-eye"></i>Giọng đọc: Nguyễn Huy</p>
-                    <h3>Tóm tắt</h3>
-                    <p>Nghe truyện ma Lộ Diện Kẻ Sát Nhân kể về hành trình lần tìm chân tướng tên tà sư và gã ác tâm hại mạng người của chàng thanh niên trẻ được mệnh danh là thợ săn tiền thưởng. Mời quý vị theo dõi qua lời kể của Nguyễn Huy - Đất Đồng Radio.
-                        <br>
-                        Tác giả: Duy Võ
-                        <br>
-                        -----
-                        <br>
-                        Theo dõi facebook tác giả:
-                        <br>
-                        ➥ https://www.facebook.com/profile.php?...
-                        <br>
-                        ➥ Facebook Nguyễn Huy
-                    </p>
-                </div>
-            </div>
+
+
+            </section>
+        </div>
+        <div class="ct-info">
+            <h1>Kỳ Án Truy Tìm Dấu Vết</h1>
+            <div class="ct-meta">Tác giả: GhostWriter | Ngày đăng: 17/04/2025 | Lượt xem: 10,234</div>
+            <p>Một câu chuyện rùng rợn xoay quanh những dấu vết bí ẩn tại ngôi làng hoang bị lãng quên. Hãy cùng khám
+                phá bí ẩn trong từng tập truyện.</p>
+            <button class="ct-btn">Nghe Tập 1</button>
         </div>
     </section>
-    <section class="snake-content">
-        <div class="content-left-item">
-            <div class="content-left-item-header">
-                <h2 class="block-title">
 
-                    <span class="block-title-inner">Mới nhất</span>
-                    <a title="Mới nhất" href="#">
-                        <div class="text_container">
-                            <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                            <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                        </div>
-                    </a>
-                </h2>
-            </div>
-            <!-- <div id="bokeh-background"></div> -->
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider">
-                        @foreach($new_audio->chunk(4) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="#">
-                                    <img src="{{asset('uploads/images/'. $p->image)}}" title="{{$p->ten}}" alt="{{$p->ten}}">
-                                    <h3>{{$p->ten}}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                </a>
-                            </div>
-                            @endforeach
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <button class="nav-btn prev-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-btn next-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-
-                <div class="slider-dots"></div>
-            </div>
-
+    <section class="ct-episode-list">
+        <h2>Danh Sách Tập</h2>
+        <div class="ct-episode">
+            <span>Tập 1: Dấu Vết Đầu Tiên</span>
+            <button class="ct-btn">Nghe</button>
         </div>
-        <div class="content-left-item">
-            <div class="content-left-item-header">
-                <h2 class="block-title">
-
-                    <span class="block-title-inner">Nghe nhiều nhất</span>
-                    <a title="Nghe nhiều nhất" href="#">
-                        <div class="text_container">
-                            <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                            <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                        </div>
-                    </a>
-                </h2>
-            </div>
-            <!-- <div id="bokeh-background"></div> -->
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slider">
-                        @foreach($new_audio->chunk(4) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="{{ route('detail', $p->slug) }}">
-                                    <img src="{{asset('uploads/images/'. $p->image)}}" title="{{$p->ten}}" alt="{{$p->ten}}">
-                                    <h3>{{$p->ten}}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                </a>
-                            </div>
-                            @endforeach
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <button class="nav-btn prev-btn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-btn next-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-
-                <div class="slider-dots"></div>
-            </div>
-
+        <div class="ct-episode">
+            <span>Tập 2: Âm Thanh Trong Đêm</span>
+            <button class="ct-btn">Nghe</button>
         </div>
+        <div class="ct-episode">
+            <span>Tập 3: Người Đội Mũ Rơm</span>
+            <button class="ct-btn">Nghe</button>
+        </div>
+    </section>
 
+    <section class="ct-related">
+        <h2>Truyện Liên Quan</h2>
+
+        <div class="ct-related-grid">
+            <div class="container" style="margin-bottom: 30px;">
+                <section class="snake-content">
+                    <div class="slider-container">
+                        <div class="slider">
+                            <div class="slide-group active">
+                                <div class="card" data-tilt>
+                                    <a href="{{ route('detailTMa.index') }}">
+                                        <img src="https://datdongradio.com/upload/images/TRUYEN-NGAN/2025/T4/lac-vao-ban-quy-nghe-truyen-ma-audio-nguyen-huy.jpg"
+                                            title="Audio 1" alt="Audio 1">
+                                        <h3>Audio 1</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="ct-more">
+            <a title="Mới nhất" href="{{ route('allTMa.index') }}">
+                <div class="text_container">
+                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
+                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
+                </div>
+            </a>
+        </div>
     </section>
 </div>
 @include('layout-footer')
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{asset('js/app.js')}}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
     document.getElementById('playPauseBtn').addEventListener('click', function() {
         let audioId = this.getAttribute('data-id'); // Lấy ID audio
@@ -180,7 +127,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById('luot-nghe').innerText = data.luot_nghe; // Cập nhật lượt nghe trên giao diện
+                    document.getElementById('luot-nghe').innerText = data
+                        .luot_nghe; // Cập nhật lượt nghe trên giao diện
                 }
             });
     });
@@ -196,7 +144,7 @@
     const tracks = [{
         src: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
         albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
-        trackTitle: "{{$audio->ten}}",
+        trackTitle: "{{ $audio->ten }}",
         duration: "3:09" // Format: "minutes:seconds"
     }];
 

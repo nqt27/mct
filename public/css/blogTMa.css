@@ -21,20 +21,16 @@
     border-radius: 20px;
 }
 #blog-root .haunted-blog-header {
-    font-family: var(--font-title);
     font-size: 3rem;
     text-align: center;
     margin-bottom: 2rem;
     color: #f1c40f;
-    animation: flicker 2s infinite;
 }
 .haunted-blog-header {
-    font-family: var(--font-title);
     font-size: 3rem;
     text-align: center;
     margin-bottom: 2rem;
     color: #f1c40f;
-    animation: flicker 2s infinite;
 }
 @keyframes flicker {
     0%,

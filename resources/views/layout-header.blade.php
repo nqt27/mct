@@ -76,7 +76,7 @@
                 <span class="story-modal__close" onclick="closeModal()">&times;</span>
                 <div id="results" class="story-modal__results"></div>
                 <div id="view-all" class="story-modal__view-all hidden">
-                    <a href="{{ route('allTMa.index') }}">Xem tất cả</a>
+                    <a href="{{ route('allTMa.index') }}">Xem tất cả truyện</a>
                 </div>
             </div>
         </div>

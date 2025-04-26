@@ -186,7 +186,57 @@ body {
         font-size: 11px;
     }
 }
+@media (max-width: 768px) {
+    .story-modal {
+        position: fixed;
+        top: 150px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
 
+    .story-modal__content {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        border-radius: 10px;
+        padding: 16px;
+        position: relative;
+    }
+
+    .story-modal__close {
+        position: absolute;
+        top: 10px;
+        right: 16px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .story-modal__results {
+        margin-top: 40px;
+        font-size: 16px;
+    }
+
+    .story-modal__view-all {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .story-modal__view-all a {
+        color: #007bff;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .hidden {
+        display: none;
+    }
+}
 .snake-slider {
     display: flex;
     justify-content: center;
@@ -779,6 +829,7 @@ input.v-form-field-type-text {
     position: relative;
     padding-left: 15px;
     line-height: 25px;
+    list-style: none;
 }
 #footer-3 a {
     text-decoration: none;
@@ -1373,7 +1424,7 @@ figure.snip1156.hover figcaption p {
 }
 
 .snake-audio-content {
-    padding: 30px 0;
+    /* padding: 30px 0; */
     font-family: "Poppins", sans-serif;
     font-size: 15px;
     color: white;
@@ -1700,7 +1751,7 @@ figure.snip1156.hover figcaption p {
 }
 .audio-flex-content {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 2fr;
     gap: 20px;
 }
 .audio-info-header {
