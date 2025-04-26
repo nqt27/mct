@@ -47,10 +47,10 @@ class MenuDichVuController extends Controller
         // Redirect về trang chủ hoặc trang danh sách sản phẩm
         try {
             // Chuyển hướng về trang danh sách với thông báo thành công
-            return redirect()->route('menu.index')->with('success', 'Menu đã được thêm thành công!');
+            return redirect()->route('menu-dichvu.index')->with('success', 'Menu đã được thêm thành công!');
         } catch (\Exception $e) {
             // Xử lý lỗi và chuyển hướng về trang danh sách với thông báo thất bại
-            return redirect()->route('menu.index')->with('error', 'Có lỗi xảy ra khi thêm menu.');
+            return redirect()->route('menu-dichvu.index')->with('error', 'Có lỗi xảy ra khi thêm menu.');
         }
     }
     public function destroy($id)
@@ -61,7 +61,7 @@ class MenuDichVuController extends Controller
         $menu->delete();
 
         // Redirect lại trang danh sách sản phẩm với thông báo thành công
-        return redirect()->route('admin')->with('success', 'Product deleted successfully.');
+        return redirect()->route('menu-dichvu.index')->with('success', 'Product deleted successfully.');
     }
     public function addSub(Request $request)
     {
@@ -73,15 +73,17 @@ class MenuDichVuController extends Controller
 
 
 
+        $maxPosition = MenuDichVu::max('position');
         $submenu = new MenuDichVu();
-        $submenu->ten = $request->input('ten');
+        $submenu->name = $request->input('ten');
         $submenu->slug = $request->input('slug');
+        $submenu->position = $maxPosition + 1;
         $submenu->parent_id = $request->input('parent_id');
         // Cập nhật các trường khác nếu cần
 
         $submenu->save();
 
-        return redirect()->route('admin')->with('success', 'Product updated successfully.');
+        return redirect()->route('menu-dichvu.index')->with('success', 'Product updated successfully.');
     }
     public function update(Request $request, $id)
     {
@@ -94,13 +96,13 @@ class MenuDichVuController extends Controller
 
         $menu = MenuDichVu::findOrFail($id);
 
-        $menu->ten = $request->input('ten');
+        $menu->name = $request->input('ten');
         $menu->slug = $request->input('slug'); // Thêm 1 vào vị trí lớn nhất
         // Cập nhật các trường khác nếu cần
 
         $menu->save();
 
-        return redirect()->route('admin')->with('success', 'Product updated successfully.');
+        return redirect()->route('menu-dichvu.index')->with('success', 'Product updated successfully.');
     }
     // Cập nhật thứ tự của menu
     public function updateOrder(Request $request)

@@ -37,14 +37,14 @@
 
                                 <div class="col-lg-6 col-xl-3">
                                     <div class="card widget-box-three">
-                                        <button class="btn btn-teal waves-effect waves-light btn-lg dashboard-btn"> <i class="fas fa-cloud mr-1"></i> <span>Cloud Hosting</span> </button>
+                                    <a href="{{route('web-config.index')}}" class="btn btn-teal waves-effect waves-light btn-lg dashboard-btn"> <i class="fas fa-edit mr-1"></i> <span>Cấu hình website</span> </a>
                                     </div>
                                 </div>
 
                                 <!-- end col -->
                                 <div class="col-lg-6 col-xl-3">
                                     <div class="card widget-box-three">
-                                        <button class="btn btn-orange waves-effect waves-light btn-lg dashboard-btn"> <i class="fas fa-cloud mr-1"></i> <span>Cloud Hosting</span> </button>
+                                    <a href="{{route('settings.index')}}" class="btn btn-orange waves-effect waves-light btn-lg dashboard-btn"> <i class="fas fa-edit mr-1"></i> <span>Cài đặt website</span> </a>
                                     </div>
                                 </div>
 

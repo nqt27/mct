@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminContactNotificationMail;
 use App\Models\Audio;
 use App\Models\DichVu;
 use App\Models\Logo;
@@ -88,5 +89,20 @@ class HomeController extends Controller
         });
 
         return back()->with('success', 'Form submitted successfully!');
+    }
+    public function sendContactMail(Request $request)
+    {
+        $admin = User::first();
+        $data = $request->all(); // Bao gồm thông tin người dùng + cart
+
+
+
+        if ($admin) {
+            Mail::to($admin->email)->send(new AdminContactNotificationMail($data));
+        }
+        if ($admin) {
+            $admin->notify(new FormSubmitted($data));
+        }
+        return response()->json(['success' => true]);
     }
 }

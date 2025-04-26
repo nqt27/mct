@@ -65,7 +65,7 @@
         drag('/admin/updateOrder-dichvu');
         addMenu($('#btn-add-menu'), '/admin/addMenu-dichvu', 'POST', null);
         editMenu($('.edit-btn'), `/admin/menu-dichvu`);
-        deleteMenu();
+        deleteMenu(`/admin/menu-dichvu`);
     });
 </script>
 </body>

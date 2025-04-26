@@ -145,10 +145,11 @@ function editMenu(button, url) {
     });
 
 }
-function deleteMenu() {
+function deleteMenu(url) {
     $('.delete-btn').on('click', function () {
         // Lấy thông tin menu từ thuộc tính data của nút
         let menuId = $(this).data('id');
+console.log(menuId);
 
         // Sử dụng SweetAlert2 để hiển thị form chỉnh sửa
         Swal.fire({
@@ -162,7 +163,7 @@ function deleteMenu() {
             if (result.isConfirmed) {
                 // Gửi dữ liệu cập nhật qua AJAX
                 $.ajax({
-                    url: `/admin/menu/${menuId}`, // Đường dẫn cập nhật
+                    url: `${url}/${menuId}`, // Đường dẫn cập nhật
                     method: 'POST',
                     data: {
                         _method: 'DELETE',
@@ -272,7 +273,7 @@ function table(menuData, target) {
         table.draw(); // Cập nhật DataTable để áp dụng bộ lọc
     });
 }
-function statusaudio(url) {
+function statusAudio(url) {
     // Lắng nghe sự kiện thay đổi của tất cả checkbox
     $('.status-checkbox').on('change', function () {
         var audioDiv = $(this).closest('.audio-status'); // Tìm div chứa checkbox của sản phẩm

@@ -210,6 +210,42 @@
 
 <!-- Dropzone -->
 <script>
+    $(document).ready(function() {
+        // Handle parent category change
+        $('#select-parent').on('change', function() {
+            const parentId = $(this).val();
+            console.log(parentId);
+
+            const childSelect = $('#select-child');
+
+            // Clear existing options
+            childSelect.empty();
+            childSelect.append('<option value="">Chọn thể loại</option>');
+
+            if (parentId) {
+                // Get subcategories via AJAX
+                $.ajax({
+                    url: '/admin/get-dichvu-subcategories/' + parentId,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.subcategories && response.subcategories.length > 0) {
+                            response.subcategories.forEach(function(subcategory) {
+                                childSelect.append(`<option value="${subcategory.id}">${subcategory.name}</option>`);
+                            });
+                            childSelect.prop('disabled', false);
+                        } else {
+                            childSelect.prop('disabled', true);
+                        }
+                    },
+                    error: function() {
+                        childSelect.prop('disabled', true);
+                    }
+                });
+            } else {
+                childSelect.prop('disabled', true);
+            }
+        });
+    });
     Dropzone.autoDiscover = false;
     $(document).ready(function() {
 
@@ -300,7 +336,7 @@
 
 
             // Duyệt qua tất cả các file được chọn trong Dropzone1 và thêm vào FormData
-            
+
 
 
             // Hiển thị tất cả các key trong FormData(tùy chọn)
@@ -348,7 +384,6 @@
     $(document).ready(function() {
         //-initialize the javascript
         urlaudio();
-        selectMenu('{{$menu}}');
     });
 </script>
 </body>

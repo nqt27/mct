@@ -52,9 +52,11 @@
                     </a>
                 </li>
                 <li class="dropdown notification-list">
-                    <a class="nav-link dropdown-toggle  waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="mdi mdi-bell noti-icon"></i>
-                        <span class="badge badge-success rounded-circle noti-icon-badge">4</span>
+                        @if(auth()->user()->unreadNotifications->count() > 0)
+                        <span class="badge badge-success rounded-circle noti-icon-badge">{{ auth()->user()->unreadNotifications->count() }}</span>
+                        @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-lg">
 
@@ -62,149 +64,50 @@
                         <div class="dropdown-item noti-title">
                             <h5 class="font-16 m-0">
                                 <span class="float-right">
-                                    <a href="" class="text-dark">
-                                        <small>Clear All</small>
+                                    @if(auth()->user()->unreadNotifications->count() > 0)
+                                    <a href="javascript:void(0);" class="text-dark mark-all-as-read">
+                                        <small>Đánh dấu đã đọc</small>
                                     </a>
-                                </span>Notification
+                                    @endif
+                                </span>Thông báo
                             </h5>
                         </div>
 
                         <div class="slimscroll noti-scroll">
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <div class="notify-icon bg-success">
-                                    <i class="mdi mdi-settings-outline"></i>
+                            @forelse(auth()->user()->unreadNotifications as $notification)
+                            <a href="{{ route('notifications.show', $notification->id) }}" class="dropdown-item notify-item">
+                                <div class="notify-icon {{ $notification->data['type'] === 'contact' ? 'bg-info' : 'bg-success' }}">
+                                    @if($notification->data['type'] === 'contact')
+                                    <i class="mdi mdi-message-text"></i>
+                                    @else
+                                    <i class="mdi mdi-cart-outline"></i>
+                                    @endif
                                 </div>
-                                <p class="notify-details">New settings
-                                    <small class="text-muted">There are new settings available</small>
+                                <p class="notify-details">
+                                    {{ $notification->data['message'] }}
+                                    <small class="text-muted">
+                                        {{ $notification->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('H:i, d/m/Y') }}
+                                    </small>
                                 </p>
                             </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <div class="notify-icon bg-info">
-                                    <i class="mdi mdi-bell-outline"></i>
-                                </div>
-                                <p class="notify-details">Updates
-                                    <small class="text-muted">There are 2 new updates available</small>
-                                </p>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <div class="notify-icon bg-danger">
-                                    <i class="mdi mdi-account-plus"></i>
-                                </div>
-                                <p class="notify-details">New user
-                                    <small class="text-muted">You have 10 unread messages</small>
-                                </p>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <div class="notify-icon bg-info">
-                                    <i class="mdi mdi-comment-account-outline"></i>
-                                </div>
-                                <p class="notify-details">Caleb Flakelar commented on Admin
-                                    <small class="text-muted">4 days ago</small>
-                                </p>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <div class="notify-icon bg-secondary">
-                                    <i class="mdi mdi-heart"></i>
-                                </div>
-                                <p class="notify-details">Carlos Crouch liked
-                                    <b>Admin</b>
-                                    <small class="text-muted">13 days ago</small>
-                                </p>
-                            </a>
+                            @empty
+                            <div class="dropdown-item">Không có thông báo mới</div>
+                            @endforelse
                         </div>
 
                         <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                            See all Notification
+                        <a href="{{ route('notifications.index') }}" class="dropdown-item text-center text-primary notify-item notify-all">
+                            Xem tất cả thông báo
                             <i class="fi-arrow-right"></i>
                         </a>
-
                     </div>
                 </li>
 
-                <li class="dropdown notification-list">
-                    <a class="nav-link dropdown-toggle  waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <i class="mdi mdi-email noti-icon"></i>
-                        <span class="badge badge-danger rounded-circle noti-icon-badge">8</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-lg">
-
-                        <!-- item-->
-                        <div class="dropdown-item noti-title">
-                            <h5 class="font-16 m-0">
-                                <span class="float-right">
-                                    <a href="" class="text-dark">
-                                        <small>Clear All</small>
-                                    </a>
-                                </span>Messages
-                            </h5>
-                        </div>
-
-                        <div class="slimscroll noti-scroll">
-
-                            <div class="inbox-widget">
-                                <a href="#">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img"><img src="{{asset('assets\images\users\avatar-1.jpg')}}" class="rounded-circle" alt=""></div>
-                                        <p class="inbox-item-author">Chadengle</p>
-                                        <p class="inbox-item-text text-truncate">Hey! there I'm available...</p>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img"><img src="{{asset('assets\images\users\avatar-2.jpg')}}" class="rounded-circle" alt=""></div>
-                                        <p class="inbox-item-author">Tomaslau</p>
-                                        <p class="inbox-item-text text-truncate">I've finished it! See you so...</p>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img"><img src="{{asset('assets\images\users\avatar-3.jpg')}}" class="rounded-circle" alt=""></div>
-                                        <p class="inbox-item-author">Stillnotdavid</p>
-                                        <p class="inbox-item-text text-truncate">This theme is awesome!</p>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img"><img src="{{asset('assets\images\users\avatar-4.jpg')}}" class="rounded-circle" alt=""></div>
-                                        <p class="inbox-item-author">Kurafire</p>
-                                        <p class="inbox-item-text text-truncate">Nice to meet you</p>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img"><img src="{{asset('assets\images\users\avatar-5.jpg')}}" class="rounded-circle" alt=""></div>
-                                        <p class="inbox-item-author">Shahedk</p>
-                                        <p class="inbox-item-text text-truncate">Hey! there I'm available...</p>
-
-                                    </div>
-                                </a>
-                            </div> <!-- end inbox-widget -->
-
-                        </div>
-                        <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                            See all Messages
-                            <i class="fi-arrow-right"></i>
-                        </a>
-
-                    </div>
-                </li>
 
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="{{asset('assets\images\users\avatar-1.jpg')}}" alt="user-image" class="rounded-circle">
-                        <span class="d-none d-sm-inline-block ml-1">Alex M.</span>
+
+                        <span class="d-none d-sm-inline-block ml-1">Administrator</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                         <!-- item-->
@@ -303,7 +206,7 @@
                         </li>
                         <li>
                             <a href="javascript: void(0);" class="waves-effect waves-light">
-                                <i class="mdi mdi-cart"></i>
+                                <i class="mdi  mdi-volume-high"></i>
                                 <span> Audio </span>
                                 <span class="menu-arrow"></span>
                             </a>
@@ -316,15 +219,45 @@
                         <li>
                             <a href="javascript: void(0);" class="waves-effect waves-light">
                                 <i class="mdi mdi-file-document-box"></i>
-                                <span> Bài viết </span>
+                                <span> Dịch vụ sản suất</span>
                                 <span class="menu-arrow"></span>
                             </a>
                             <ul class="nav-second-level" aria-expanded="false">
                                 <li>
-                                    <a href="{{route('dichvu.index')}}"></i>Dịch vụ</a>
+                                    <a href="{{route('dichvu.index')}}"></i>Dịch vụ sản xuất</a>
                                 </li>
                                 <li>
                                     <a href="{{route('menu-dichvu.index')}}">Danh mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect waves-light">
+                                <i class="mdi mdi-file-document-box"></i>
+                                <span> Review </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li>
+                                    <a href="{{route('admin_review.index')}}"></i>Review</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('menu-review.index')}}">Danh mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="waves-effect waves-light">
+                                <i class="mdi mdi-file-document-box"></i>
+                                <span> Blog </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li>
+                                    <a href="{{route('admin_blog.index')}}"></i>Blog</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('menu-blog.index')}}">Danh mục</a>
                                 </li>
                             </ul>
                         </li>

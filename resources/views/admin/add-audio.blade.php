@@ -355,12 +355,27 @@
         // Form submission handler
         $('#submit-all').on('click', function(e) {
             e.preventDefault();
+
+            // Create FormData object
             var formData = new FormData($('#audio-info-form')[0]);
 
-            // Add form data...
-            // ...existing form data collection...
+            // Add SEO form data
+            $('#audio-seo-form').find('input, select, textarea').each(function() {
+                formData.append(this.name, $(this).val());
+            });
 
-            // Add series data
+            // Add status checkboxes
+            $('#audio-status-form').find('input[type="checkbox"]').each(function() {
+                formData.append(this.name, $(this).is(':checked') ? 1 : 0);
+            });
+
+            // Add main image if exists
+            if (myDropzone.files.length > 0) {
+                formData.append("image", myDropzone.files[0]);
+            }
+
+            // Add series/chapters data
+            formData.append('is_series', $('#is_series').is(':checked') ? 1 : 0);
             if ($('#is_series').is(':checked')) {
                 $('.chapter-entry').each(function(index) {
                     const title = $(this).find('input[name="chapter_titles[]"]').val();
@@ -371,7 +386,39 @@
                 });
             }
 
-            // ...rest of your AJAX submission code...
+            // Send AJAX request
+            $.ajax({
+                url: "{{ route('audio.store') }}",
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Audio đã được thêm thành công',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = "{{ route('audio.index') }}";
+                    });
+                },
+                error: function(xhr) {
+                    let errorMessage = 'Có lỗi xảy ra';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: errorMessage,
+                        icon: 'error'
+                    });
+                }
+            });
         });
 
         // Initialize other features
@@ -452,7 +499,6 @@
     $(document).ready(function() {
         //-initialize the javascript
         urlaudio();
-        selectMenu('{{$menu}}');
     });
 </script>
 

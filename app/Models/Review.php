@@ -8,12 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
-    protected $table = 'reviews';
+    protected $table = 'review';
     protected $fillable = [
-        'user_id',
-        'product_id',
-        'comment',
-        'rating'
+        'tieude',
+        'noidung',
+        'slug',
+        'display',
+        'moi',
+        'keyword_focus',
+        'seo_title',
+        'seo_keywords',
+        'seo_description',
+        'image'
     ];
-    
+    public function menu_news()
+    {
+        return $this->belongsTo(MenuReview::class);
+    }
 }

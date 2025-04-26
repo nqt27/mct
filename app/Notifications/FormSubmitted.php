@@ -43,9 +43,12 @@ class FormSubmitted extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'message' => 'Có liên hệ mới ',
+            'type' => 'contact',
             'name' => $this->formData['name'],
             'phone' => $this->formData['phone'],
             'email' => $this->formData['email'],
+            'content' => $this->formData['content'],
             'submitted_at' => now()->toDateTimeString(),
         ];
     }
