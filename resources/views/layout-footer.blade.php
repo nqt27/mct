@@ -32,9 +32,7 @@
 
                                 <div class="block-content">
                                     <div class="block-html-content " style="  ">
-                                        <p>Địa chỉ: 24B Ngõ 86 Chùa Hà</p>
-                                        <p>Hotline: 0869.762.086</p>
-                                        <p>Email: info@zland.vn</p>
+                                        {!! $settings->content !!}
                                     </div>
                                 </div>
                             </div>
@@ -139,10 +137,7 @@
 
 
                             <div class="block-content">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29793.018643990756!2d105.75155940129605!3d21.027590603919084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454bab9b67e93%3A0xbbe16aced529963f!2zTeG7uSDEkMOsbmgsIE5hbSBU4burIExpw6ptLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1529287706193"
-                                    width="275" height="450" frameborder="0"
-                                    style="border: 0px; height: 193.5px;" allowfullscreen=""></iframe>
+                                {!! $web_config->google_maps_iframe !!}
                             </div>
                         </div>
                     </div>
@@ -162,13 +157,14 @@
                             <div class="block-content">
 
                                 <ul class="clearfix">
-                                    <li class="active "><a href="https://demo.zland.vn/56/">Trang chủ</a></li>
+                                    <li class="active "><a href="">Trang chủ</a></li>
 
-                                    <li class=""><a href="#">Giới thiệu</a></li>
+                                    <li class=""><a href="#">Podcast</a></li>
 
-                                    <li class=""><a href="#">Dự án</a></li>
+                                    <li class=""><a href="{{ route('dvsx.index') }}">Dịch vụ sản xuất</a></li>
 
-                                    <li class=""><a href="#">Liên hệ</a></li>
+                                    <li class=""><a href="{{ route('review.index') }}">Review</a></li>
+                                    <li class=""><a href="{{ route('blogTMa.index') }}">Blog</a></li>
 
 
 
@@ -260,8 +256,7 @@
             });
 
             const result = await res.json();
-            if (result.success) {
-            }
+            if (result.success) {}
         } catch (error) {
             console.error('Error:', error);
 

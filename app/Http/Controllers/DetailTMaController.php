@@ -46,7 +46,7 @@ class DetailTMaController extends Controller
 
             return view('detail-dichvu', ['logo' => $logo, 'dichvu' => $dichvu, 'menu' => $menu, 'slide' => $slide]);
         }
-        $audio = Audio::where('slug', $slug)->first();
+        $audio = Audio::where('slug', $slug)->with('chapters')->first();
         if ($audio) {
             $logo = Logo::first();
             $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1

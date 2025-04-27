@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\AdminContactNotificationMail;
 use App\Models\Audio;
+use App\Models\Blog;
 use App\Models\DichVu;
 use App\Models\Logo;
 use App\Models\MenuDichVu;
@@ -22,14 +23,12 @@ class HomeController extends Controller
         $logo = Logo::first();
         $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
         $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-            ->with('submenu')
-            ->orderBy('position') // Sắp xếp theo vị trí
-            ->get();
-        $slide = Slide::where('display', 1)->get();
-        $dichvu = DichVu::take(6)->get(); // Nếu `new` lưu là số 1
 
-        return view('home', ['logo' => $logo, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
+        $slide = Slide::where('display', 1)->get();
+        $blog = Blog::take(6)->get(); // Nếu `new` lưu là số 1
+        $dichvu = DichVu::take(3)->get();
+
+        return view('home', ['logo' => $logo, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'dichvu' => $dichvu, 'blog' => $blog, 'slide' => $slide]);
     }
     public function detail($slug)
     {

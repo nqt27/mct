@@ -49,28 +49,21 @@
             </section>
         </div>
         <div class="ct-info">
-            <h1>Kỳ Án Truy Tìm Dấu Vết</h1>
-            <div class="ct-meta">Tác giả: GhostWriter | Ngày đăng: 17/04/2025 | Lượt xem: 10,234</div>
-            <p>Một câu chuyện rùng rợn xoay quanh những dấu vết bí ẩn tại ngôi làng hoang bị lãng quên. Hãy cùng khám
-                phá bí ẩn trong từng tập truyện.</p>
+            <h1>{{$audio->ten}}</h1>
+            <div class="ct-meta">{{$audio->tacgia}} | Ngày đăng: {{$audio->created_at}} | Lượt xem: {{$audio->luot_nghe}}</div>
+            <p>{!!$audio->tomtat!!}</p>
             <button class="ct-btn">Nghe Tập 1</button>
         </div>
     </section>
-
     <section class="ct-episode-list">
-        <h2>Danh Sách Tập</h2>
+        <h2 id="audioData" data-chapters="{{ json_encode($audio->chapters) }}">Danh Sách Tập</h2>
+        @foreach($audio->chapters as $chapter)
         <div class="ct-episode">
-            <span>Tập 1: Dấu Vết Đầu Tiên</span>
-            <button class="ct-btn">Nghe</button>
+            <span>Tập 1: {{$chapter->title}}</span>
+            <button class="ct-btn" data-src="{{$chapter->chapter_number}}">Nghe</button>
         </div>
-        <div class="ct-episode">
-            <span>Tập 2: Âm Thanh Trong Đêm</span>
-            <button class="ct-btn">Nghe</button>
-        </div>
-        <div class="ct-episode">
-            <span>Tập 3: Người Đội Mũ Rơm</span>
-            <button class="ct-btn">Nghe</button>
-        </div>
+        @endforeach
+
     </section>
 
     <section class="ct-related">
@@ -139,14 +132,37 @@
 
     const playPauseBtn = document.getElementById("playPauseBtn");
     playPauseBtn.addEventListener("click", togglePlayPause);
+    const audioDataElement = document.getElementById("audioData");
+    const chapters = JSON.parse(audioDataElement.getAttribute("data-chapters"));
+
+    let tracks = [];
+    console.log(Array.isArray(chapters) && chapters.length > 0);
+
+    if (Array.isArray(chapters) && chapters.length > 0) {
+        tracks = chapters.map(chapter => {
+            return {
+                src: window.location.origin + '/uploads/audio/' + chapter.audio_path, // cái đường dẫn audio đã có sẵn
+                albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
+                trackTitle: "{{ $audio->ten }}",
+                bandName: "Band 1",
+                duration: "0:59" // Format: "minutes:seconds"
+            };
+        });
+    } else {
+        tracks = [{
+                src: "{{ asset('uploads/audio/' . $audio->audio_path) }}",
+                albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
+                trackTitle: "{{ $audio->ten }}", // Format: "minutes:seconds"
+                bandName: "Band 1",
+                duration: "0:59"
+            }
+
+        ];
+    }
+    console.log(tracks);
 
     // Load tracks using JavaScript
-    const tracks = [{
-        src: "https://raw.githubusercontent.com/muhammederdem/mini-player/master/mp3/1.mp3",
-        albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
-        trackTitle: "{{ $audio->ten }}",
-        duration: "3:09" // Format: "minutes:seconds"
-    }];
+
 
     let currentTrackIndex = 0;
 
@@ -160,6 +176,18 @@
     }
 
     loadTrack(currentTrackIndex);
+    const episodeButtons = document.querySelectorAll(".ct-btn");
+    episodeButtons.forEach((button) => {
+        button.addEventListener("click", function() {
+            const chapterNumber = parseInt(this.getAttribute("data-src")); // lấy số chương
+            currentTrackIndex = chapterNumber - 1; // Nếu chapter_number là 1-based thì trừ 1 cho đúng mảng JS
+            console.log(currentTrackIndex);
+
+            loadTrack(currentTrackIndex);
+            audio.load(); // <<-- thêm dòng này để reset audio
+            audio.play(); // chơi nhạc
+        });
+    });
 
     // Event listener for updating time and buffering indicator
     audio.addEventListener("timeupdate", () => {
@@ -376,6 +404,8 @@
         isLiked = !isLiked;
     });
 </script>
+
+
 <script>
     wrapnav();
     slideAudio();

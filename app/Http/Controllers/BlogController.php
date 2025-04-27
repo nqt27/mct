@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Audio;
+use App\Models\Blog;
 use App\Models\DichVu;
 use App\Models\Logo;
+use App\Models\MenuBlog;
 use App\Models\MenuDichVu;
 use App\Models\Slide;
 use App\Models\TheLoai;
@@ -18,75 +20,29 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $logo = Logo::first();
-        $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-            ->with('submenu')
-            ->orderBy('position') // Sắp xếp theo vị trí
-            ->get();
-        $slide = Slide::where('display', 1)->get();
-        $dichvu = DichVu::take(6)->get(); // Nếu `new` lưu là số 1
-
-        return view('blogTMa', ['logo' => $logo, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
+        $blog = Blog::where('display', 1)->get();
+        return view('blogTMa', ['blog' => $blog]);
     }
-    public function detail($slug)
-    {
-        $dichvu = DichVu::where('slug', $slug)->first();
-        if ($dichvu) {
-            $logo = Logo::first();
-            // $hot_audio = DichVu::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            // $new_audio = DichVu::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $dichvu = DichVu::where('slug', $slug)->first(); // Nếu `new` lưu là số 1
-            $menu = MenuDichVu::whereNull('parent_id') // Chỉ lấy menu cha
-                ->orderBy('position') // Sắp xếp theo vị trí
-                ->get();
-            $slide = Slide::where('display', 1)->get();
-            // $dichvu = Audio::take(6)->get(); // Nếu `new` lưu là số 1
+    public function phanloai($slug)
+{
+    // Lấy thể loại cha theo slug
+    $theloaiCha = MenuBlog::where('slug', $slug)->first();
 
-            return view('detail-dichvu', ['logo' => $logo, 'dichvu' => $dichvu, 'menu' => $menu, 'slide' => $slide]);
-        }
-        $audio = Audio::where('slug', $slug)->first();
-        if ($audio) {
-            $logo = Logo::first();
-            $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $audio = Audio::where('slug', $slug)->first(); // Nếu `new` lưu là số 1
-            $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-                ->orderBy('position') // Sắp xếp theo vị trí
-                ->get();
-            $slide = Slide::where('display', 1)->get();
-            $dichvu = Audio::take(6)->get(); // Nếu `new` lưu là số 1
-
-            return view('detail', ['logo' => $logo, 'audio' => $audio, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
-        }
+    if (!$theloaiCha) {
+        abort(404); // Không tìm thấy thể loại
     }
 
-    public function handleForm(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email',
-        ]);
+    // Lấy tất cả thể loại con của thể loại cha
+    $theloaiCon = MenuBlog::where('parent_id', $theloaiCha->id)->pluck('id')->toArray();
 
-        $data = [
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-        ];
-        // Gửi thông báo đến tất cả các admin
-        $admins = User::all();  // Lấy tất cả các admin từ cơ sở dữ liệu
-        foreach ($admins as $admin) {
-            $admin->notify(new FormSubmitted($data)); // Gửi thông báo cho từng admin
-        }
-        // Gửi email đến admin
-        Mail::send('emails.notify-admin', $data, function ($message) {
-            $message->to('nqt271@gmail.com')
-                ->subject('Liên hệ tư vấn')
-                ->from('spamnt27@gmail.com',  'SnakeTeam');
-        });
+    // Gộp id cha + id các con lại
+    $theloaiIds = array_merge([$theloaiCha->id], $theloaiCon);
 
-        return back()->with('success', 'Form submitted successfully!');
-    }
+    // Lấy tất cả audio thuộc các thể loại đó
+    $blog = Blog::where('display', 1)
+                  ->whereIn('menu_id', $theloaiIds)
+                  ->get();
+
+    return view('blogTMa', ['blog' => $blog]);
+}
 }

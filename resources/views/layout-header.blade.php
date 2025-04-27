@@ -43,25 +43,112 @@
                     <li class="active  menu-item" par="1"><a href="#"><i
                                 class="fa-solid fa-house-chimney"></i></a></li>
                     <li class="menu-item drop" par="3">
-                        <a href="#">Podcast <p style="font-size: x-small;">Truyện ma bẻ lái</p></a>
+                        <a href="{{route('allTMa.index')}}">Podcast <p style="font-size: x-small;">Truyện ma bẻ lái</p></a>
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
-                            @foreach ($menu as $m)
-                                <li class="menu-item2 drop" par="4"><a
-                                        href="{{ $m->url }}">{{ $m->ten }}</a>
-                                    <ul class="sub-menu2 sub-menu-1">
-                                        @foreach ($m->submenu as $sm)
-                                            <li class="menu-item" par="4"><a
-                                                    href="{{ $m->url }}">{{ $sm->ten }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </li>
+
+                            <li class="menu-item2 drop" par="4">
+                                <a href="{{ url('theloai/truyen-ngan') }}">Truyện ngắn</a>
+                                <ul class="sub-menu2 sub-menu-1" par="1">
+                                    @foreach ($menu as $m)
+                                    <li class="menu-item3 drop" par="4">
+                                        <a href="{{ url('theloai/truyen-ngan/' . $m->slug) }}">{{ $m->ten }}</a>
+
+                                        @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu3 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                            <li class="menu-item3" par="4">
+                                                <a href="{{ url('theloai/truyen-ngan/' . $sm->slug) }}">{{ $sm->ten }}</a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                        @endif
+
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            <li class="menu-item2 drop" par="4">
+                                <a href="{{ url('theloai/truyen-dai') }}">Truyện dài</a>
+                                <ul class="sub-menu2 sub-menu-1" par="1">
+                                    @foreach ($menu as $m)
+                                    <li class="menu-item3 drop" par="4">
+                                        <a href="{{ url('theloai/truyen-dai/' . $m->slug) }}">{{ $m->ten }}</a>
+
+                                        @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu3 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                            <li class="menu-item3" par="4">
+                                                <a href="{{ url('theloai/truyen-dai/' . $sm->slug) }}">{{ $sm->ten }}</a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                        @endif
+
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li class="menu-item drop" par="2">
+                        <a href="{{ route('dvsx.index') }}">Dịch vụ sản xuất</a>
+                        <span class="menu-arrow menu-arrow-1" par="1"></span>
+                        <ul class="sub-menu sub-menu-1" par="1">
+                            @foreach ($menu_dv as $m)
+                            <li class="menu-item2 drop" par="4"><a
+                                    href="{{ $m->url }}">{{ $m->name }}</a>
+                                @if ($m->submenu->isNotEmpty())
+                                <ul class="sub-menu2 sub-menu-1">
+                                    @foreach ($m->submenu as $sm)
+                                    <li class="menu-item2" par="4"><a
+                                            href="{{ $m->url }}">{{ $sm->name }}</a></li>
+                                    @endforeach
+                                </ul>
+                                @endif
+                            </li>
                             @endforeach
                         </ul>
                     </li>
-                    <li class="menu-item" par="2"><a href="{{ route('dvsx.index') }}">Dịch vụ sản xuất</a></li>
-                    <li class="menu-item" par="14"><a href="{{ route('review.index') }}">Review</a></li>
-                    <li class="menu-item" par="17"><a href="{{ route('blogTMa.index') }}">Blog</a></li>
+                    <li class="menu-item drop" par="14">
+                        <a href="{{ route('review.index') }}">Review</a>
+                        <span class="menu-arrow menu-arrow-1" par="1"></span>
+                        <ul class="sub-menu sub-menu-1" par="1">
+                            @foreach ($menu_review as $m)
+                            <li class="menu-item2 drop" par="4"><a
+                                    href="{{ $m->url }}">{{ $m->name }}</a>
+                                @if ($m->submenu->isNotEmpty())
+                                <ul class="sub-menu2 sub-menu-1">
+                                    @foreach ($m->submenu as $sm)
+                                    <li class="menu-item2" par="4"><a
+                                            href="{{ $m->url }}">{{ $sm->name }}</a></li>
+                                    @endforeach
+                                </ul>
+                                @endif
+                            </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li class="menu-item drop" par="17">
+                        <a href="{{ route('blogTMa.index') }}">Blog</a>
+                        <span class="menu-arrow menu-arrow-1" par="1"></span>
+                        <ul class="sub-menu sub-menu-1" par="1">
+                            @foreach ($menu_blog as $m)
+                            <li class="menu-item2 drop" par="4"><a
+                                    href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
+                                @if ($m->submenu->isNotEmpty())
+                                <ul class="sub-menu2 sub-menu-1">
+                                    @foreach ($m->submenu as $sm)
+                                    <li class="menu-item2" par="4"><a
+                                            href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
+                                        @endforeach
+                                </ul>
+                                @endif
+                            </li>
+                            @endforeach
+                        </ul>
+                    </li>
                     <li class="menu-item" par="14"><a href="{{ route('lienhe.index') }}">Liên hệ</a></li>
                 </ul>
             </nav>
@@ -86,96 +173,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        // 1. Fetch story data from allTMa page
-        async function fetchStoriesData() {
-            try {
-                const response = await fetch('{{ route('allTMa.index') }}');
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const stories = [];
-                doc.querySelectorAll('.card').forEach(card => {
-                    const linkEl = card.querySelector('a');
-                    const title = linkEl.querySelector('h3')?.textContent.trim() || '';
-                    const imgSrc = linkEl.querySelector('img')?.src || '';
-                    const metaEls = linkEl.querySelectorAll('p');
-                    let views = '0',
-                        date = '';
-                    metaEls.forEach(p => {
-                        const txt = p.textContent;
-                        if (txt.includes('Lượt xem')) {
-                            views = txt.split(':')[1]?.trim();
-                        }
-                        if (txt.includes('Phát hành')) {
-                            date = txt.split(':')[1]?.trim();
-                        }
-                    });
-                    const link = linkEl.getAttribute('href') || '#';
-                    stories.push({
-                        title,
-                        imgSrc,
-                        views,
-                        date,
-                        link
-                    });
-                });
-                return stories;
-            } catch (error) {
-                console.error('Error fetching stories:', error);
-                return [];
-            }
-        }
 
-        // 2. Initialize variables
-        let stories = [];
-        const searchBox = document.getElementById('box');
-        const modal = document.getElementById('modal');
-        const resultsDiv = document.getElementById('results');
-        const viewAllDiv = document.getElementById('view-all');
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            stories = await fetchStoriesData();
-        });
-
-        // 3. Handle search input
-        searchBox.addEventListener('input', e => {
-            const term = e.target.value.trim().toLowerCase();
-            if (!term) {
-                modal.classList.add('hidden');
-                return;
-            }
-            modal.classList.remove('hidden');
-
-            const filtered = stories.filter(s => s.title.toLowerCase().includes(term));
-            if (filtered.length) {
-                resultsDiv.innerHTML = filtered.map(s => `
-                    <a href="${s.link}" class="search-result-item">
-                        <img src="${s.imgSrc}" alt="${s.title}">
-                        <div class="search-result-info">
-                            <h4>${s.title}</h4>
-                            <div class="search-result-meta">👁 ${s.views} | 📅 ${s.date}</div>
-                        </div>
-                    </a>
-                `).join('');
-                viewAllDiv.classList.add('hidden');
-            } else {
-                resultsDiv.innerHTML = '<p>Không tìm thấy kết quả</p>';
-                viewAllDiv.classList.remove('hidden');
-            }
-        });
-
-        // 4. Close modal
-        function closeModal() {
-            modal.classList.add('hidden');
-            searchBox.value = '';
-        }
-
-        // 5. Close modal when clicking outside
-        window.addEventListener('click', e => {
-            if (e.target === modal) closeModal();
-        });
-    </script>
 
 
     <script>

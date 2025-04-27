@@ -23,6 +23,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SlideController;
+use Faker\Provider\Lorem;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -177,11 +178,14 @@ Route::get('/', function () {
 })->name('home');
 Route::post('/', [HomeController::class, 'handleForm'])->name('submit.form');
 Route::get('/detail-TMa', [DetailTMaController::class, 'index'])->name('detailTMa.index');
-Route::get('/all-TMa', [AllTMaController::class, 'index'])->name('allTMa.index');
-Route::get('/blog-detail', [BlogDetailController::class, 'index'])->name('blogdetail.index');
-Route::get('/blog-TMa', [BlogController::class, 'index'])->name('blogTMa.index');
+Route::get('/podcast', [AllTMaController::class, 'index'])->name('allTMa.index');
+Route::get('/theloai/{loai}/{slug?}', [AllTMaController::class, 'phanloai'])->name('allTMa.theloai');
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogTMa.index');
+Route::get('/blogs/{slug}', [BlogController::class, 'phanloai'])->name('blogTMa');
 Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/lienhe', [LienHeController::class, 'index'])->name('lienhe.index');
 Route::get('/dvsx', [DichVuSXController::class, 'index'])->name('dvsx.index');
+Route::get('/blog/{slug}', [BlogDetailController::class, 'index'])->name('blogdetail');
+
 Route::get('/{slug}', [HomeController::class, 'detail'])->where('slug', '^(?!admin|blog|about|contact).*')->name('detail');
 Route::post('/audio/play/{id}', [AudioController::class, 'playAudio']);

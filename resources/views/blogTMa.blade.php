@@ -2,30 +2,18 @@
 <section id="blog-root">
     <h2 class="haunted-blog-header">Blog Truyện Ma</h2>
     <div class="haunted-blog-grid" id="hauntedBlogGrid">
+        @foreach($blog as $b)
         <article class="haunted-blog-card">
-            <img src="https://picsum.photos/seed/1/400/200" alt="Truyền thuyết làng hoang">
+            <img src="{{ asset('images/' . $b->image) }}" alt="{{$b->tieude}}">
             <div class="haunted-blog-card-content">
-                <h3>Truyền Thuyết Làng Hoang</h3>
-                <p>Những lời đồn về bóng ma xuất hiện cuối đêm trong ngôi làng vắng...</p>
-                <a href="{{ route('blogdetail.index') }}">Đọc tiếp →</a>
+                <h3>{{$b->tieude}}</h3>
+                <p>{!! Str::limit($b->noidung, 100) !!}</p>
+                <a href="{{ route('blogdetail', $b->slug) }}">Đọc tiếp →</a>
+
             </div>
         </article>
-        <article class="haunted-blog-card">
-            <img src="https://picsum.photos/seed/2/400/200" alt="Chuyện ma học đường">
-            <div class="haunted-blog-card-content">
-                <h3>Chuyện Ma Học Đường</h3>
-                <p>Hành lang ký túc xá sau giờ học luôn vang vọng tiếng thì thầm...</p>
-                <a href="#">Đọc tiếp →</a>
-            </div>
-        </article>
-        <article class="haunted-blog-card">
-            <img src="https://picsum.photos/seed/3/400/200" alt="Búp bê ám ảnh">
-            <div class="haunted-blog-card-content">
-                <h3>Búp Bê Ám Ảnh</h3>
-                <p>Có người nói tiếng hát ngân nga từ căn phòng chứa búp bê cũ...</p>
-                <a href="#">Đọc tiếp →</a>
-            </div>
-        </article>
+        @endforeach
+
         <!-- Thêm card nếu cần -->
     </div>
 </section>

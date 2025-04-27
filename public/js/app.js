@@ -46,6 +46,14 @@ function wrapnav() {
                 $(this).children(".sub-menu2").stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
             }
         );
+        $(".menu-item3.drop").hover(
+            function () {
+                $(this).children(".sub-menu3").stop(true, true).fadeIn(500); // Hiển thị chậm hơn (500ms)
+            },
+            function () {
+                $(this).children(".sub-menu3").stop(true, true).fadeOut(100); // Ẩn chậm hơn (500ms)
+            }
+        );
         $(window).scroll(function () {
             if ($(this).scrollTop() > 50) {
                 // Khi người dùng cuộn trang xuống hơn 50px
@@ -62,105 +70,97 @@ function wrapnav() {
 }
 function slideAudio() {
     $(document).ready(function () {
-        const slider = $(".slider");
-        const slideGroups = $(".slide-group");
-        const totalSlides = slideGroups.length;
-        let currentSlide = 0;
+        $(".slider-container").each(function () {
+            const $container = $(this);
+            const $slider = $container.find(".slider");
+            const $slideGroups = $slider.find(".slide-group");
+            const $dotsContainer = $container.find(".slider-dots");
+            const $nextBtn = $container.find(".next-btn");
+            const $prevBtn = $container.find(".prev-btn");
 
-        const dotsContainer = $(".slider-dots");
-        for (let i = 0; i < totalSlides; i++) {
-            dotsContainer.append(
-                `<div class="dot ${i === 0 ? "active" : ""}"></div>`
-            );
-        }
+            let currentSlide = 0;
+            const totalSlides = $slideGroups.length;
 
-        $(".next-btn").click(() => navigate(1));
-        $(".prev-btn").click(() => navigate(-1));
-
-        $(".dot").click(function () {
-            const index = $(this).index();
-            goToSlide(index);
-        });
-
-        function navigate(direction) {
-            currentSlide =
-                (currentSlide + direction + totalSlides) % totalSlides;
-            goToSlide(currentSlide);
-        }
-
-        function goToSlide(index) {
-            slider.css("transform", `translateX(-${index * 100}%)`);
-            $(".dot").removeClass("active").eq(index).addClass("active");
-            currentSlide = index;
-        }
-
-        $(".card").each(function () {
-            const card = $(this);
-
-            card.on("mousemove", function (e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = ((y - centerY) / centerY) * 15;
-                const rotateY = ((centerX - x) / centerX) * 15;
-
-                this.style.setProperty("--card-rotate-x", `${rotateX}deg`);
-                this.style.setProperty("--card-rotate-y", `${rotateY}deg`);
-            });
-
-            card.on("mouseleave", function () {
-                this.style.setProperty("--card-rotate-x", "0deg");
-                this.style.setProperty("--card-rotate-y", "0deg");
-            });
-        });
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        slider.on("touchstart", function (e) {
-            touchStartX = e.originalEvent.touches[0].clientX;
-        });
-
-        slider.on("touchend", function (e) {
-            touchEndX = e.originalEvent.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > 50) {
-                navigate(diff > 0 ? 1 : -1);
+            // Generate dots
+            for (let i = 0; i < totalSlides; i++) {
+                $dotsContainer.append(
+                    `<div class="dot ${i === 0 ? "active" : ""}"></div>`
+                );
             }
+
+            function goToSlide(index) {
+                $slider.css("transform", `translateX(-${index * 100}%)`);
+                $dotsContainer.find(".dot").removeClass("active").eq(index).addClass("active");
+                currentSlide = index;
+            }
+
+            function navigate(direction) {
+                currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+                goToSlide(currentSlide);
+            }
+
+            // Event bindings
+            $nextBtn.click(() => navigate(1));
+            $prevBtn.click(() => navigate(-1));
+
+            $dotsContainer.on("click", ".dot", function () {
+                const index = $(this).index();
+                goToSlide(index);
+            });
+
+            // Hover effect
+            $container.find(".card").each(function () {
+                const $card = $(this);
+
+                $card.on("mousemove", function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = ((y - centerY) / centerY) * 15;
+                    const rotateY = ((centerX - x) / centerX) * 15;
+
+                    this.style.setProperty("--card-rotate-x", `${rotateX}deg`);
+                    this.style.setProperty("--card-rotate-y", `${rotateY}deg`);
+                });
+
+                $card.on("mouseleave", function () {
+                    this.style.setProperty("--card-rotate-x", "0deg");
+                    this.style.setProperty("--card-rotate-y", "0deg");
+                });
+            });
+
+            // Touch swipe
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            $slider.on("touchstart", function (e) {
+                touchStartX = e.originalEvent.touches[0].clientX;
+            });
+
+            $slider.on("touchend", function (e) {
+                touchEndX = e.originalEvent.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > 50) {
+                    navigate(diff > 0 ? 1 : -1);
+                }
+            });
         });
 
+        // Bokeh background (chung cho toàn trang)
         const $bokehBackground = $("#bokeh-background");
         const numBokeh = 25;
         const colors = [
-            {
-                start: "rgba(255, 69, 0, .6)",
-                end: "rgba(255, 69, 0, 0.25)",
-            },
-            {
-                start: "rgba(255, 0, 0, .6)",
-                end: "rgba(255, 0, 0, 0.25)",
-            },
-            {
-                start: "rgba(255, 165, 0, .6)",
-                end: "rgba(255, 165, 0, 0.25)",
-            },
-            {
-                start: "rgba(255, 20, 147, .6)",
-                end: "rgba(255, 20, 147, 0.25)",
-            },
-            {
-                start: "rgba(238, 130, 238, .6)",
-                end: "rgba(238, 130, 238, 0.25)",
-            },
-            {
-                start: "rgba(148, 0, 211, .6)",
-                end: "rgba(148, 0, 211, 0.25)",
-            },
+            { start: "rgba(255, 69, 0, .6)", end: "rgba(255, 69, 0, 0.25)" },
+            { start: "rgba(255, 0, 0, .6)", end: "rgba(255, 0, 0, 0.25)" },
+            { start: "rgba(255, 165, 0, .6)", end: "rgba(255, 165, 0, 0.25)" },
+            { start: "rgba(255, 20, 147, .6)", end: "rgba(255, 20, 147, 0.25)" },
+            { start: "rgba(238, 130, 238, .6)", end: "rgba(238, 130, 238, 0.25)" },
+            { start: "rgba(148, 0, 211, .6)", end: "rgba(148, 0, 211, 0.25)" },
         ];
 
         for (let i = 0; i < numBokeh; i++) {
@@ -187,3 +187,5 @@ function slideAudio() {
         }
     });
 }
+
+

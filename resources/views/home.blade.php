@@ -18,11 +18,11 @@
         <div class="carousel-container">
             <div class="carousel">
                 @foreach ($slide as $s)
-                    <div class="card" data-flipped="false">
-                        <div class="front"
-                            style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
+                <div class="card" data-flipped="false">
+                    <div class="front"
+                        style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
 
-                    </div>
+                </div>
                 @endforeach
 
             </div>
@@ -50,19 +50,19 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($new_audio->chunk(4) as $index => $group)
-                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                                @foreach ($group as $p)
-                                    <div class="card" data-tilt>
-                                        <a href="{{ route('detail', $p->slug) }}">
-                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                            <h3>{{ $p->ten }}</h3>
-                                            <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                        </a>
-                                    </div>
-                                @endforeach
+                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                            @foreach ($group as $p)
+                            <div class="card" data-tilt>
+                                <a href="{{ route('detail', $p->slug) }}">
+                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                    <h3>{{ $p->ten }}</h3>
+                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                </a>
                             </div>
+                            @endforeach
+                        </div>
                         @endforeach
 
 
@@ -100,19 +100,19 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($new_audio->chunk(4) as $index => $group)
-                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                                @foreach ($group as $p)
-                                    <div class="card" data-tilt>
-                                        <a href="{{ route('detail', $p->slug) }}">
-                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                            <h3>{{ $p->ten }}</h3>
-                                            <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                        </a>
-                                    </div>
-                                @endforeach
+                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                            @foreach ($group as $p)
+                            <div class="card" data-tilt>
+                                <a href="{{ route('detail', $p->slug) }}">
+                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                    <h3>{{ $p->ten }}</h3>
+                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                </a>
                             </div>
+                            @endforeach
+                        </div>
                         @endforeach
 
 
@@ -140,61 +140,35 @@
             </div>
             <h3>Blog MCT Media – Những Kiến Thức, Kinh Nghiệm Hay</h3>
             <div class="content-left-item-content">
-                @foreach ($dichvu as $n)
-                    <div class="card">
-                        <img src="{{ asset('uploads/images/' . $n->image) }}" class="card-img-top"
-                            alt="{{ $n->title }}">
-                        <div class="card-body">
-                            <div class="noidung-dichvu">
-                                <h5 class="card-title">{{ $n->tieude }}</h5>
-                                <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
-                            </div>
-                            <a href="{{ route('detail', $n->slug) }}" class="btn btn-primary vertical-button">Xem chi
-                                tiết</a>
+                @foreach ($blog as $n)
+                <div class="card">
+                    <img src="{{ asset('images/' . $n->image) }}" class="card-img-top"
+                        alt="{{ $n->title }}">
+                    <div class="card-body">
+                        <div class="noidung-dichvu">
+                            <h5 class="card-title">{{ $n->tieude }}</h5>
+                            <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
                         </div>
+                        <a href="{{ route('detail', $n->slug) }}" class="btn btn-primary vertical-button">Xem chi
+                            tiết</a>
                     </div>
+                </div>
                 @endforeach
             </div>
             <h3>MCT Media – Giải Pháp Truyền Thông Cho Mọi Người</h3>
             <div class="info">
+                @foreach($dichvu as $dv)
                 <figure class="snip1156">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample62.jpg" alt="sample62" />
+                    <img src="{{ asset('images/' . $dv->image) }}" alt="{{$dv->name}}" />
                     <figcaption>
                         <div>
-                            <h2>Sản Xuất Video </h2>
-                        </div>
-                        <div>
-                            <p>Phim doanh nghiệp – Sản xuất MV – Video Quảng cáo – Video Viral – Video Marketing chất
-                                lượng cho mọi nhu cầu của Dự án hợp với MCT Media.
-                            </p>
+                            <h2>{{$dv->tieude}} </h2>
                         </div>
                     </figcaption>
                     <a href="#"></a>
                 </figure>
-                <figure class="snip1156">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample65.jpg" alt="sample65" />
-                    <figcaption>
-                        <div>
-                            <h2>Indigo Violet</h2>
-                        </div>
-                        <div>
-                            <p>We'd invent machines that do things less efficiently.</p>
-                        </div>
-                    </figcaption>
-                    <a href="#"></a>
-                </figure>
-                <figure class="snip1156">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample31.jpg" alt="sample31" />
-                    <figcaption>
-                        <div>
-                            <h2>Richard Tea</h2>
-                        </div>
-                        <div>
-                            <p>To the machines and go play outside.</p>
-                        </div>
-                    </figcaption>
-                    <a href="#"></a>
-                </figure>
+                @endforeach
+                
             </div>
 
         </div>
@@ -204,7 +178,7 @@
 
 @include('layout-footer')
 
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <script>
@@ -321,7 +295,7 @@
 <script>
     wrapnav();
     slideAudio();
-</script> --}}
+</script>
 </body>
 
 </html>

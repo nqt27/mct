@@ -8,7 +8,7 @@
                 alt="Ảnh bìa truyện ma" />
         </div>
         <div class="ct-info">
-            <h1>Kỳ Án Truy Tìm Dấu Vết</h1>
+            <h1>{{$audio->name}}</h1>
             <div class="ct-meta">Tác giả: GhostWriter | Ngày đăng: 17/04/2025 | Lượt xem: 10,234</div>
             <p>Một câu chuyện rùng rợn xoay quanh những dấu vết bí ẩn tại ngôi làng hoang bị lãng quên. Hãy cùng khám
                 phá bí ẩn trong từng tập truyện.</p>

@@ -18,75 +18,44 @@ class AllTMaController extends Controller
 {
     public function index()
     {
-        $logo = Logo::first();
-        $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-            ->with('submenu')
-            ->orderBy('position') // Sắp xếp theo vị trí
-            ->get();
-        $slide = Slide::where('display', 1)->get();
-        $dichvu = DichVu::take(6)->get(); // Nếu `new` lưu là số 1
 
-        return view('allTMa', ['logo' => $logo, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
+        $audio = Audio::where('display', 1)->get();
+
+
+        return view('allTMa', ['audio' => $audio]);
     }
-    public function detail($slug)
+    public function phanloai($loai, $slug = null)
     {
-        $dichvu = DichVu::where('slug', $slug)->first();
-        if ($dichvu) {
-            $logo = Logo::first();
-            // $hot_audio = DichVu::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            // $new_audio = DichVu::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $dichvu = DichVu::where('slug', $slug)->first(); // Nếu `new` lưu là số 1
-            $menu = MenuDichVu::whereNull('parent_id') // Chỉ lấy menu cha
-                ->orderBy('position') // Sắp xếp theo vị trí
-                ->get();
-            $slide = Slide::where('display', 1)->get();
-            // $dichvu = Audio::take(6)->get(); // Nếu `new` lưu là số 1
+        // Mặc định query audio có display = 1
+        $query = Audio::where('display', 1);
 
-            return view('detail-dichvu', ['logo' => $logo, 'dichvu' => $dichvu, 'menu' => $menu, 'slide' => $slide]);
+        // Kiểm tra loại: truyen-ngan hay truyen-dai
+        if ($loai == 'truyen-ngan') {
+            $query->where('is_series', 0); // 0 là ngắn
+        } elseif ($loai == 'truyen-dai') {
+            $query->where('is_series', 1); // 1 là dài
+        } else {
+            abort(404); // Loại không hợp lệ thì cho 404
         }
-        $audio = Audio::where('slug', $slug)->first();
-        if ($audio) {
-            $logo = Logo::first();
-            $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-            $audio = Audio::where('slug', $slug)->first(); // Nếu `new` lưu là số 1
-            $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-                ->orderBy('position') // Sắp xếp theo vị trí
-                ->get();
-            $slide = Slide::where('display', 1)->get();
-            $dichvu = Audio::take(6)->get(); // Nếu `new` lưu là số 1
 
-            return view('detail', ['logo' => $logo, 'audio' => $audio, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
+        // Nếu có slug thể loại con
+        if ($slug) {
+            // Tìm thể loại cha hoặc con theo slug
+            $theloaiCha = TheLoai::where('slug', $slug)->first();
+            if (!$theloaiCha) {
+                abort(404);
+            }
+
+            // Lấy id của chính nó và con nó (nếu có)
+            $theloaiCon = TheLoai::where('parent_id', $theloaiCha->id)->pluck('id')->toArray();
+            $theloaiIds = array_merge([$theloaiCha->id], $theloaiCon);
+
+            $query->whereIn('theloai_id', $theloaiIds);
         }
-    }
 
-    public function handleForm(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'email' => 'required|email',
-        ]);
+        // Cuối cùng lấy dữ liệu
+        $audio = $query->get();
 
-        $data = [
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-        ];
-        // Gửi thông báo đến tất cả các admin
-        $admins = User::all();  // Lấy tất cả các admin từ cơ sở dữ liệu
-        foreach ($admins as $admin) {
-            $admin->notify(new FormSubmitted($data)); // Gửi thông báo cho từng admin
-        }
-        // Gửi email đến admin
-        Mail::send('emails.notify-admin', $data, function ($message) {
-            $message->to('nqt271@gmail.com')
-                ->subject('Liên hệ tư vấn')
-                ->from('spamnt27@gmail.com',  'SnakeTeam');
-        });
-
-        return back()->with('success', 'Form submitted successfully!');
+        return view('allTMa', ['audio' => $audio]);
     }
 }
