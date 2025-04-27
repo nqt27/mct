@@ -1,8 +1,8 @@
 @include('layout-header')
-<h2 class="haunted-blog-header">Tất cả truyện ma</h2>
 <div class="container" style="margin-bottom: 30px;">
     <section class="snake-content">
         <div class="content-left-item">
+            <h2 style="margin-top: 10px" class="haunted-blog-header">Tất cả truyện ma</h2>
 
             <div class="slider-container">
                 <div class="slider-wrapper">
