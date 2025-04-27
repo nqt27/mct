@@ -8,7 +8,7 @@
     --font-title: "Creepster", cursive;
 }
 #blog-root {
-    background: var(--bg);
+    background: #272525;
 
     font-family: var(--font-main);
     max-width: 1200px;

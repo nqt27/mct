@@ -26,7 +26,7 @@
 
 
                                 <div class="block-title">
-                                    <span class="block-title-inner">Liên hệ</span>
+                                    <span style="margin-left: 0px" class="block-title-inner">Liên hệ</span>
                                 </div>
 
 
@@ -50,7 +50,8 @@
                         <div id="block-37" class="block-Form core-block">
 
                             <div class="block-title">
-                                <span class="block-title-inner">Nhận thông tin dự án</span>
+                                <span style="margin-left: 0px; margin-bottom: 10px" class="block-title-inner">Nhận thông
+                                    tin dự án</span>
                             </div>
 
 
@@ -120,7 +121,8 @@
                         <div id="block-81" class="block-text core-block">
 
                             <div class="block-title">
-                                <span class="block-title-inner">bản đồ</span>
+                                <span style="margin-left: 0px; margin-bottom: 10px" class="block-title-inner">bản
+                                    đồ</span>
                             </div>
 
 
@@ -143,12 +145,12 @@
                         <div id="block-38" class="block-menu core-block">
 
                             <div class="block-title">
-                                <span class="block-title-inner">Liên kết nhanh</span>
+                                <span style="margin-left: 0px" class="block-title-inner">Liên kết nhanh</span>
                             </div>
 
                             <div class="block-content">
 
-                                <ul class="clearfix">
+                                <ul style="padding-left: 0px" class="clearfix">
                                     <li class="active "><a href="https://demo.zland.vn/56/">Trang chủ</a></li>
 
                                     <li class=""><a href="#">Giới thiệu</a></li>
