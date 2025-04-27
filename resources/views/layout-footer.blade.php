@@ -31,7 +31,7 @@
 
 
                                 <div class="block-content">
-                                    <div class="block-html-content " style="  ">
+                                    <div class="block-html-content ">
                                         <p>Địa chỉ: 24B Ngõ 86 Chùa Hà</p>
                                         <p>Hotline: 0869.762.086</p>
                                         <p>Email: info@zland.vn</p>

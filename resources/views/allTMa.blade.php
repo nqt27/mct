@@ -1,28 +1,26 @@
 @include('layout-header')
-<h2 class="haunted-blog-header">Tất cả truyện ma</h2>
 <div class="container" style="margin-bottom: 30px;">
     <section class="snake-content">
         <div class="content-left-item">
+            <h2 style="margin-top: 10px" class="haunted-blog-header">Tất cả truyện ma</h2>
 
             <div class="slider-container">
                 <div class="slider-wrapper">
                     <div class="slider">
 
-                        @foreach ($new_audio->chunk(4) as $index => $group)
-                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                                @foreach ($group as $p)
-                                    <div class="card" data-tilt>
-                                        <a href="{{ route('detail', $p->slug) }}">
-                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                            <h3>{{ $p->ten }}</h3>
-                                            <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endforeach
+                        <div class="slide-group active">
+                            @foreach ($new_audio as $p)
+                                <div class="card" data-tilt>
+                                    <a href="{{ route('detail', $p->slug) }}">
+                                        <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                            title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                        <h3>{{ $p->ten }}</h3>
+                                        <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                        <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
 
 
 

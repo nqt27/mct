@@ -154,7 +154,10 @@
                         <img src="${s.imgSrc}" alt="${s.title}">
                         <div class="search-result-info">
                             <h4>${s.title}</h4>
-                            <div class="search-result-meta">👁 ${s.views} | 📅 ${s.date}</div>
+                            <div class="search-result-meta">
+                                <i class="fa-solid fa-eye"></i> ${s.views} |
+                                <i class="fa-solid fa-calendar-days"></i> ${s.date}
+                                  </div>
                         </div>
                     </a>
                 `).join('');
