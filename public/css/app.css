@@ -103,7 +103,7 @@ body {
         height: 12px;
     }
     .scroll-top {
-        bottom: 12px;
+        bottom: 60px;
         right: 12px;
         width: 28px;
         height: 28px;
@@ -1106,26 +1106,72 @@ img.scale-05:hover {
     text-overflow: ellipsis;
 }
 @media only screen and (max-width: 991px) {
-    .snake-top-view {
-        flex-direction: column;
-    }
     .v-toggle-menu {
         display: block;
-        width: 40px;
+        width: 55px;
         height: 40px;
         border-radius: 2px;
-        position: fixed;
-        top: 80px;
-        right: 5%;
         text-align: center;
         line-height: 40px;
         color: #fff;
         font-size: 23px;
         cursor: pointer;
-        transition: left 0.5s, right 0.5s;
-        -webkit-transition: left 0.5s, right 0.5s;
+        background-color: #ffc107; /* giữ màu vàng như ảnh */
         z-index: 101;
         box-sizing: border-box;
+        position: static; /* bỏ cố định */
+        margin-left: auto; /* đẩy sang phải trong flex container */
+    }
+
+    .snake-top-view {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 10px;
+        flex-wrap: nowrap;
+    }
+
+    .logo-box img {
+        height: 40px;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: #222;
+        border-radius: 20px;
+        padding: 5px 10px;
+        flex-grow: 1;
+    }
+
+    .search-box input {
+        background: transparent;
+        border: none;
+        color: white;
+        width: 100%;
+    }
+
+    .search-box i {
+        color: orange;
+        margin-left: 5px;
+    }
+    .snake-top-view .logo img {
+        max-height: 70px;
+    }
+    .snake-search {
+        width: 110px;
+        height: 40px;
+        padding: 0 8px;
+    }
+
+    .snake-search input.search__box {
+        font-size: 12px;
+    }
+
+    .snake-search i.search__icon {
+        font-size: 16px;
+        margin-left: 5px;
     }
     .snake-menu {
         display: none;
