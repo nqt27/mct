@@ -106,7 +106,7 @@
                                                 <div class="v-form-item-title"></div>
                                                 <div class="v-form-item-content">
                                                     <input name="v-submit" id="form-submit" type="submit"
-                                                        value="Tải về">
+                                                        value="Gửi">
                                                 </div>
                                                 <div id="fullscreenLoader" style="display: none;">
                                                     <div class="loader"></div>

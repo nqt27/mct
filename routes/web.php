@@ -183,8 +183,14 @@ Route::get('/theloai/{loai}/{slug?}', [AllTMaController::class, 'phanloai'])->na
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogTMa.index');
 Route::get('/blogs/{slug}', [BlogController::class, 'phanloai'])->name('blogTMa');
 Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
+Route::get('/reviews/{slug}', [ReviewController::class, 'phanloai'])->name('reviews');
+Route::get('/review/{slug}', [ReviewController::class, 'detail'])->name('review.detail');
+
 Route::get('/lienhe', [LienHeController::class, 'index'])->name('lienhe.index');
 Route::get('/dvsx', [DichVuSXController::class, 'index'])->name('dvsx.index');
+Route::get('/dich-vu-san-xuat/{slug}', [DichVuSXController::class, 'phanloai'])->name('dvsx');
+Route::get('/dich-vu/{slug}', [DichVuSXController::class, 'detail'])->name('dvsx.detail');
+
 Route::get('/blog/{slug}', [BlogDetailController::class, 'index'])->name('blogdetail');
 
 Route::get('/{slug}', [HomeController::class, 'detail'])->where('slug', '^(?!admin|blog|about|contact).*')->name('detail');

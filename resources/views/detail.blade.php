@@ -126,6 +126,7 @@
             });
     });
 </script>
+
 <script>
     const audio = new Audio();
     let isPlaying = false;
@@ -136,16 +137,17 @@
     const chapters = JSON.parse(audioDataElement.getAttribute("data-chapters"));
 
     let tracks = [];
-    console.log(Array.isArray(chapters) && chapters.length > 0);
+
 
     if (Array.isArray(chapters) && chapters.length > 0) {
         tracks = chapters.map(chapter => {
+            
             return {
-                src: window.location.origin + '/uploads/audio/' + chapter.audio_path, // cái đường dẫn audio đã có sẵn
+                src: "{{ asset('uploads/audio') }}/" + chapter.audio_path,
+ // cái đường dẫn audio đã có sẵn
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}",
                 bandName: "Band 1",
-                duration: "0:59" // Format: "minutes:seconds"
             };
         });
     } else {
@@ -154,7 +156,6 @@
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}", // Format: "minutes:seconds"
                 bandName: "Band 1",
-                duration: "0:59"
             }
 
         ];
@@ -184,7 +185,6 @@
             console.log(currentTrackIndex);
 
             loadTrack(currentTrackIndex);
-            audio.load(); // <<-- thêm dòng này để reset audio
             audio.play(); // chơi nhạc
         });
     });

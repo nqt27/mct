@@ -1,23 +1,9 @@
 @include('layout-header')
-<div class="container" style="margin-bottom: 30px;">
-    <section class="snake-audio-content">
-        <div class="content-left-item">
-            <div class="content">
-                <h1>{{$dichvu->tieude}}</h1>
-                <p>{!!$dichvu->noidung!!}</p>
-            </div>
-        </div>
-    </section>
-</div>
+<section id="detail-blog-root">
+    <h1 class="detail-blog-title">{{$dichvu->tieude}}</h1>
+    <img class="detail-blog-cover" src="{{ asset('images/' . $dichvu->image) }}" alt="{{$dichvu->tieude}}">
+    <div class="detail-blog-content">
+        {!!$dichvu->noidung!!}
+    </div>
+</section>
 @include('layout-footer')
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{asset('js/app.js')}}"></script>
-<script>
-    wrapnav();
-    slideAudio();
-</script>
-</body>
-
-</html>

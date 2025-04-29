@@ -81,19 +81,24 @@ function slideAudio() {
             let currentSlide = 0;
             const totalSlides = $slideGroups.length;
 
-            // Generate dots
+            // Xóa hết các dot cũ trước khi thêm mới
+            $dotsContainer.empty();
+
+            // Tạo dots cho mỗi slide
             for (let i = 0; i < totalSlides; i++) {
                 $dotsContainer.append(
                     `<div class="dot ${i === 0 ? "active" : ""}"></div>`
                 );
             }
 
+            // Function to move to a specific slide
             function goToSlide(index) {
                 $slider.css("transform", `translateX(-${index * 100}%)`);
                 $dotsContainer.find(".dot").removeClass("active").eq(index).addClass("active");
                 currentSlide = index;
             }
 
+            // Function to navigate between slides (next/prev)
             function navigate(direction) {
                 currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
                 goToSlide(currentSlide);
@@ -103,12 +108,13 @@ function slideAudio() {
             $nextBtn.click(() => navigate(1));
             $prevBtn.click(() => navigate(-1));
 
+            // Click on dot to navigate to the respective slide
             $dotsContainer.on("click", ".dot", function () {
                 const index = $(this).index();
                 goToSlide(index);
             });
 
-            // Hover effect
+            // Hover effect for cards
             $container.find(".card").each(function () {
                 const $card = $(this);
 
@@ -133,7 +139,7 @@ function slideAudio() {
                 });
             });
 
-            // Touch swipe
+            // Touch swipe handling
             let touchStartX = 0;
             let touchEndX = 0;
 
@@ -151,7 +157,7 @@ function slideAudio() {
             });
         });
 
-        // Bokeh background (chung cho toàn trang)
+        // Bokeh background (for the entire page)
         const $bokehBackground = $("#bokeh-background");
         const numBokeh = 25;
         const colors = [
@@ -186,6 +192,7 @@ function slideAudio() {
             $bokehBackground.append($bokeh);
         }
     });
+
 }
 
 

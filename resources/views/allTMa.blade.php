@@ -7,30 +7,35 @@
             <div class="slider-container">
                 <div class="slider-wrapper">
                     <div class="slider">
-
-                        <div class="slide-group active">
-                        @foreach ($audio as $p)
+                        @foreach ($audio->chunk(16) as $index => $group)
+                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                            @foreach ($group as $p)
                             <div class="card" data-tilt>
                                 <a href="{{ route('detail', $p->slug) }}">
                                     <img src="{{ asset('uploads/images/' . $p->image) }}"
                                         title="{{ $p->ten }}" alt="{{ $p->ten }}">
                                     <h3>{{ $p->ten }}</h3>
                                     <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{$p->luot_nghe}}</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: {{$p->created_at}}</p>
+                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: {{ $p->created_at->format('d/m/Y') }}</p>
                                 </a>
                             </div>
                             @endforeach
                         </div>
-
+                        @endforeach
 
 
                     </div>
                 </div>
 
+                <button class="nav-btn prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="nav-btn next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
 
-
+                <div class="slider-dots"></div>
             </div>
-            <div id="pagination" class="pagination"></div>
 
         </div>
 
@@ -40,60 +45,113 @@
 </div>
 @include('layout-footer')
 <script>
-    const itemsPerPage = 16;
-    const cards = Array.from(document.querySelectorAll(".card")); // Đổi từ .library-card thành .card
-    const pagination = document.getElementById("pagination");
-    const libraryGrid = document.getElementById("libraryGrid");
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".carousel .card");
+        const prevButton = document.querySelector(".arrow-left");
+        const nextButton = document.querySelector(".arrow-right");
+        const indicatorContainer = document.querySelector(".carousel-indicator");
+        const carousel = document.querySelector(".carousel");
 
-    let currentPage = 1;
+        let currentIndex = 0;
+        let startX = 0; // Startpunkt för touch
 
-    function renderPage(page) {
-        // Ẩn tất cả card
-        cards.forEach(card => {
-            card.style.display = "none";
-        });
+        createIndicators();
+        updateCarousel();
+        setInterval(nextImage, 3000); // Chuyển slide mỗi 3 giây
+        // Lägg till event listeners
+        carousel.addEventListener("touchstart", handleTouchStart, false);
+        carousel.addEventListener("touchend", handleTouchEnd, false);
+        nextButton.addEventListener("click", nextImage);
+        prevButton.addEventListener("click", prevImage);
 
-        const start = (page - 1) * itemsPerPage;
-        const end = page * itemsPerPage;
-
-        // Hiện card của trang hiện tại
-        cards.slice(start, end).forEach(card => {
-            card.style.display = "block";
-            card.style.opacity = 0;
-            card.style.transition = "opacity 0.5s ease, transform 0.3s ease";
-            card.style.transform = "scale(0.95)";
-            requestAnimationFrame(() => {
-                card.style.opacity = 1;
-                card.style.transform = "scale(1)";
+        cards.forEach((card, index) => {
+            card.addEventListener("click", () => {
+                if (index === currentIndex) {
+                    // card.dataset.flipped = card.dataset.flipped === "true" ? "false" : "true";
+                    updateCarousel();
+                }
             });
         });
 
-        renderPagination();
+        function createIndicators() {
+            indicatorContainer.innerHTML = ""; // Rensa gamla indikatorer
 
-        // Cuộn lên đầu grid mỗi khi đổi trang
-        //  Cuộn lên đầu trang thay vì chỉ scroll đến libraryGrid
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    function renderPagination() {
-        const totalPages = Math.ceil(cards.length / itemsPerPage);
-        pagination.innerHTML = "";
-
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
-            if (i === currentPage) btn.classList.add("active");
-            btn.addEventListener("click", () => {
-                currentPage = i;
-                renderPage(currentPage);
+            cards.forEach((_, index) => {
+                const indicator = document.createElement("span");
+                indicator.classList.add("indicator");
+                indicator.dataset.index = index;
+                indicator.addEventListener("click", () => goToImage(index));
+                indicatorContainer.appendChild(indicator);
             });
-            pagination.appendChild(btn);
+
+            updateIndicators();
         }
-    }
 
-    // Gọi khi load lần đầu
-    renderPage(currentPage);
+        function updateCarousel() {
+            cards.forEach((card, index) => {
+                let distance = (index - currentIndex + cards.length) % cards.length;
+                let scale = distance === 0 ? 1 : 0.8;
+                let xOffset = distance === 1 ? 50 : distance === cards.length - 1 ? -50 : 0;
+                let zIndex = distance === 0 ? 10 : 5;
+
+                card.style.opacity = distance > 1 && distance < cards.length - 1 ? "0" : "1";
+                card.style.pointerEvents = distance === 0 ? "auto" : "none";
+
+                const isFlipped = card.dataset.flipped === "true";
+                card.style.transform =
+                    `translateX(${xOffset}px) scale(${scale}) rotateY(${isFlipped ? 180 : 0}deg)`;
+                card.style.zIndex = zIndex;
+            });
+
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            document.querySelectorAll(".indicator").forEach((dot, index) => {
+                dot.classList.toggle("active", index === currentIndex);
+            });
+        }
+
+        function goToImage(index) {
+            currentIndex = index;
+            resetAllFlippedCards();
+            updateCarousel();
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % cards.length;
+            resetAllFlippedCards();
+            updateCarousel();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            resetAllFlippedCards();
+            updateCarousel();
+        }
+
+        function resetAllFlippedCards() {
+            cards.forEach(card => (card.dataset.flipped = "false"));
+        }
+
+        function handleTouchStart(event) {
+            startX = event.touches[0].clientX;
+        }
+
+        function handleTouchEnd(event) {
+            let diffX = startX - event.changedTouches[0].clientX;
+
+            if (diffX > 50) nextImage();
+            else if (diffX < -50) prevImage();
+        }
+    });
+</script>
+
+
+<script>
+    $(".hover").mouseleave(
+        function() {
+            $(this).removeClass("hover");
+        }
+    );
 </script>
