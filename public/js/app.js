@@ -90,12 +90,17 @@ function slideAudio() {
 
             function goToSlide(index) {
                 $slider.css("transform", `translateX(-${index * 100}%)`);
-                $dotsContainer.find(".dot").removeClass("active").eq(index).addClass("active");
+                $dotsContainer
+                    .find(".dot")
+                    .removeClass("active")
+                    .eq(index)
+                    .addClass("active");
                 currentSlide = index;
             }
 
             function navigate(direction) {
-                currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+                currentSlide =
+                    (currentSlide + direction + totalSlides) % totalSlides;
                 goToSlide(currentSlide);
             }
 
@@ -158,8 +163,14 @@ function slideAudio() {
             { start: "rgba(255, 69, 0, .6)", end: "rgba(255, 69, 0, 0.25)" },
             { start: "rgba(255, 0, 0, .6)", end: "rgba(255, 0, 0, 0.25)" },
             { start: "rgba(255, 165, 0, .6)", end: "rgba(255, 165, 0, 0.25)" },
-            { start: "rgba(255, 20, 147, .6)", end: "rgba(255, 20, 147, 0.25)" },
-            { start: "rgba(238, 130, 238, .6)", end: "rgba(238, 130, 238, 0.25)" },
+            {
+                start: "rgba(255, 20, 147, .6)",
+                end: "rgba(255, 20, 147, 0.25)",
+            },
+            {
+                start: "rgba(238, 130, 238, .6)",
+                end: "rgba(238, 130, 238, 0.25)",
+            },
             { start: "rgba(148, 0, 211, .6)", end: "rgba(148, 0, 211, 0.25)" },
         ];
 
@@ -187,5 +198,3 @@ function slideAudio() {
         }
     });
 }
-
-

@@ -29,13 +29,13 @@
 
 
     <header class="snake-top-view">
+        <div class="v-toggle-menu"><i class="fa fa-bars" aria-hidden="true"></i></div>
         <article class="logo">
             <a href="/">
 
                 <img src="{{ asset('uploads/images/' . $logo->filename) }}" alt="logo">
             </a>
 
-            <div class="v-toggle-menu"><i class="fa fa-bars" aria-hidden="true"></i></div>
         </article>
         <article class="snake-navigation">
             <nav class="main-menu">
@@ -432,92 +432,7 @@
         wrapnav();
         slideAudio();
     </script>
-    {{-- <script>
-        // function toggleShow() {
-        //     var el = document.getElementById("box");
-        //     el.classList.toggle("show");
-        // }
 
-        // Search functionality
-        const searchBox = document.getElementById('box');
-        const modal = document.getElementById('modal');
-        const resultsDiv = document.getElementById('results');
-        const viewAllDiv = document.getElementById('view-all');
-
-        // Collect data from allTMa page
-        function collectStoriesData() {
-            const stories = [];
-            const cards = document.querySelectorAll('.library-card');
-
-            cards.forEach(card => {
-                const title = card.querySelector('h3')?.textContent || '';
-                const meta = card.querySelector('.library-card__meta')?.textContent || '';
-                const image = card.querySelector('img')?.src || '';
-                const link = card.getAttribute('href') || '#';
-
-                // Extract views and date from meta text
-                const viewsMatch = meta.match(/👁 (\d+)/);
-                const dateMatch = meta.match(/📅 ([\d-]+)/);
-
-                stories.push({
-                    title,
-                    views: viewsMatch ? viewsMatch[1] : '0',
-                    date: dateMatch ? dateMatch[1] : '',
-                    image,
-                    link
-                });
-            });
-
-            return stories;
-        }
-
-        // Initialize stories data
-        let stories = [];
-        document.addEventListener('DOMContentLoaded', () => {
-            stories = collectStoriesData();
-        });
-
-        searchBox.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-
-            if (searchTerm.length > 0) {
-                modal.classList.remove('hidden');
-                const filteredStories = stories.filter(story =>
-                    story.title.toLowerCase().includes(searchTerm)
-                );
-
-                if (filteredStories.length > 0) {
-                    resultsDiv.innerHTML = filteredStories.map(story => `
-                        <a href="${story.link}" class="search-result-item">
-                            <img src="${story.image}" alt="${story.title}">
-                            <div class="search-result-info">
-                                <h4>${story.title}</h4>
-                                <div class="search-result-meta">👁 ${story.views} | 📅 ${story.date}</div>
-                            </div>
-                        </a>
-                    `).join('');
-                    viewAllDiv.classList.add('hidden');
-                } else {
-                    resultsDiv.innerHTML = '<p>Không tìm thấy kết quả</p>';
-                    viewAllDiv.classList.remove('hidden');
-                }
-            } else {
-                modal.classList.add('hidden');
-            }
-        });
-
-        function closeModal() {
-            modal.classList.add('hidden');
-            searchBox.value = '';
-        }
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-    </script> --}}
 </body>
 
 </html>
