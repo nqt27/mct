@@ -7,7 +7,7 @@
     --font-contact: Arial, sans-serif;
 }
 #contact-root {
-    background: var(--bg-contact);
+    background: #272525;
     color: var(--text-contact);
     font-family: var(--font-contact);
     max-width: 700px;

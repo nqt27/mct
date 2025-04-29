@@ -18,11 +18,11 @@
         <div class="carousel-container">
             <div class="carousel">
                 @foreach ($slide as $s)
-                <div class="card" data-flipped="false">
-                    <div class="front"
-                        style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
+                    <div class="card" data-flipped="false">
+                        <div class="front"
+                            style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
 
-                </div>
+                    </div>
                 @endforeach
 
             </div>
@@ -141,34 +141,34 @@
             <h3>Blog MCT Media – Những Kiến Thức, Kinh Nghiệm Hay</h3>
             <div class="content-left-item-content">
                 @foreach ($blog as $n)
-                <div class="card">
-                    <img src="{{ asset('images/' . $n->image) }}" class="card-img-top"
-                        alt="{{ $n->title }}">
-                    <div class="card-body">
-                        <div class="noidung-dichvu">
-                            <h5 class="card-title">{{ $n->tieude }}</h5>
-                            <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
+                    <div class="card">
+                        <img src="{{ asset('images/' . $n->image) }}" class="card-img-top" alt="{{ $n->title }}">
+                        <div class="card-body">
+                            <div class="noidung-dichvu">
+                                <h5 class="card-title">{{ $n->tieude }}</h5>
+                                <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
+                            </div>
+                            <a href="{{ route('blogdetail', $n->slug) }}" class="btn btn-primary vertical-button">Xem
+                                chi
+                                tiết</a>
                         </div>
-                        <a href="{{ route('detail', $n->slug) }}" class="btn btn-primary vertical-button">Xem chi
-                            tiết</a>
                     </div>
-                </div>
                 @endforeach
             </div>
             <h3>MCT Media – Giải Pháp Truyền Thông Cho Mọi Người</h3>
             <div class="info">
-                @foreach($dichvu as $dv)
-                <figure class="snip1156">
-                    <img src="{{ asset('images/' . $dv->image) }}" alt="{{$dv->name}}" />
-                    <figcaption>
-                        <div>
-                            <h2>{{$dv->tieude}} </h2>
-                        </div>
-                    </figcaption>
-                    <a href="#"></a>
-                </figure>
+                @foreach ($dichvu as $dv)
+                    <figure class="snip1156">
+                        <img src="{{ asset('images/' . $dv->image) }}" alt="{{ $dv->name }}" />
+                        <figcaption>
+                            <div>
+                                <h2>{{ $dv->tieude }} </h2>
+                            </div>
+                        </figcaption>
+                        <a href="#"></a>
+                    </figure>
                 @endforeach
-                
+
             </div>
 
         </div>
