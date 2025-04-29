@@ -29,13 +29,13 @@
 
 
     <header class="snake-top-view">
+        <div class="v-toggle-menu"><i class="fa fa-bars" aria-hidden="true"></i></div>
         <article class="logo">
             <a href="/">
 
                 <img src="{{ asset('uploads/images/' . $logo->filename) }}" alt="logo">
             </a>
 
-            <div class="v-toggle-menu"><i class="fa fa-bars" aria-hidden="true"></i></div>
         </article>
         <article class="snake-navigation">
             <nav class="main-menu">
@@ -102,17 +102,18 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_dv as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('dich-vu-san-xuat/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item2" par="4"><a
-                                            href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a></li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('dich-vu-san-xuat/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item2" par="4"><a
+                                                        href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
@@ -121,17 +122,18 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_review as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('reviews/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item2" par="4"><a
-                                            href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a></li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('reviews/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item2" par="4"><a
+                                                        href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
@@ -140,17 +142,17 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_blog as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item2" par="4"><a
-                                            href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                        @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item2" par="4"><a
+                                                        href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
@@ -432,7 +434,7 @@
         wrapnav();
         slideAudio();
     </script>
-   
+
     <script>
         // 1. Fetch story data from allTMa page
         async function fetchStoriesData() {
