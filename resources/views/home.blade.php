@@ -18,11 +18,11 @@
         <div class="carousel-container">
             <div class="carousel">
                 @foreach ($slide as $s)
-                <div class="card" data-flipped="false">
-                    <div class="front"
-                        style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
+                    <div class="card" data-flipped="false">
+                        <div class="front"
+                            style="background-image: url('{{ asset('uploads/images/' . $s->filename) }}');"></div>
 
-                </div>
+                    </div>
                 @endforeach
 
             </div>
@@ -50,19 +50,19 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($new_audio->chunk(4) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach ($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="{{ route('detail', $p->slug) }}">
-                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                    <h3>{{ $p->ten }}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                </a>
+                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                                @foreach ($group as $p)
+                                    <div class="card" data-tilt>
+                                        <a href="{{ route('detail', $p->slug) }}">
+                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                            <h3>{{ $p->ten }}</h3>
+                                            <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @endforeach
 
 
@@ -100,19 +100,19 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($new_audio->chunk(4) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach ($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="{{ route('detail', $p->slug) }}">
-                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                    <h3>{{ $p->ten }}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
-                                </a>
+                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                                @foreach ($group as $p)
+                                    <div class="card" data-tilt>
+                                        <a href="{{ route('detail', $p->slug) }}">
+                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                            <h3>{{ $p->ten }}</h3>
+                                            <p><i class="fa-solid fa-eye"></i>Lượt xem: 30</p>
+                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành: 1-1-2025</p>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @endforeach
 
 
@@ -141,34 +141,34 @@
             <h3>Blog MCT Media – Những Kiến Thức, Kinh Nghiệm Hay</h3>
             <div class="content-left-item-content">
                 @foreach ($blog as $n)
-                <div class="card">
-                    <img src="{{ asset('images/' . $n->image) }}" class="card-img-top"
-                        alt="{{ $n->title }}">
-                    <div class="card-body">
-                        <div class="noidung-dichvu">
-                            <h5 class="card-title">{{ $n->tieude }}</h5>
-                            <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
+                    <div class="card">
+                        <img src="{{ asset('images/' . $n->image) }}" class="card-img-top" alt="{{ $n->title }}">
+                        <div class="card-body">
+                            <div class="noidung-dichvu">
+                                <h5 class="card-title">{{ $n->tieude }}</h5>
+                                <p class="card-text">{!! Str::limit($n->noidung, 100) !!}</p>
+                            </div>
+                            <a href="{{ route('blogdetail', $n->slug) }}" class="btn btn-primary vertical-button">Xem
+                                chi
+                                tiết</a>
                         </div>
-                        <a href="{{ route('detail', $n->slug) }}" class="btn btn-primary vertical-button">Xem chi
-                            tiết</a>
                     </div>
-                </div>
                 @endforeach
             </div>
             <h3>MCT Media – Giải Pháp Truyền Thông Cho Mọi Người</h3>
             <div class="info">
-                @foreach($dichvu as $dv)
-                <figure class="snip1156">
-                    <img src="{{ asset('images/' . $dv->image) }}" alt="{{$dv->name}}" />
-                    <figcaption>
-                        <div>
-                            <h2>{{$dv->tieude}} </h2>
-                        </div>
-                    </figcaption>
-                    <a href="#"></a>
-                </figure>
+                @foreach ($dichvu as $dv)
+                    <figure class="snip1156">
+                        <img src="{{ asset('images/' . $dv->image) }}" alt="{{ $dv->name }}" />
+                        <figcaption>
+                            <div>
+                                <h2>{{ $dv->tieude }} </h2>
+                            </div>
+                        </figcaption>
+                        <a href="#"></a>
+                    </figure>
                 @endforeach
-                
+
             </div>
 
         </div>
