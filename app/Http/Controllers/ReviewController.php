@@ -20,17 +20,10 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $logo = Logo::first();
-        $hot_audio = Audio::where('nghenhieu', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $new_audio = Audio::where('moi', 1)->take(6)->get(); // Nếu `new` lưu là số 1
-        $menu = TheLoai::whereNull('parent_id') // Chỉ lấy menu cha
-            ->with('submenu')
-            ->orderBy('position') // Sắp xếp theo vị trí
-            ->get();
-        $slide = Slide::where('display', 1)->get();
-        $dichvu = DichVu::take(6)->get(); // Nếu `new` lưu là số 1
+        
+        $review = Review::take(6)->get(); // Nếu `new` lưu là số 1
 
-        return view('review', ['logo' => $logo, 'hot_audio' => $hot_audio, 'new_audio' => $new_audio, 'menu' => $menu, 'dichvu' => $dichvu, 'slide' => $slide]);
+        return view('review', ['review' => $review]);
     }
     public function phanloai($slug)
     {

@@ -106,7 +106,8 @@ function formMenu(button, url, method = 'POST', parent_id) {
             console.log(url);
             // Gửi dữ liệu cập nhật qua AJAX
             $.ajax({
-                url: `${url}/${menuId || ''}`, // Đường dẫn cập nhật
+                url: menuId ? `${url}/${menuId}` : url,
+                // Đường dẫn cập nhật
                 method: 'POST',
                 data: data,
                 success: function (response) {
@@ -149,7 +150,7 @@ function deleteMenu(url) {
     $('.delete-btn').on('click', function () {
         // Lấy thông tin menu từ thuộc tính data của nút
         let menuId = $(this).data('id');
-console.log(menuId);
+        console.log(menuId);
 
         // Sử dụng SweetAlert2 để hiển thị form chỉnh sửa
         Swal.fire({
@@ -337,7 +338,7 @@ function deleteItem(url) {
                     success: function (response) {
                         Swal.fire({
                             title: "Đã xóa",
-                            text: "Dã xóa sản phẩm",
+                            text: "Đã xóa sản phẩm",
                             icon: "success"
                         });
 

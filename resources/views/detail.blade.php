@@ -21,7 +21,7 @@
                                 <div class="track-info">
                                     <div id="trackTitle"></div>
                                     <div id="bandName"></div>
-                                    <button id="likeBtn"><i class="far fa-heart"></i></button>
+                                    <button id="likeBtn" style="display:none;"><i class="far fa-heart"></i></button>
                                 </div>
                                 <div class="seek-bar">
                                     <input type="range" id="seekSlider" min="0" step="1" value="0">
@@ -59,7 +59,7 @@
         <h2 id="audioData" data-chapters="{{ json_encode($audio->chapters) }}">Danh Sách Tập</h2>
         @foreach($audio->chapters as $chapter)
         <div class="ct-episode">
-            <span>Tập 1: {{$chapter->title}}</span>
+            <span> {{$chapter->title}}</span>
             <button class="ct-btn" data-src="{{$chapter->chapter_number}}">Nghe</button>
         </div>
         @endforeach
@@ -147,7 +147,7 @@
  // cái đường dẫn audio đã có sẵn
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}",
-                bandName: "Band 1",
+                bandName: chapter.title,
             };
         });
     } else {
@@ -155,7 +155,6 @@
                 src: "{{ asset('uploads/audio/' . $audio->audio_path) }}",
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}", // Format: "minutes:seconds"
-                bandName: "Band 1",
             }
 
         ];

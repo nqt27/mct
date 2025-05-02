@@ -111,7 +111,7 @@
                 } // Chỉ định các cột không sắp xếp, theo chỉ mục (bắt đầu từ 0)
             ]
         });
-        statusaudio('/admin/slide-status/');
+        statusAudio('/admin/slide-status/');
         deleteItem('/admin/slide/');
         // deleteAll('/admin/delete-all');
     });

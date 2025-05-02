@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('css/lienhe.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/dvsx.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/allTMa.css') }}" type="text/css">
-    <title>Sun Group | Bất động sản</title>
+    <title>MCT | MCT Media</title>
 </head>
 
 <body>
@@ -48,8 +48,8 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
 
-                            <li class="menu-item2 drop" par="4">
-                                <a href="{{ url('theloai/truyen-ngan') }}">Truyện ngắn</a>
+                            <li class="menu-item2" par="4">
+                                <a href="{{ url('theloai/truyen-ngan') }}">Kỳ án</a>
                                 <ul class="sub-menu2 sub-menu-1" par="1">
                                     @foreach ($menu as $m)
                                         <li class="menu-item3 drop" par="4">
@@ -72,7 +72,30 @@
                                 </ul>
                             </li>
                             <li class="menu-item2 drop" par="4">
-                                <a href="{{ url('theloai/truyen-dai') }}">Truyện dài</a>
+                                <a href="{{ url('theloai/truyen-dai') }}">Truyện</a>
+                                <ul class="sub-menu2 sub-menu-1" par="1">
+                                    @foreach ($menu as $m)
+                                        <li class="menu-item3 drop" par="4">
+                                            <a
+                                                href="{{ url('theloai/truyen-dai/' . $m->slug) }}">{{ $m->ten }}</a>
+
+                                            @if ($m->submenu->isNotEmpty())
+                                                <ul class="sub-menu3 sub-menu-1">
+                                                    @foreach ($m->submenu as $sm)
+                                                        <li class="menu-item3" par="4">
+                                                            <a
+                                                                href="{{ url('theloai/truyen-dai/' . $sm->slug) }}">{{ $sm->ten }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            <li class="menu-item2" par="4">
+                                <a href="{{ url('theloai/truyen-dai') }}">Audio Phim</a>
                                 <ul class="sub-menu2 sub-menu-1" par="1">
                                     @foreach ($menu as $m)
                                         <li class="menu-item3 drop" par="4">
