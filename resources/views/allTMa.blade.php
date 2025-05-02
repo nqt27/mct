@@ -1,10 +1,5 @@
 @include('layout-header')
 <div class="container" style="margin-bottom: 30px;">
-    <div class="breadcrumb">
-        <a href="#"><i class="fas fa-home"></i> Xem Phim</a> /
-        <a href="#"> Phim Lẻ</a> /
-        <span> Quá Nhanh Quá Nguy Hiểm 7</span>
-    </div>
     <section class="snake-content">
         <div class="content-left-item">
             <h2 style="margin-top: 10px" class="haunted-blog-header">Tất cả truyện ma</h2>

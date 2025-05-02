@@ -14,11 +14,6 @@
 
 
 <div class="container" style="margin-bottom: 30px;">
-    <div class="breadcrumb">
-        <a href="#"><i class="fas fa-home"></i> Xem Phim</a> /
-        <a href="#"> Phim Lẻ</a> /
-        <span> Quá Nhanh Quá Nguy Hiểm 7</span>
-    </div>
     <section class="snake-slider">
         <div class="carousel-container">
             <div class="carousel">

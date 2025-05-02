@@ -208,7 +208,13 @@
         </button>
 
     </header>
-
+    <div class="container" style="margin-bottom: 30px;">
+        <div class="breadcrumb">
+            <a href="#"><i class="fas fa-home"></i> Xem Phim</a> /
+            <a href="#"> Phim Lẻ</a> /
+            <span> Quá Nhanh Quá Nguy Hiểm 7</span>
+        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
