@@ -8,19 +8,20 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($audio->chunk(16) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach ($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="{{ route('detail', $p->slug) }}">
-                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                    <h3>{{ $p->ten }}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{$p->luot_nghe}}</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: {{ $p->created_at->format('d/m/Y') }}</p>
-                                </a>
+                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                                @foreach ($group as $p)
+                                    <div class="card" data-tilt>
+                                        <a href="{{ route('detail', $p->slug) }}">
+                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                            <h3>{{ $p->ten }}</h3>
+                                            <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{ $p->luot_nghe }}</p>
+                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành:
+                                                {{ $p->created_at->format('d/m/Y') }}</p>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @endforeach
 
 

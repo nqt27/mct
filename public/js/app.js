@@ -203,5 +203,4 @@ function slideAudio() {
             $bokehBackground.append($bokeh);
         }
     });
-
 }

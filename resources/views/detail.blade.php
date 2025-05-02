@@ -1,6 +1,7 @@
 @include('layout-header')
 
 <div class="ct-container">
+
     <section class="ct-detail">
         <div class="ct-cover">
             <section class="snake-audio-content">
@@ -49,9 +50,10 @@
             </section>
         </div>
         <div class="ct-info">
-            <h1>{{$audio->ten}}</h1>
-            <div class="ct-meta">{{$audio->tacgia}} | Ngày đăng: {{$audio->created_at}} | Lượt xem: {{$audio->luot_nghe}}</div>
-            <p>{!!$audio->tomtat!!}</p>
+            <h1>{{ $audio->ten }}</h1>
+            <div class="ct-meta">{{ $audio->tacgia }} | Ngày đăng: {{ $audio->created_at }} | Lượt xem:
+                {{ $audio->luot_nghe }}</div>
+            <p>{!! $audio->tomtat !!}</p>
             <button class="ct-btn">Nghe Tập 1</button>
         </div>
     </section>
@@ -141,10 +143,10 @@
 
     if (Array.isArray(chapters) && chapters.length > 0) {
         tracks = chapters.map(chapter => {
-            
+
             return {
                 src: "{{ asset('uploads/audio') }}/" + chapter.audio_path,
- // cái đường dẫn audio đã có sẵn
+                // cái đường dẫn audio đã có sẵn
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}",
                 bandName: chapter.title,
@@ -180,7 +182,8 @@
     episodeButtons.forEach((button) => {
         button.addEventListener("click", function() {
             const chapterNumber = parseInt(this.getAttribute("data-src")); // lấy số chương
-            currentTrackIndex = chapterNumber - 1; // Nếu chapter_number là 1-based thì trừ 1 cho đúng mảng JS
+            currentTrackIndex = chapterNumber -
+                1; // Nếu chapter_number là 1-based thì trừ 1 cho đúng mảng JS
             console.log(currentTrackIndex);
 
             loadTrack(currentTrackIndex);
@@ -405,10 +408,10 @@
 </script>
 
 
-<script>
+{{-- <script>
     wrapnav();
     slideAudio();
-</script>
+</script> --}}
 </body>
 
 </html>
