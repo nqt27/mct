@@ -1,5 +1,10 @@
 @include('layout-header')
 <div class="container" style="margin-bottom: 30px;">
+    <div class="breadcrumb">
+        <a href="#"><i class="fas fa-home"></i> Xem Phim</a> /
+        <a href="#"> Phim Lẻ</a> /
+        <span> Quá Nhanh Quá Nguy Hiểm 7</span>
+    </div>
     <section class="snake-content">
         <div class="content-left-item">
             <h2 style="margin-top: 10px" class="haunted-blog-header">Tất cả truyện ma</h2>
@@ -8,19 +13,20 @@
                 <div class="slider-wrapper">
                     <div class="slider">
                         @foreach ($audio->chunk(16) as $index => $group)
-                        <div class="slide-group {{ $loop->first ? 'active' : '' }}">
-                            @foreach ($group as $p)
-                            <div class="card" data-tilt>
-                                <a href="{{ route('detail', $p->slug) }}">
-                                    <img src="{{ asset('uploads/images/' . $p->image) }}"
-                                        title="{{ $p->ten }}" alt="{{ $p->ten }}">
-                                    <h3>{{ $p->ten }}</h3>
-                                    <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{$p->luot_nghe}}</p>
-                                    <p><i class="fa-solid fa-calendar-days"></i>Phát hành: {{ $p->created_at->format('d/m/Y') }}</p>
-                                </a>
+                            <div class="slide-group {{ $loop->first ? 'active' : '' }}">
+                                @foreach ($group as $p)
+                                    <div class="card" data-tilt>
+                                        <a href="{{ route('detail', $p->slug) }}">
+                                            <img src="{{ asset('uploads/images/' . $p->image) }}"
+                                                title="{{ $p->ten }}" alt="{{ $p->ten }}">
+                                            <h3>{{ $p->ten }}</h3>
+                                            <p><i class="fa-solid fa-eye"></i>Lượt nghe: {{ $p->luot_nghe }}</p>
+                                            <p><i class="fa-solid fa-calendar-days"></i>Phát hành:
+                                                {{ $p->created_at->format('d/m/Y') }}</p>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @endforeach
 
 

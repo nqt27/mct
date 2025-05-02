@@ -1,6 +1,13 @@
 @include('layout-header')
-
+<div class="container" style="margin-bottom: 30px;">
+    <div class="breadcrumb">
+        <a href="#"><i class="fas fa-home"></i> Xem Phim</a> /
+        <a href="#"> Phim Lẻ</a> /
+        <span> Quá Nhanh Quá Nguy Hiểm 7</span>
+    </div>
+</div>
 <div class="ct-container">
+
     <section class="ct-detail">
         <div class="ct-cover">
             <section class="snake-audio-content">
@@ -49,19 +56,20 @@
             </section>
         </div>
         <div class="ct-info">
-            <h1>{{$audio->ten}}</h1>
-            <div class="ct-meta">{{$audio->tacgia}} | Ngày đăng: {{$audio->created_at}} | Lượt xem: {{$audio->luot_nghe}}</div>
-            <p>{!!$audio->tomtat!!}</p>
+            <h1>{{ $audio->ten }}</h1>
+            <div class="ct-meta">{{ $audio->tacgia }} | Ngày đăng: {{ $audio->created_at }} | Lượt xem:
+                {{ $audio->luot_nghe }}</div>
+            <p>{!! $audio->tomtat !!}</p>
             <button class="ct-btn">Nghe Tập 1</button>
         </div>
     </section>
     <section class="ct-episode-list">
         <h2 id="audioData" data-chapters="{{ json_encode($audio->chapters) }}">Danh Sách Tập</h2>
-        @foreach($audio->chapters as $chapter)
-        <div class="ct-episode">
-            <span>Tập 1: {{$chapter->title}}</span>
-            <button class="ct-btn" data-src="{{$chapter->chapter_number}}">Nghe</button>
-        </div>
+        @foreach ($audio->chapters as $chapter)
+            <div class="ct-episode">
+                <span>Tập 1: {{ $chapter->title }}</span>
+                <button class="ct-btn" data-src="{{ $chapter->chapter_number }}">Nghe</button>
+            </div>
         @endforeach
 
     </section>
@@ -141,10 +149,10 @@
 
     if (Array.isArray(chapters) && chapters.length > 0) {
         tracks = chapters.map(chapter => {
-            
+
             return {
                 src: "{{ asset('uploads/audio') }}/" + chapter.audio_path,
- // cái đường dẫn audio đã có sẵn
+                // cái đường dẫn audio đã có sẵn
                 albumArt: "{{ asset('uploads/images/' . $audio->image) }}",
                 trackTitle: "{{ $audio->ten }}",
                 bandName: "Band 1",
@@ -181,7 +189,8 @@
     episodeButtons.forEach((button) => {
         button.addEventListener("click", function() {
             const chapterNumber = parseInt(this.getAttribute("data-src")); // lấy số chương
-            currentTrackIndex = chapterNumber - 1; // Nếu chapter_number là 1-based thì trừ 1 cho đúng mảng JS
+            currentTrackIndex = chapterNumber -
+                1; // Nếu chapter_number là 1-based thì trừ 1 cho đúng mảng JS
             console.log(currentTrackIndex);
 
             loadTrack(currentTrackIndex);
@@ -406,10 +415,10 @@
 </script>
 
 
-<script>
+{{-- <script>
     wrapnav();
     slideAudio();
-</script>
+</script> --}}
 </body>
 
 </html>

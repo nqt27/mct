@@ -24,6 +24,30 @@ html {
 body {
     background-color: #4d586b;
 }
+.breadcrumb {
+    color: #fff;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.breadcrumb a {
+    color: orange;
+    text-decoration: none;
+    margin-right: 5px;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb i {
+    margin-right: 3px;
+}
+
+.breadcrumb span {
+    color: #fff;
+}
+
 :root {
     --bg-panel: rgba(0, 0, 0, 0.8);
     --bg-btn: rgba(0, 0, 0, 0.8);
@@ -1116,11 +1140,15 @@ img.scale-05:hover {
         color: #fff;
         font-size: 23px;
         cursor: pointer;
-        background-color: #ffc107; /* giữ màu vàng như ảnh */
+        background-color: #ffc107;
         z-index: 101;
         box-sizing: border-box;
-        position: static; /* bỏ cố định */
-        margin-left: auto; /* đẩy sang phải trong flex container */
+        position: static;
+        margin-left: auto;
+
+        /* Cố định kích thước */
+        flex-shrink: 0;
+        flex-grow: 0;
     }
 
     .snake-top-view {
@@ -1157,10 +1185,9 @@ img.scale-05:hover {
         margin-left: 5px;
     }
     .snake-top-view .logo img {
-        max-height: 70px;
+        max-height: 50px;
     }
     .snake-search {
-        width: 110px;
         height: 40px;
         padding: 0 8px;
     }
@@ -1643,10 +1670,11 @@ figure.snip1156.hover figcaption p {
 #albumArt {
     position: relative;
     z-index: 1;
-    width: 100%;
-    height: auto;
+    width: 378px;
+    height: 500px;
     border-radius: 15px;
     margin-bottom: -100px;
+    margin-top: 15px;
 }
 #fade {
     margin-top: 20px;
@@ -1699,6 +1727,13 @@ figure.snip1156.hover figcaption p {
     height: 60px;
     width: 60px;
     margin: 0 20px 20px;
+}
+@media (max-width: 768px) {
+    #playPauseBtn {
+        height: 40px;
+        width: 40px;
+        margin: 0 10px 15px;
+    }
 }
 
 #shuffleBtn.active,
@@ -1969,7 +2004,7 @@ figure.snip1156.hover figcaption p {
         padding-left: 0px;
     }
 }
-.footer-item iframe {
+/* .footer-item iframe {
     width: 275px;
     height: 450px;
 }
@@ -1986,4 +2021,214 @@ figure.snip1156.hover figcaption p {
 footer .block-title span {
     padding: 10px 0 !important;
     font-size: 20px;
+} */
+footer {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.mct-footer {
+    padding: 40px 20px;
+    color: #fff;
+    border-radius: 10px;
+
+    width: 1500px;
+
+    background: rgba(0, 0, 0, 0.66);
+    border-radius: 10px;
+}
+
+.mct-footer__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+.mct-footer__top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 400px;
+    flex-wrap: wrap;
+}
+.mct-footer__logo {
+    max-width: 348px;
+    margin-bottom: 10px;
+}
+
+.mct-footer__column {
+    flex: 1 1 180px;
+    min-width: 200px;
+}
+
+.mct-footer__column h4,
+.mct-footer__column h3 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.mct-footer__column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mct-footer__column ul li {
+    margin-bottom: 8px;
+
+    align-items: center;
+}
+.mct-footer__column ul li a {
+    color: #ccc;
+}
+.mct-icons img {
+    width: 20px;
+    margin-left: 5px;
+    transition: transform 0.3s;
+}
+
+.mct-icons img:hover {
+    transform: scale(1.2);
+}
+
+.mct-footer__contact {
+    flex: 1 1 220px;
+    min-width: 220px;
+}
+
+.mct-footer__contact input {
+    width: 300px;
+    padding: 6px;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+.mct-footer__contact button {
+    margin-top: 5px;
+    padding: 6px 12px;
+    background: #1d1d1d;
+    border: 1px solid #ccc;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.mct-footer__contact button:hover {
+    background: #333;
+}
+
+.mct-footer__map {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.mct-footer__map img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mct-footer__map {
+    margin-top: 30px;
+}
+
+.mct-footer__map-responsive {
+    position: relative;
+    width: 706px; /* Giữ đúng kích thước bạn đưa */
+    height: 309px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 2s ease-in-out;
+}
+
+.mct-footer__map-responsive iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    .mct-footer {
+        width: 100%;
+        padding: 30px 15px;
+    }
+
+    .mct-footer__top-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .mct-footer__logo {
+        max-width: 220px;
+        margin: 0 auto 20px auto;
+    }
+
+    .mct-footer__contact {
+        text-align: center;
+    }
+
+    .mct-footer__contact input {
+        width: 100%;
+        max-width: 90vw;
+    }
+
+    .mct-footer__contact button {
+        width: 100%;
+        max-width: 90vw;
+        margin-top: 10px;
+    }
+
+    .mct-footer__container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mct-footer__column {
+        min-width: 100%;
+        text-align: center;
+    }
+
+    .mct-footer__map img {
+        border-radius: 10px;
+        width: 100%;
+        max-width: 90vw;
+    }
+    .mct-footer__map-responsive {
+        position: relative;
+        width: 100%;
+        padding-bottom: 45%; /* 16:9 tỷ lệ khung hình */
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    .mct-footer__map-responsive iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 20px;
+    }
 }
