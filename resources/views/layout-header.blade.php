@@ -40,6 +40,7 @@
         <article class="snake-navigation">
             <nav class="main-menu">
                 <ul class="snake-menu">
+                    <button class="header__nav-close">×</button>
                     <li class="active  menu-item" par="1"><a href="#"><i
                                 class="fa-solid fa-house-chimney"></i></a></li>
                     <li class="menu-item drop" par="3">

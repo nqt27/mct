@@ -19,8 +19,8 @@
 
         <div class="mct-footer__contact">
             <h4>CONTACT <strong>MCT MEDIA</strong></h4>
-            <input type="email" placeholder="Your email" />
-            <button>Subscribe</button>
+            <input type="email" placeholder="Email của bạn" />
+            <button>Đăng Ký</button>
         </div>
     </div>
 
