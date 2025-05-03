@@ -7,6 +7,15 @@ function wrapnav() {
             // Toggle class "active" cho nút
             $(this).toggleClass("active");
         });
+
+        $(".header__nav-close").on("click", function () {
+            // Ẩn menu khi nhấn nút close
+            $(".snake-menu").removeClass("show");
+
+            // Gỡ class "active" trên nút toggle nếu có
+            $(".v-toggle-menu").removeClass("active");
+        });
+
         const animatedEls = document.querySelectorAll(".animation-content");
 
         const observer = new IntersectionObserver(
