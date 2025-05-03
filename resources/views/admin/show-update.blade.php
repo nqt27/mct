@@ -82,36 +82,46 @@
                                         <input class="form-control" type="text" required="" placeholder="Tác giả" name="tacgia" id="tacgia" value="{{ $audio->tacgia }}">
                                     </div>
                                 </div>
-                                <!-- Parent Category -->
+                                <!-- Cấp 1 -->
                                 <div class="form-group row pt-1">
-                                    <label class="col-md-3 control-label">Danh mục</label>
-                                    <div class="col-md-9">
+                                    <label class="col-md-3 control-label">Danh mục cấp 1</label>
+                                    <div class="col-sm-9">
                                         <select class="form-control" id="select-parent" name="menu_id">
                                             <option value="">Chọn danh mục</option>
-                                            @foreach($menu as $m)
-                                            <option value="{{ $m->id }}"
-                                                {{ $selectedMenu && $m->id == $selectedMenu->parent_id ? 'selected' : '' }}>
-                                                {{ $m->ten }}
+                                            @foreach($menu as $menu1)
+                                            <option value="{{ $menu1->id }}"
+                                                {{ ($menuLevel1 && $menu1->id == $menuLevel1->id) ? 'selected' : '' }}>
+                                                {{ $menu1->ten }}
                                             </option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Cấp 2 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
+                                <div class="form-group row pt-1">
+                                    <label class="col-md-3 control-label">Danh mục cấp 2</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="select-child" name="menu_id2">
+                                            @if($menuLevel2)
+                                            <option value="{{ $menuLevel2->id }}" selected>
+                                                {{ $menuLevel2->ten }}
+                                            </option>
+                                            @endif
 
                                         </select>
                                     </div>
                                 </div>
 
-                                <!-- Child Category -->
+                                <!-- Cấp 3 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
                                 <div class="form-group row pt-1">
-                                    <label class="col-md-3 control-label">Thể loại{{ $audio->theloai->id}}</label>
-                                    <div class="col-md-9">
-                                        <select class="form-control" id="select-child" name="menu_id2">
-                                            <option value="">Chọn thể loại</option>
-                                            @if($selectedMenu)
-                                            @foreach($menu->where('id', $selectedMenu->parent_id)->first()->submenu ?? [] as $child)
-                                            <option value="{{ $child->id }}"
-                                                {{ $child->id == $selectedMenu->id ? 'selected' : '' }}>
-                                                {{ $child->ten }}
+                                    <label class="col-md-3 control-label">Danh mục cấp 3</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="select-subchild" name="menu_id3">
+                                            @if($menuLevel3)
+                                            <option value="{{ $menuLevel3->id }}" selected>
+                                                {{ $menuLevel3->ten }}
                                             </option>
-                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -328,231 +338,244 @@
     Dropzone.autoDiscover = false;
     var myDropzone;
     $(document).ready(function() {
-        $(document).ready(function() {
-            // Pre-select parent category and load subcategories
-            const initialParentId = $('#select-parent').val();
-            if (initialParentId) {
+        // Handle parent category change
+        $('#select-parent').on('click', function() {
+            const parentId = $(this).val();
+            const childSelect = $('#select-child');
+            const subChildSelect = $('#select-subchild'); // Get the sub-child select
+
+            // Clear existing options
+            childSelect.empty();
+            childSelect.append('<option value="">Chọn danh mục</option>');
+            subChildSelect.empty(); // Clear sub-child options
+            subChildSelect.append('<option value="">Chọn danh mục</option>'); // Add default option for sub-child
+            subChildSelect.prop('disabled', true); // Disable sub-child initially
+
+            if (parentId) {
+                // Get subcategories via AJAX
                 $.ajax({
-                    url: '/admin/get-subcategories/' + initialParentId,
+                    url: '/admin/get-subcategories/' + parentId,
                     method: 'GET',
                     success: function(response) {
                         if (response.subcategories && response.subcategories.length > 0) {
-                            const childSelect = $('#select-child');
-                            childSelect.empty();
-                            childSelect.append('<option value="">Chọn thể loại</option>');
-
                             response.subcategories.forEach(function(subcategory) {
-                                const selected = subcategory.id == "{{ $audio->theloai_id }}" ? 'selected' : '';
-                                childSelect.append(`<option value="${subcategory.id}" ${selected}>${subcategory.ten}</option>`);
+                                childSelect.append(`<option value="${subcategory.id}">${subcategory.ten}</option>`);
                             });
                             childSelect.prop('disabled', false);
-                        }
-                    }
-                });
-            }
-
-            // Handle parent category change
-            $('#select-parent').on('change', function() {
-                const parentId = $(this).val();
-                const childSelect = $('#select-child');
-
-                // Clear existing options
-                childSelect.empty();
-                childSelect.append('<option value="">Chọn thể loại</option>');
-
-                if (parentId) {
-                    // Get subcategories via AJAX
-                    $.ajax({
-                        url: '/admin/get-subcategories/' + parentId,
-                        method: 'GET',
-                        success: function(response) {
-                            if (response.subcategories && response.subcategories.length > 0) {
-                                response.subcategories.forEach(function(subcategory) {
-                                    childSelect.append(`<option value="${subcategory.id}">${subcategory.ten}</option>`);
-                                });
-                                childSelect.prop('disabled', false);
-                            } else {
-                                childSelect.prop('disabled', true);
-                            }
-                        },
-                        error: function() {
+                        } else {
                             childSelect.prop('disabled', true);
                         }
-                    });
-                } else {
-                    childSelect.prop('disabled', true);
-                }
-            });
-        });
-
-        myDropzone = new Dropzone("#my-dropzone", {
-            maxFiles: 1, // Chỉ cho phép tải lên một ảnh
-            autoProcessQueue: false, // Ngừng tự động tải lên khi có ảnh
-            paramName: "image", // Tên trường khi gửi lên server
-            uploadMultiple: false,
-            autoDiscover: false,
-            previewsContainer: "#custom-preview",
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            init: function() {
-                var myDropzone = this;
-
-                // Thêm ảnh từ cơ sở dữ liệu (nếu có)
-                var existingImage = "{{ asset('uploads/images/' . $audio->image) }}";
-                if (existingImage) {
-                    var previewContainer = document.getElementById("custom-preview");
-
-                    // Tạo phần tử img cho preview của ảnh cũ
-                    var previewImage = document.createElement("img");
-                    previewImage.src = existingImage; // URL ảnh preview
-                    previewImage.className = "custom-preview-image";
-                    previewImage.alt = "Current Image";
-
-                    // Thêm ảnh vào vùng custom preview
-                    previewContainer.appendChild(previewImage);
-                }
-
-                // Khi thêm một ảnh mới, xóa ảnh cũ nếu có
-                myDropzone.on("addedfile", function(file) {
-                    // Xóa ảnh cũ nếu có
-                    var previewContainer = document.getElementById("custom-preview");
-                    previewContainer.innerHTML = ""; // Xóa tất cả ảnh cũ trong preview
-
-                    // Tạo phần tử img cho preview của ảnh mới
-                    var previewImage = document.createElement("img");
-                    previewImage.src = URL.createObjectURL(file); // URL ảnh preview
-                    previewImage.alt = file.name;
-                    previewImage.className = "custom-preview-image";
-
-                    // Thêm ảnh mới vào vùng custom preview
-                    previewContainer.appendChild(previewImage);
-                    if (myDropzone.files.length > 1) {
-                        myDropzone.removeFile(myDropzone.files[0]); // Xóa ảnh cũ
+                    },
+                    error: function() {
+                        childSelect.prop('disabled', true);
                     }
                 });
-            }
-        });
-
-
-        // Toggle series/single audio sections
-        $('#is_series').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('.single-audio').hide();
-                $('.series-chapters').show();
             } else {
-                $('.single-audio').show();
-                $('.series-chapters').hide();
+                childSelect.prop('disabled', true);
             }
         });
 
+        // Handle child category change to load sub-child categories
+        $('#select-child').on('click', function() {
+            const childId = $(this).val();
+            const subChildSelect = $('#select-subchild');
 
+            // Clear existing sub-child options
+            subChildSelect.empty();
+            subChildSelect.append('<option value="">Chọn thể loại con</option>');
 
-        // Initial binding for audio preview
-        $('input[name="audio_file"], input[name="chapter_files[]"]').on('change', function() {
-            handleAudioPreview(this);
+            if (childId) {
+                // Get sub-subcategories via AJAX (using the same route, assuming it handles any parent_id)
+                $.ajax({
+                    url: '/admin/get-subcategories/' + childId, // Use childId to fetch its children
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.subcategories && response.subcategories.length > 0) {
+                            response.subcategories.forEach(function(subcategory) {
+                                subChildSelect.append(`<option value="${subcategory.id}">${subcategory.ten}</option>`);
+                            });
+                            subChildSelect.prop('disabled', false); // Enable sub-child select
+                        } else {
+                            subChildSelect.prop('disabled', true); // Disable if no sub-children
+                        }
+                    },
+                    error: function() {
+                        subChildSelect.prop('disabled', true);
+                    }
+                });
+            } else {
+                subChildSelect.prop('disabled', true); // Disable if no child is selected
+            }
+
         });
+    });
 
+    myDropzone = new Dropzone("#my-dropzone", {
+        maxFiles: 1, // Chỉ cho phép tải lên một ảnh
+        autoProcessQueue: false, // Ngừng tự động tải lên khi có ảnh
+        paramName: "image", // Tên trường khi gửi lên server
+        uploadMultiple: false,
+        autoDiscover: false,
+        previewsContainer: "#custom-preview",
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        init: function() {
+            var myDropzone = this;
 
-        $('#submit-all').on('click', function(e) {
-            e.preventDefault();
+            // Thêm ảnh từ cơ sở dữ liệu (nếu có)
+            var existingImage = "{{ asset('uploads/images/' . $audio->image) }}";
+            if (existingImage) {
+                var previewContainer = document.getElementById("custom-preview");
 
-            var formData = new FormData();
-            formData.append('_method', 'PUT');
+                // Tạo phần tử img cho preview của ảnh cũ
+                var previewImage = document.createElement("img");
+                previewImage.src = existingImage; // URL ảnh preview
+                previewImage.className = "custom-preview-image";
+                previewImage.alt = "Current Image";
 
-            // Add basic info form data
-            $('#audio-info-form').find('input, select, textarea').each(function() {
-                if (this.type === 'checkbox') {
-                    formData.append(this.name, $(this).prop('checked') ? 1 : 0);
-                } else if (this.name && this.name !== 'chapter_titles[]' && this.name !== 'chapter_files[]') {
-                    formData.append(this.name, $(this).val());
+                // Thêm ảnh vào vùng custom preview
+                previewContainer.appendChild(previewImage);
+            }
+
+            // Khi thêm một ảnh mới, xóa ảnh cũ nếu có
+            myDropzone.on("addedfile", function(file) {
+                // Xóa ảnh cũ nếu có
+                var previewContainer = document.getElementById("custom-preview");
+                previewContainer.innerHTML = ""; // Xóa tất cả ảnh cũ trong preview
+
+                // Tạo phần tử img cho preview của ảnh mới
+                var previewImage = document.createElement("img");
+                previewImage.src = URL.createObjectURL(file); // URL ảnh preview
+                previewImage.alt = file.name;
+                previewImage.className = "custom-preview-image";
+
+                // Thêm ảnh mới vào vùng custom preview
+                previewContainer.appendChild(previewImage);
+                if (myDropzone.files.length > 1) {
+                    myDropzone.removeFile(myDropzone.files[0]); // Xóa ảnh cũ
                 }
             });
+        }
+    });
 
-            // Add SEO form data
-            $('#audio-seo-form').find('input, select, textarea').each(function() {
+
+    // Toggle series/single audio sections
+    $('#is_series').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('.single-audio').hide();
+            $('.series-chapters').show();
+        } else {
+            $('.single-audio').show();
+            $('.series-chapters').hide();
+        }
+    });
+
+
+
+    // Initial binding for audio preview
+    $('input[name="audio_file"], input[name="chapter_files[]"]').on('change', function() {
+        handleAudioPreview(this);
+    });
+
+
+    $('#submit-all').on('click', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData();
+        formData.append('_method', 'PUT');
+
+        // Add basic info form data
+        $('#audio-info-form').find('input, select, textarea').each(function() {
+            if (this.type === 'checkbox') {
+                formData.append(this.name, $(this).prop('checked') ? 1 : 0);
+            } else if (this.name && this.name !== 'chapter_titles[]' && this.name !== 'chapter_files[]') {
                 formData.append(this.name, $(this).val());
-            });
-
-            // Add status checkboxes
-            $('#audio-status-form').find('input[type="checkbox"]').each(function() {
-                formData.append(this.name, $(this).is(':checked') ? 1 : 0);
-            });
-
-            // Add main image if changed
-            if (myDropzone.files.length > 0) {
-                formData.append("image", myDropzone.files[0]);
             }
-
-            // Handle series/chapters data
-            formData.append('is_series', $('#is_series').is(':checked') ? 1 : 0);
-
-            if ($('#is_series').is(':checked')) {
-                // Add chapter data
-                $('.chapter-entry').each(function(index) {
-                    // Get chapter elements
-                    const chapterId = $(this).find('input[name="chapter_ids[]"]').val();
-                    const title = $(this).find('input[name="chapter_titles[]"]').val();
-                    const fileInput = $(this).find('input[name="chapter_files[]"]')[0];
-
-                    // Add existing chapter ID if present
-                    if (chapterId) {
-                        formData.append(`existing_chapter_ids[${index}]`, chapterId);
-                    }
-
-                    // Add chapter title
-                    formData.append(`chapter_titles[${index}]`, title || '');
-
-                    // Add chapter file if new one is selected
-                    if (fileInput && fileInput.files[0]) {
-                        formData.append(`chapter_files[${index}]`, fileInput.files[0]);
-                    }
-                });
-            } else {
-                // Add single audio file if changed
-                const audioFile = $('input[name="audio_file"]')[0].files[0];
-                if (audioFile) {
-                    formData.append('audio_file', audioFile);
-                }
-            }
-
-            // Send AJAX request
-            var audioId = "{{ $audio->id }}";
-            $.ajax({
-                url: `/admin/audio/${audioId}`,
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Thành công!',
-                        text: 'Audio đã được cập nhật thành công',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = '/admin/audio';
-                    });
-                },
-                error: function(xhr) {
-                    console.error('Update error:', xhr);
-                    let errorMessage = 'Có lỗi xảy ra';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    Swal.fire({
-                        title: 'Lỗi!',
-                        text: errorMessage,
-                        icon: 'error'
-                    });
-                }
-            });
         });
 
+        // Add SEO form data
+        $('#audio-seo-form').find('input, select, textarea').each(function() {
+            formData.append(this.name, $(this).val());
+        });
+
+        // Add status checkboxes
+        $('#audio-status-form').find('input[type="checkbox"]').each(function() {
+            formData.append(this.name, $(this).is(':checked') ? 1 : 0);
+        });
+
+        // Add main image if changed
+        if (myDropzone.files.length > 0) {
+            formData.append("image", myDropzone.files[0]);
+        }
+
+        // Handle series/chapters data
+        formData.append('is_series', $('#is_series').is(':checked') ? 1 : 0);
+
+        if ($('#is_series').is(':checked')) {
+            // Add chapter data
+            $('.chapter-entry').each(function(index) {
+                // Get chapter elements
+                const chapterId = $(this).find('input[name="chapter_ids[]"]').val();
+                const title = $(this).find('input[name="chapter_titles[]"]').val();
+                const fileInput = $(this).find('input[name="chapter_files[]"]')[0];
+
+                // Add existing chapter ID if present
+                if (chapterId) {
+                    formData.append(`existing_chapter_ids[${index}]`, chapterId);
+                }
+
+                // Add chapter title
+                formData.append(`chapter_titles[${index}]`, title || '');
+
+                // Add chapter file if new one is selected
+                if (fileInput && fileInput.files[0]) {
+                    formData.append(`chapter_files[${index}]`, fileInput.files[0]);
+                }
+            });
+        } else {
+            // Add single audio file if changed
+            const audioFile = $('input[name="audio_file"]')[0].files[0];
+            if (audioFile) {
+                formData.append('audio_file', audioFile);
+            }
+        }
+
+        // Send AJAX request
+        var audioId = "{{ $audio->id }}";
+        $.ajax({
+            url: `/admin/audio/${audioId}`,
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: 'Audio đã được cập nhật thành công',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = '/admin/audio';
+                });
+            },
+            error: function(xhr) {
+                console.error('Update error:', xhr);
+                let errorMessage = 'Có lỗi xảy ra';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: errorMessage,
+                    icon: 'error'
+                });
+            }
+        });
     });
 </script>
 <script>
@@ -629,7 +652,6 @@
     $(document).ready(function() {
         //-initialize the javascript
         urlaudio();
-        selectMenu('{{$menu}}');
     });
 </script>
 </body>

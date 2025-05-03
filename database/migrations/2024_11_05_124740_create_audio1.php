@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('keyword_focus')->nullable();
             $table->string('seo_title')->nullable();
             $table->string('seo_keywords')->nullable();
+            $table->integer('order')->default(0); // Thêm trường thứ tự
             $table->text('seo_description')->nullable();
             // $table->json('images')->nullable(); // thêm cột JSON
             $table->foreign('theloai_id')->references('id')->on('theloai')->onDelete('cascade');

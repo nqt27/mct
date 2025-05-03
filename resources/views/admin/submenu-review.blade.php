@@ -26,7 +26,7 @@
                         @foreach($submenu as $m)
                         <div class="card menu-item" id="menu-{{$m->id}}">
                             <div class="card-header card-header-divider">{{$m->name}}
-                                <!-- <a href="/admin/submenu-review/{{$m->id}}" class="btn btn-info waves-effect waves-light btn-submenu" data-id="{{$m->id}}" data-name="{{$m->name}}" data-url="{{$m->url}}" type="button" style="float: right; margin:5px"><i class="fas fa-list mr-1"></i><span>Danh mục con</span></a> -->
+                                <a href="/admin/submenu-review/{{$m->id}}" class="btn btn-info waves-effect waves-light btn-submenu" data-id="{{$m->id}}" data-name="{{$m->name}}" data-url="{{$m->url}}" type="button" style="float: right; margin:5px"><i class="fas fa-list mr-1"></i><span>Danh mục con</span></a>
                                 <button class="btn btn-success waves-effect waves-light edit-btn" data-id="{{$m->id}}" data-name="{{$m->name}}" data-url="{{$m->url}}" type="button" style="float: right; margin:5px"><i class="fas fa-edit mr-1"></i><span>Sửa danh mục</span></button>
                                 <button class="btn btn-space btn-danger delete-btn" data-id="{{$m->id}}" data-name="{{$m->name}}" data-url="{{$m->url}}" type="button" style="float: right; margin:5px"><i class="fas fa-trash mr-1"></i><span>Xóa danh mục</span></button>
 

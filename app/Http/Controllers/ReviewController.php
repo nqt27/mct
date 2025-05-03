@@ -21,32 +21,42 @@ class ReviewController extends Controller
     public function index()
     {
         
-        $review = Review::take(6)->get(); // Nếu `new` lưu là số 1
+        $review = Review::orderBy('order')->take(6)->get(); // Nếu `new` lưu là số 1
 
         return view('review', ['review' => $review]);
     }
     public function phanloai($slug)
     {
-        // Lấy thể loại cha theo slug
-        $theloaiCha = MenuReview::where('slug', $slug)->first();
+       // Lấy thể loại cha theo slug
+       $theloaiCha = MenuReview::where('slug', $slug)->first();
 
-        if (!$theloaiCha) {
-            abort(404); // Không tìm thấy thể loại
-        }
+       if (!$theloaiCha) {
+           abort(404); // Không tìm thấy thể loại
+       }
 
-        // Lấy tất cả thể loại con của thể loại cha
-        $theloaiCon = MenuReview::where('parent_id', $theloaiCha->id)->pluck('id')->toArray();
+       // Function to get all descendant IDs recursively
+       function getAllDescendantIds($categoryId) {
+           $children = MenuReview::where('parent_id', $categoryId)->pluck('id');
+           $allIds = $children->toArray();
+           foreach ($children as $childId) {
+               $allIds = array_merge($allIds, getAllDescendantIds($childId));
+           }
+           return $allIds;
+       }
 
-        // Gộp id cha + id các con lại
-        $theloaiIds = array_merge([$theloaiCha->id], $theloaiCon);
+       // Get IDs of the parent category and all its descendants
+       $descendantIds = getAllDescendantIds($theloaiCha->id);
+       $theloaiIds = array_merge([$theloaiCha->id], $descendantIds);
 
-        // Lấy tất cả audio thuộc các thể loại đó
-        $review = Review::where('display', 1)
-            ->whereIn('menu_id', $theloaiIds)
-            ->get();
+       // Lấy tất cả dichvu thuộc các thể loại đó
+       $review = Review::where('display', 1)
+           ->whereIn('menu_id', $theloaiIds)
+           ->get();
 
-        return view('review', ['review' => $review]);
+       // Pass the category name to the view as well, if needed for display
+       return view('review', ['review' => $review, 'categoryName' => $theloaiCha->name]);
     }
+    
     public function detail($slug)
     {
         $review = Review::where('slug', $slug)->first();

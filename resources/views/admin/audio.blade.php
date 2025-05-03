@@ -50,7 +50,7 @@
                                         <thead>
                                             <tr>
                                                 <th><input type="checkbox" id="select-all"></th>
-                                                <th>ID</th>
+                                                <th>STT</th>
                                                 <th>Tên Audio</th>
                                                 <th>Hình ảnh</th>
                                                 <th>Tác giả</th>
@@ -63,7 +63,7 @@
                                             @foreach($audio as $a)
                                             <tr class="odd gradeX a">
                                                 <td style="width: 0%;"><input type="checkbox" class="select-item" value="{{ $a->id }}"></td>
-                                                <td style="width: 0%;">{{$a->id}}</td>
+                                                <td style="width: 0%;"> <input type="number" name="order[]" class="form-control order-input" value="{{ $a->order ?? 0 }}" data-id="{{ $a->id }}" style="width: 80px;"></td>
                                                 <td class="col-2">{{$a->ten}}</td>
                                                 <td class="col-1"><img src="{{asset('uploads/images/'. $a->image)}}" style="width: 100%" alt=""></td>
                                                 <td class="col-1">{{$a->tacgia}}</td>
@@ -164,6 +164,37 @@
 <script src="{{asset('assets\libs\pdfmake\vfs_fonts.js')}}"></script>
 <script src="{{asset('js\feature.js')}}" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        $('.order-input').on('change', function() {
+            let id = $(this).data('id');
+            let order = $(this).val();
+
+            $.ajax({
+                url: '{{ route("audio.updateOrder") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    order: order
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Cập nhật thành công!');
+                        window.location.reload();
+                    } else {
+                        console.log('Cập nhật thất bại!');
+                    }
+
+                },
+                error: function() {
+                    console.log('Lỗi kết nối server.');
+                }
+            });
+        });
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
         selectMenu()

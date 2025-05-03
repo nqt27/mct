@@ -22,7 +22,7 @@ class AudioController extends Controller
             ->whereNull('parent_id') // Lấy luôn menu con
             ->orderBy('position') // Sắp xếp theo vị trí
             ->get();
-        $audio = Audio::all();
+        $audio = Audio::orderBy('order')->get();
         return view('admin.audio',  ['audio' => $audio, 'menu' => $menu, 'selectmenu' => $selectmenu]);
     }
     public function add()
@@ -133,7 +133,7 @@ class AudioController extends Controller
         $audio->ten = $request->input('ten');
         $audio->tacgia = $request->input('tacgia');
         $audio->tomtat = $request->input('tomtat');
-        $audio->theloai_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
+        $audio->theloai_id = $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id');
         $audio->is_series = $request->boolean('is_series');
         $audio->keyword_focus = $request->input('keyword_focus');
         $audio->seo_title = $request->input('seo_title');
@@ -265,8 +265,21 @@ class AudioController extends Controller
         // Get audio with relationships
         $audio = Audio::with(['chapters'])->findOrFail($id);
 
-        // Lấy menu con đã chọn
+        // Determine the selected category and its hierarchy
         $selectedMenu = TheLoai::find($audio->theloai_id);
+        $menuLevel1 = null;
+        $menuLevel2 = null;
+        $menuLevel3 = null;
+
+        if ($selectedMenu) {
+            $parent = $selectedMenu->parent_id ? TheLoai::find($selectedMenu->parent_id) : null;
+            $grandparent = $parent && $parent->parent_id ? TheLoai::find($parent->parent_id) : null;
+
+            $menuLevel3 = $grandparent ? $selectedMenu : null; // It's level 3 only if grandparent exists
+            $menuLevel2 = $parent ? ($grandparent ? $parent : $selectedMenu) : null; // It's level 2 if parent exists (either the parent itself or the selected one if no grandparent)
+            $menuLevel1 = $grandparent ? $grandparent : ($parent ? $parent : $selectedMenu); // It's level 1 (grandparent, parent, or the selected one if no parents)
+        }
+        // Lấy menu con đã chọn
 
         // Lấy menu cha và các menu con liên quan
         $menu = TheLoai::whereNull('parent_id')
@@ -281,6 +294,9 @@ class AudioController extends Controller
             'audio' => $audio,
             'menu' => $menu,
             'selectedMenu' => $selectedMenu,
+            'menuLevel1' => $menuLevel1,
+            'menuLevel2' => $menuLevel2,
+            'menuLevel3' => $menuLevel3
         ]);
     }
     public function update(Request $request, $id)
@@ -394,7 +410,7 @@ class AudioController extends Controller
         $audio->ten = $request->input('ten');
         $audio->tacgia = $request->input('tacgia');
         $audio->tomtat = $request->input('tomtat');
-        $audio->theloai_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
+        $audio->theloai_id = $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id');
         $audio->is_series = $request->boolean('is_series');
         $audio->keyword_focus = $request->input('keyword_focus');
         $audio->seo_title = $request->input('seo_title');
@@ -638,5 +654,37 @@ class AudioController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
+    }
+    public function updateOrder(Request $request)
+    {
+        $id = $request->input('id');
+        $newOrder = (int) $request->input('order');
+
+        $currentBlog = Audio::find($id);
+        if (!$currentBlog) {
+            return response()->json(['success' => false, 'message' => 'Bài viết không tồn tại']);
+        }
+
+        $oldOrder = $currentBlog->order;
+
+        // Nếu không thay đổi thì khỏi làm gì
+        if ($newOrder == $oldOrder) {
+            return response()->json(['success' => true, 'message' => 'Không có gì thay đổi']);
+        }
+
+        // Tìm bài viết đang giữ vị trí $newOrder
+        $otherBlog = Audio::where('order', $newOrder)->first();
+
+        // Cập nhật order cho current blog
+        $currentBlog->order = $newOrder;
+        $currentBlog->save();
+
+        // Nếu có bài trùng thì đổi vị trí
+        if ($otherBlog && $otherBlog->id != $id) {
+            $otherBlog->order = $oldOrder;
+            $otherBlog->save();
+        }
+
+        return response()->json(['success' => true]);
     }
 }

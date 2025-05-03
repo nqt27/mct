@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('seo_title')->nullable();
             $table->string('seo_keywords')->nullable();
             $table->text('seo_description')->nullable();
+            $table->integer('order')->default(0); // Thêm trường thứ tự
             $table->unsignedBigInteger('menu_id'); // Thêm cột khóa ngoại
             $table->foreign('menu_id')->references('id')->on('menu_blog')->onDelete('cascade');
             $table->timestamps();

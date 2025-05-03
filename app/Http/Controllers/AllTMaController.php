@@ -19,24 +19,17 @@ class AllTMaController extends Controller
     public function index()
     {
 
-        $audio = Audio::where('display', 1)->get();
+        $audio = Audio::where('display', 1)->orderBy('order')->get();
 
 
         return view('allTMa', ['audio' => $audio]);
     }
-    public function phanloai($loai, $slug = null)
+    public function phanloai($slug = null)
     {
         // Mặc định query audio có display = 1
         $query = Audio::where('display', 1);
 
-        // Kiểm tra loại: truyen-ngan hay truyen-dai
-        if ($loai == 'truyen-ngan') {
-            $query->where('is_series', 0); // 0 là ngắn
-        } elseif ($loai == 'truyen-dai') {
-            $query->where('is_series', 1); // 1 là dài
-        } else {
-            abort(404); // Loại không hợp lệ thì cho 404
-        }
+       
 
         // Nếu có slug thể loại con
         if ($slug) {
@@ -54,7 +47,7 @@ class AllTMaController extends Controller
         }
 
         // Cuối cùng lấy dữ liệu
-        $audio = $query->get();
+        $audio = $query->orderBy('order')->get();
 
         return view('allTMa', ['audio' => $audio]);
     }

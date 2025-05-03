@@ -47,7 +47,7 @@
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" id="select-all"></th>
-                                        <th>ID</th>
+                                        <th>STT</th>
                                         <th>Tiêu đề bài viết</th>
                                         <th>Hình ảnh</th>
                                         <th>Danh mục</th>
@@ -59,8 +59,8 @@
                                     @foreach($dichvu as $n)
                                     <tr class="odd gradeX a">
                                         <td style="width: 0%;"><input type="checkbox" class="select-item" value="{{ $n->id }}"></td>
-                                        <td style="width: 0%;">{{$n->id}}</td>
-                                        <td class="col-2">{{$n->title}}</td>
+                                        <td style="width: 0%;"> <input type="number" name="order[]" class="form-control order-input" value="{{ $n->order ?? 0 }}" data-id="{{ $n->id }}" style="width: 80px;"></td>
+                                        <td class="col-2">{{$n->tieude}}</td>
                                         <td class="col-2"><img src="{{asset('images/'. $n->image)}}" style="width: 90%" alt=""></td>
                                         <td class="col-1">
                                             @foreach($menu as $m)
@@ -146,7 +146,36 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+<script>
+    $(document).ready(function() {
+        $('.order-input').on('change', function() {
+            let id = $(this).data('id');
+            let order = $(this).val();
 
+            $.ajax({
+                url: '{{ route("dichvu.updateOrder") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    order: order
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Cập nhật thành công!');
+                        window.location.reload();
+                    } else {
+                        console.log('Cập nhật thất bại!');
+                    }
+
+                },
+                error: function() {
+                    console.log('Lỗi kết nối server.');
+                }
+            });
+        });
+    });
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {

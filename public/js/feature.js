@@ -198,28 +198,50 @@ function deleteMenu(url) {
 function selectMenu() {
     const selectParent = document.getElementById("select-parent");
     const selectChild = document.getElementById("select-child");
+    const selectSubChild = document.getElementById("select-subchild");
+    console.log(selectChild);
 
-    selectParent.addEventListener("change", function () {
-        const parentId = this.value;
+    function loadSubCategories(parentId, selectElement, clearElement = null) {
+        if (clearElement) {
+            clearElement.innerHTML = '<option value="">Chọn danh mục</option>';
+        }
 
-        // Gửi yêu cầu AJAX sử dụng Fetch API
-        fetch(`/get-subcategories?parent_id=${parentId}`)
+        if (!parentId) {
+            selectElement.innerHTML = '<option value="">Chọn danh mục</option>';
+        }
+
+        fetch(`/get-subcategories/${parentId}`)
             .then(response => response.json())
             .then(data => {
-                // Xóa tất cả các option hiện có trong select-child
-                selectChild.innerHTML = '<option value=""></option>';
+                selectElement.innerHTML = '<option value="">Chọn danh mục</option>';
 
-                // Thêm option mới từ dữ liệu trả về
-                data.forEach(category => {
-                    const option = document.createElement("option");
-                    option.value = category.id;
-                    option.textContent = category.name;
-                    selectChild.appendChild(option);
-                });
+                if (data.length > 0) {
+                    data.forEach(category => {
+                        const option = document.createElement("option");
+                        option.value = category.id;
+                        option.textContent = category.ten;
+                        selectElement.appendChild(option);
+                    });
+
+                    selectElement.style.display = "block"; // Hiện dropdown nếu có dữ liệu
+                } else {
+                    selectElement.style.display = "none"; // Ẩn nếu không có danh mục con
+                }
             })
-            .catch(error => console.error("Lỗi khi lấy danh mục cấp 2:", error));
+            .catch(error => console.error("Lỗi khi lấy danh mục:", error));
+    }
+
+
+
+    selectParent.addEventListener("change", function () {
+        loadSubCategories(this.value, selectChild, selectSubChild);
+    });
+
+    selectChild.addEventListener("change", function () {
+        loadSubCategories(this.value, selectSubChild);
     });
 }
+
 function table(menuData, target) {
     var table = $('#table1').DataTable({
         order: [

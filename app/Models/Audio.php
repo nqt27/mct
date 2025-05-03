@@ -29,6 +29,7 @@ class Audio extends Model
         'images',
         'audio_path',
         'is_series',
+        'order',
         'total_chapters'
     ];
 

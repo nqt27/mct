@@ -19,6 +19,7 @@ class Review extends Model
         'seo_title',
         'seo_keywords',
         'seo_description',
+        'order',
         'image'
     ];
     public function menu_news()

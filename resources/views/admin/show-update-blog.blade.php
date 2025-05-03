@@ -17,7 +17,7 @@
                     <div class="card card-border-color card-border-color-primary">
                         <div class="card-body" style="flex-direction: row; justify-content: normal">
                             <button class="btn btn-primary waves-effect waves-light" id="submit-all"><i class="fas fa-save mr-1"></i><span>Lưu sản phẩm</span></button>
-                            <a href="{{route('blog.index')}}" class="btn btn-secondary waves-effect waves-light" type="button"><span>Trở về</span></a>
+                            <a href="{{route('admin_blog.index')}}" class="btn btn-secondary waves-effect waves-light" type="button"><span>Trở về</span></a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                             <h3 class="card-title text-white mb-0">Thông tin sản phẩm</h3>
                         </div>
                         <div class="card-body">
-                            <form style="width: 100%;" id="audio-info-form" method="post" action="{{ route('blog.update', $blog->id) }}">
+                            <form style="width: 100%;" id="audio-info-form" method="post" action="{{ route('admin_blog.update', $blog->id) }}">
                                 @csrf
                                 <div class="form-group row">
                                     <label class="col-sm-3 control-label">Đường dẫn mẫu</label>
@@ -55,31 +55,46 @@
                                         <textarea id="editor1" class="summernote" name="noidung">{{ $blog->noidung }}</textarea>
                                     </div>
                                 </div>
+                                <!-- Cấp 1 -->
                                 <div class="form-group row pt-1">
-                                    <label class="col-md-3 control-label">Danh mục</label>
+                                    <label class="col-md-3 control-label">Danh mục cấp 1</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="select-parent" name="menu_id">
-                                            @foreach($menu as $m)
-                                            <option value="{{ $m->id }}"
-                                                {{ $selectedMenu && $m->id == $selectedMenu->parent_id ? 'selected' : '' }}>
-                                                {{ $m->name }}
+                                            <option value="">Chọn danh mục</option>
+                                            @foreach($menu as $menu1)
+                                            <option value="{{ $menu1->id }}"
+                                                {{ ($menuLevel1 && $menu1->id == $menuLevel1->id) ? 'selected' : '' }}>
+                                                {{ $menu1->name }}
                                             </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
 
+                                <!-- Cấp 2 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
                                 <div class="form-group row pt-1">
                                     <label class="col-md-3 control-label">Danh mục cấp 2</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="select-child" name="menu_id2">
-                                            @if($selectedMenu)
-                                            @foreach($menu->where('id', $selectedMenu->parent_id)->first()->submenu ?? [] as $child)
-                                            <option value="{{ $child->id }}"
-                                                {{ $child->id == $selectedMenu->id ? 'selected' : '' }}>
-                                                {{ $child->name }}
+                                            @if($menuLevel2)
+                                            <option value="{{ $menuLevel2->id }}" selected>
+                                                {{ $menuLevel2->name }}
                                             </option>
-                                            @endforeach
+                                            @endif
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Cấp 3 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
+                                <div class="form-group row pt-1">
+                                    <label class="col-md-3 control-label">Danh mục cấp 3</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="select-subchild" name="menu_id3">
+                                            @if($menuLevel3)
+                                            <option value="{{ $menuLevel3->id }}" selected>
+                                                {{ $menuLevel3->name }}
+                                            </option>
                                             @endif
                                         </select>
                                     </div>
@@ -95,7 +110,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form style="width: 100%;" id="audio-seo-form" method="post" action="{{ route('blog.store') }}">
+                            <form style="width: 100%;" id="audio-seo-form" method="post" action="{{ route('admin_blog.store') }}">
                                 @csrf
                                 <div class="form-group row">
                                     <label class="col-md-3 control-label">Keywword chính: </label>
@@ -164,7 +179,7 @@
                             <div id="custom-preview" class="custom-preview" style="margin: 20px">
                                 <!-- Các ảnh preview sẽ hiển thị ở đây -->
                             </div>
-                            <form style="max-width: 100%" method="post" action="{{route('blog.store')}}" enctype="multipart/form-data" class="dropzone dz-clickable col-sm-9" id="my-dropzone">
+                            <form style="max-width: 100%" method="post" action="{{route('admin_blog.store')}}" enctype="multipart/form-data" class="dropzone dz-clickable col-sm-9" id="my-dropzone">
                                 @csrf
                                 <div class="dz-message">
                                     <div class="icon"><span class="mdi mdi-cloud-upload"></span></div>
@@ -215,15 +230,17 @@
 <script>
     $(document).ready(function() {
         // Handle parent category change
-        $('#select-parent').on('change', function() {
+        $('#select-parent').on('click', function() {
             const parentId = $(this).val();
-            console.log(parentId);
-
             const childSelect = $('#select-child');
+            const subChildSelect = $('#select-subchild'); // Get the sub-child select
 
             // Clear existing options
             childSelect.empty();
-            childSelect.append('<option value="">Chọn thể loại</option>');
+            childSelect.append('<option value="">Chọn danh mục</option>');
+            subChildSelect.empty(); // Clear sub-child options
+            subChildSelect.append('<option value="">Chọn danh mục</option>'); // Add default option for sub-child
+            subChildSelect.prop('disabled', true); // Disable sub-child initially
 
             if (parentId) {
                 // Get subcategories via AJAX
@@ -247,6 +264,40 @@
             } else {
                 childSelect.prop('disabled', true);
             }
+        });
+
+        // Handle child category change to load sub-child categories
+        $('#select-child').on('click', function() {
+            const childId = $(this).val();
+            const subChildSelect = $('#select-subchild');
+
+            // Clear existing sub-child options
+            subChildSelect.empty();
+            subChildSelect.append('<option value="">Chọn thể loại con</option>');
+
+            if (childId) {
+                // Get sub-subcategories via AJAX (using the same route, assuming it handles any parent_id)
+                $.ajax({
+                    url: '/admin/get-blog-subcategories/' + childId, // Use childId to fetch its children
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.subcategories && response.subcategories.length > 0) {
+                            response.subcategories.forEach(function(subcategory) {
+                                subChildSelect.append(`<option value="${subcategory.id}">${subcategory.name}</option>`);
+                            });
+                            subChildSelect.prop('disabled', false); // Enable sub-child select
+                        } else {
+                            subChildSelect.prop('disabled', true); // Disable if no sub-children
+                        }
+                    },
+                    error: function() {
+                        subChildSelect.prop('disabled', true);
+                    }
+                });
+            } else {
+                subChildSelect.prop('disabled', true); // Disable if no child is selected
+            }
+
         });
     });
     Dropzone.autoDiscover = false;

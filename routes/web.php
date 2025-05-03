@@ -15,6 +15,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogDetailController;
 use App\Http\Controllers\DetailTMaController;
 use App\Http\Controllers\DichVuSXController;
+use App\Http\Controllers\FaviconController;
 use App\Http\Controllers\LienHeController;
 use App\Http\Controllers\MenuBlogController;
 use App\Http\Controllers\MenuReviewController;
@@ -81,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/audio/{id}', [AudioController::class, 'update'])->name('audio.update');
     Route::put('/admin/audio-status/{id}', [AudioController::class, 'update_status'])->name('audio.update_status');
     Route::post('/admin/delete-all', [AudioController::class, 'deleteAll'])->name('audio.deleteAll');
+    Route::post('/admin/audio/update-order', [AudioController::class, 'updateOrder'])->name('audio.updateOrder');
     Route::get('/get-audio', [AudioController::class, 'getaudios'])->name('get-audio');
 
 
@@ -102,6 +104,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/dichvu/{id}', [DichVuController::class, 'update'])->name('dichvu.update');
     Route::put('/admin/dichvu-status/{id}', [DichVuController::class, 'update_status'])->name('dichvu.update_status');
     Route::post('/admin/delete-all-dichvu', [DichVuController::class, 'deleteAll'])->name('dichvu.deleteAll');
+    Route::post('/admin/dichvu/update-order', [DichVuController::class, 'updateOrder'])->name('dichvu.updateOrder');
+
 
     //////////////////    MENU review  ////////////////////////////////////
     Route::get('/admin/menu-review', [MenuReviewController::class, 'index'])->name('menu-review.index');
@@ -120,6 +124,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/review/{id}', [AdminReviewController::class, 'update'])->name('admin_review.update');
     Route::put('/admin/review-status/{id}', [AdminReviewController::class, 'update_status'])->name('admin_review.update_status');
     Route::post('/admin/delete-all-review', [AdminReviewController::class, 'deleteAll'])->name('admin_review.deleteAll');
+    Route::post('/admin/review/update-order', [AdminReviewController::class, 'updateOrder'])->name('review.updateOrder');
+
 
     //////////////////    MENU blog  ////////////////////////////////////
     Route::get('/admin/menu-blog', [MenuBlogController::class, 'index'])->name('menu-blog.index');
@@ -138,9 +144,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/blog/{id}', [AdminBlogController::class, 'update'])->name('admin_blog.update');
     Route::put('/admin/blog-status/{id}', [AdminBlogController::class, 'update_status'])->name('admin_blog.update_status');
     Route::post('/admin/delete-all-blog', [AdminBlogController::class, 'deleteAll'])->name('admin_blog.deleteAll');
+    Route::post('/admin/blog/update-order', [AdminBlogController::class, 'updateOrder'])->name('blog.updateOrder');
+
     //////////////////////          LOGO               ////////////////////////////
     Route::get('/admin/logo', [LogoController::class, 'index'])->name('logo');
     Route::post('/admin/logo', [LogoController::class, 'store'])->name('logo.store');
+    Route::get('/admin/favicon', [FaviconController::class, 'index'])->name('favicon');
+    Route::post('/admin/favicon', [FaviconController::class, 'store'])->name('favicon.store');
 
     //////////////////////       SLIDES           ////////////////////////////
     Route::get('/admin/slide', [SlideController::class, 'index'])->name('slide.index');
@@ -179,7 +189,7 @@ Route::get('/', function () {
 Route::post('/', [HomeController::class, 'handleForm'])->name('submit.form');
 Route::get('/detail-TMa', [DetailTMaController::class, 'index'])->name('detailTMa.index');
 Route::get('/podcast', [AllTMaController::class, 'index'])->name('allTMa.index');
-Route::get('/theloai/{loai}/{slug?}', [AllTMaController::class, 'phanloai'])->name('allTMa.theloai');
+Route::get('/podcast/{slug?}', [AllTMaController::class, 'phanloai'])->name('allTMa.theloai');
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogTMa.index');
 Route::get('/blogs/{slug}', [BlogController::class, 'phanloai'])->name('blogTMa');
 Route::get('/review', [ReviewController::class, 'index'])->name('review.index');

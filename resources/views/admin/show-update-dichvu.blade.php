@@ -55,31 +55,46 @@
                                         <textarea id="editor1" class="summernote" name="noidung">{{ $dichvu->noidung }}</textarea>
                                     </div>
                                 </div>
+                                <!-- Cấp 1 -->
                                 <div class="form-group row pt-1">
-                                    <label class="col-md-3 control-label">Danh mục</label>
+                                    <label class="col-md-3 control-label">Danh mục cấp 1</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="select-parent" name="menu_id">
-                                            @foreach($menu as $m)
-                                            <option value="{{ $m->id }}"
-                                                {{ $selectedMenu && $m->id == $selectedMenu->parent_id ? 'selected' : '' }}>
-                                                {{ $m->name }}
+                                            <option value="">Chọn danh mục</option>
+                                            @foreach($menu as $menu1)
+                                            <option value="{{ $menu1->id }}"
+                                                {{ ($menuLevel1 && $menu1->id == $menuLevel1->id) ? 'selected' : '' }}>
+                                                {{ $menu1->name }}
                                             </option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
 
+                                <!-- Cấp 2 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
                                 <div class="form-group row pt-1">
                                     <label class="col-md-3 control-label">Danh mục cấp 2</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="select-child" name="menu_id2">
-                                            @if($selectedMenu)
-                                            @foreach($menu->where('id', $selectedMenu->parent_id)->first()->submenu ?? [] as $child)
-                                            <option value="{{ $child->id }}"
-                                                {{ $child->id == $selectedMenu->id ? 'selected' : '' }}>
-                                                {{ $child->name }}
+                                            @if($menuLevel2)
+                                            <option value="{{ $menuLevel2->id }}" selected>
+                                                {{ $menuLevel2->name }}
                                             </option>
-                                            @endforeach
+                                            @endif
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Cấp 3 (Luôn hiển thị nhưng rỗng nếu không có menu con) -->
+                                <div class="form-group row pt-1">
+                                    <label class="col-md-3 control-label">Danh mục cấp 3</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="select-subchild" name="menu_id3">
+                                            @if($menuLevel3)
+                                            <option value="{{ $menuLevel3->id }}" selected>
+                                                {{ $menuLevel3->name }}
+                                            </option>
                                             @endif
                                         </select>
                                     </div>
@@ -215,15 +230,17 @@
 <script>
     $(document).ready(function() {
         // Handle parent category change
-        $('#select-parent').on('change', function() {
+        $('#select-parent').on('click', function() {
             const parentId = $(this).val();
-            console.log(parentId);
-
             const childSelect = $('#select-child');
+            const subChildSelect = $('#select-subchild'); // Get the sub-child select
 
             // Clear existing options
             childSelect.empty();
-            childSelect.append('<option value="">Chọn thể loại</option>');
+            childSelect.append('<option value="">Chọn danh mục</option>');
+            subChildSelect.empty(); // Clear sub-child options
+            subChildSelect.append('<option value="">Chọn danh mục</option>'); // Add default option for sub-child
+            subChildSelect.prop('disabled', true); // Disable sub-child initially
 
             if (parentId) {
                 // Get subcategories via AJAX
@@ -247,6 +264,40 @@
             } else {
                 childSelect.prop('disabled', true);
             }
+        });
+
+        // Handle child category change to load sub-child categories
+        $('#select-child').on('click', function() {
+            const childId = $(this).val();
+            const subChildSelect = $('#select-subchild');
+
+            // Clear existing sub-child options
+            subChildSelect.empty();
+            subChildSelect.append('<option value="">Chọn thể loại con</option>');
+
+            if (childId) {
+                // Get sub-subcategories via AJAX (using the same route, assuming it handles any parent_id)
+                $.ajax({
+                    url: '/admin/get-dichvu-subcategories/' + childId, // Use childId to fetch its children
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.subcategories && response.subcategories.length > 0) {
+                            response.subcategories.forEach(function(subcategory) {
+                                subChildSelect.append(`<option value="${subcategory.id}">${subcategory.name}</option>`);
+                            });
+                            subChildSelect.prop('disabled', false); // Enable sub-child select
+                        } else {
+                            subChildSelect.prop('disabled', true); // Disable if no sub-children
+                        }
+                    },
+                    error: function() {
+                        subChildSelect.prop('disabled', true);
+                    }
+                });
+            } else {
+                subChildSelect.prop('disabled', true); // Disable if no child is selected
+            }
+
         });
     });
     Dropzone.autoDiscover = false;

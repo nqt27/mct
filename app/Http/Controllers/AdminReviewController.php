@@ -18,7 +18,7 @@ class AdminReviewController extends Controller
             ->whereNull('parent_id') // Lấy luôn menu con
             ->orderBy('position') // Sắp xếp theo vị trí
             ->get();
-        $review = Review::all();
+        $review = Review::orderBy('order')->get();
         return view('admin.review',  ['review' => $review, 'menu' => $menu, 'selectmenu' => $selectmenu]);
     }
     public function add()
@@ -64,7 +64,7 @@ class AdminReviewController extends Controller
         $review->slug = $request->input('slug');
         $review->tieude = $request->input('tieude');
         $review->noidung = $request->input('noidung');
-        $review->menu_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
+        $review->menu_id = $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id');
         $review->keyword_focus = $request->input('keyword_focus');
         $review->seo_title = $request->input('seo_title');
         $review->seo_keywords = $request->input('seo_keywords');
@@ -121,6 +121,18 @@ class AdminReviewController extends Controller
 
         // Lấy menu con đã chọn
         $selectedMenu = MenuReview::find($review->menu_id);
+        $menuLevel1 = null;
+        $menuLevel2 = null;
+        $menuLevel3 = null;
+
+        if ($selectedMenu) {
+            $parent = $selectedMenu->parent_id ? MenuReview::find($selectedMenu->parent_id) : null;
+            $grandparent = $parent && $parent->parent_id ? MenuReview::find($parent->parent_id) : null;
+
+            $menuLevel3 = $grandparent ? $selectedMenu : null; // It's level 3 only if grandparent exists
+            $menuLevel2 = $parent ? ($grandparent ? $parent : $selectedMenu) : null; // It's level 2 if parent exists (either the parent itself or the selected one if no grandparent)
+            $menuLevel1 = $grandparent ? $grandparent : ($parent ? $parent : $selectedMenu); // It's level 1 (grandparent, parent, or the selected one if no parents)
+        }
 
         // Lấy menu cha và các menu con liên quan
         $menu = MenuReview::with('submenu') // Lấy menu cha
@@ -129,7 +141,7 @@ class AdminReviewController extends Controller
             ->get();
 
 
-        return view('admin.show-update-review', ['review' => $review, 'menu' => $menu, 'selectedMenu' => $selectedMenu]);
+        return view('admin.show-update-review', ['review' => $review, 'menu' => $menu, 'selectedMenu' => $selectedMenu, 'menuLevel1' => $menuLevel1, 'menuLevel2' => $menuLevel2, 'menuLevel3' => $menuLevel3]);
     }
     public function update(Request $request, $id)
     { // Kiểm tra dữ liệu đầu vào
@@ -164,7 +176,7 @@ class AdminReviewController extends Controller
         $review->slug = $request->input('slug');
         $review->tieude = $request->input('tieude');
         $review->noidung = $request->input('noidung');
-        $review->menu_id = $request->input('menu_id2') ? $request->input('menu_id2') : $request->input('menu_id');
+        $review->menu_id = $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id');
         $review->keyword_focus = $request->input('keyword_focus');
         $review->seo_title = $request->input('seo_title');
         $review->seo_keywords = $request->input('seo_keywords');
@@ -195,6 +207,38 @@ class AdminReviewController extends Controller
         $review->save();
 
         return response()->json(['success' => 'review status updated successfully!']);
+    }
+    public function updateOrder(Request $request)
+    {
+        $id = $request->input('id');
+        $newOrder = (int) $request->input('order');
+
+        $currentBlog = Review::find($id);
+        if (!$currentBlog) {
+            return response()->json(['success' => false, 'message' => 'Bài viết không tồn tại']);
+        }
+
+        $oldOrder = $currentBlog->order;
+
+        // Nếu không thay đổi thì khỏi làm gì
+        if ($newOrder == $oldOrder) {
+            return response()->json(['success' => true, 'message' => 'Không có gì thay đổi']);
+        }
+
+        // Tìm bài viết đang giữ vị trí $newOrder
+        $otherBlog = Review::where('order', $newOrder)->first();
+
+        // Cập nhật order cho current blog
+        $currentBlog->order = $newOrder;
+        $currentBlog->save();
+
+        // Nếu có bài trùng thì đổi vị trí
+        if ($otherBlog && $otherBlog->id != $id) {
+            $otherBlog->order = $oldOrder;
+            $otherBlog->save();
+        }
+
+        return response()->json(['success' => true]);
     }
     //     public function search(Request $request)
     //     {
