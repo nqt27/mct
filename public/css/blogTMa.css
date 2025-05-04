@@ -19,6 +19,24 @@
         rgba(200, 161, 37, 0.2) 0px 3px 13px -3px;
     overflow: hidden;
     border-radius: 20px;
+    margin-bottom: 15px;
+}
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    #blog-root {
+        padding: 1rem;
+        border-radius: 12px;
+        margin: 10px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #blog-root {
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin-top: 15px;
+    }
 }
 #blog-root .haunted-blog-header {
     font-size: 3rem;
@@ -26,11 +44,20 @@
     margin-bottom: 2rem;
     color: #f1c40f;
 }
-.haunted-blog-header {
-    font-size: 3rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #f1c40f;
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    #blog-root .haunted-blog-header {
+        font-size: 1.8rem;
+        margin-bottom: 1.2rem;
+    }
+}
+
+/* Từ 480px đến 768px (tablet) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #blog-root .haunted-blog-header {
+        font-size: 2.4rem;
+        margin-bottom: 1.6rem;
+    }
 }
 @keyframes flicker {
     0%,
@@ -55,6 +82,22 @@
     max-width: 1200px;
     margin: auto;
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    #blog-root .haunted-blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+}
+
+/* Từ 480px đến 768px (tablet) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #blog-root .haunted-blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
 #blog-root .haunted-blog-card {
     background: var(--card-bg);
     border-radius: 8px;
@@ -104,8 +147,39 @@
 #blog-root .haunted-blog-card-content a:hover {
     color: #fff;
 }
-@media (max-width: 600px) {
-    #blog-root .haunted-blog-header {
-        font-size: 2.5rem;
+/* ===== Responsive ===== */
+
+/* Mobile nhỏ (dưới 480px) */
+@media (max-width: 479px) {
+    #blog-root .haunted-blog-card img {
+        height: 150px;
+    }
+
+    #blog-root .haunted-blog-card-content {
+        padding: 0.8rem;
+    }
+
+    #blog-root .haunted-blog-card-content h3 {
+        font-size: 1.1rem;
+    }
+
+    #blog-root .haunted-blog-card-content p {
+        font-size: 0.85rem;
+        height: auto;
+    }
+}
+
+/* Tablet (480px - 768px) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #blog-root .haunted-blog-card img {
+        height: 160px;
+    }
+
+    #blog-root .haunted-blog-card-content h3 {
+        font-size: 1.2rem;
+    }
+
+    #blog-root .haunted-blog-card-content p {
+        font-size: 0.9rem;
     }
 }

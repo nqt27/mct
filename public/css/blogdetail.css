@@ -18,6 +18,7 @@
         rgba(200, 161, 37, 0.2) 0px 3px 13px -3px;
     overflow: hidden;
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 #detail-blog-root .detail-blog-title {
     font-size: 3rem;
@@ -25,6 +26,21 @@
     margin-bottom: 1rem;
     text-align: center;
     text-transform: capitalize;
+}
+/* Mobile nhỏ (dưới 480px) */
+@media (max-width: 479px) {
+    #detail-blog-root {
+        padding: 1rem;
+        margin: 15px 10px;
+    }
+}
+
+/* Tablet (480px - 768px) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #detail-blog-root {
+        padding: 1.5rem;
+        margin: 20px 15px;
+    }
 }
 #detail-blog-root .detail-blog-meta {
     text-align: center;

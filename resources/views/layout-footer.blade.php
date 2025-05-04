@@ -1,11 +1,10 @@
-
 </div>
 <footer class="mct-footer">
     <div class="mct-footer__top-row">
         <img src="{{ asset('uploads/images/' . $logo->filename) }}" alt="Logo" class="mct-footer__logo" />
 
         <div class="mct-footer__contact">
-            <h4>CONTACT <strong>MCT MEDIA</strong></h4>
+            <h4>CONTACT <strong>Machuteam MEDIA</strong></h4>
             <input type="email" placeholder="Email của bạn" />
             <button>Đăng Ký</button>
         </div>
@@ -13,8 +12,8 @@
 
     <div class="mct-footer__container">
         <div class="mct-footer__column">
-            <h3>Hệ Thống MCT MEDIA</h3>
-            {!!$settings->content!!}
+            <h3>Hệ Thống Machuteam MEDIA</h3>
+            {!! $settings->content !!}
         </div>
 
         <div class="mct-footer__column">
@@ -53,7 +52,7 @@
 
     <div class="mct-footer__map">
         <div class="mct-footer__map-responsive">
-           {!!$web_config->google_maps_iframe!!}
+            {!! $web_config->google_maps_iframe !!}
         </div>
     </div>
 
