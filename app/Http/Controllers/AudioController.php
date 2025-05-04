@@ -156,7 +156,7 @@ class AudioController extends Controller
                         Str::slug($title) . '.' . $file->getClientOriginalExtension();
 
                     // Move chapter file
-                    $file->move(public_path('uploads/audio/chapters'), $audioName);
+                    $file->storeAs('public/audios/chapters', $audioName);
 
                     // Create chapter
                     $audio->chapters()->create([
@@ -301,10 +301,8 @@ class AudioController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // Find existing audio
         $audio = Audio::findOrFail($id);
-
-        // Validate request
+    
         $validatedData = $request->validate([
             'slug' => 'nullable|string|max:255',
             'ten' => 'nullable|string|max:255',
@@ -321,110 +319,98 @@ class AudioController extends Controller
             'nghenhieu' => 'boolean',
             'image' => 'nullable|file',
             'images.*' => 'nullable|file',
-            'audio_file' => 'nullable|file', // 50MB max
+            'audio_file' => 'nullable|file',
             'is_series' => 'boolean',
         ]);
-
-        // Delete old single audio file if exists and switching type or updating file
+    
         if (
             $audio->audio_path &&
-            (!$request->boolean('is_series') || $request->hasFile('audio_file'))
+            !$request->boolean('is_series') &&
+            $request->hasFile('audio_file')
         ) {
             File::delete(public_path('uploads/audio/' . $audio->audio_path));
             $audio->audio_path = null;
         }
-
-        // Handle single audio file
+    
         if (!$request->boolean('is_series') && $request->hasFile('audio_file')) {
             $file = $request->file('audio_file');
-            $audioName = time() . '_' . Str::slug($request->input('ten')) . '.' .
-                $file->getClientOriginalExtension();
-
-            // Create directory and move file
+            $audioName = time() . '_' . Str::slug($request->input('ten')) . '.' . $file->getClientOriginalExtension();
             $audioPath = $this->createAudioDirectory('singles');
             $file->move($audioPath, $audioName);
             $audio->audio_path = 'singles/' . $audioName;
         }
-        $logoPath = public_path('uploads/images/logo.png');
-        $logo = Image::make($logoPath)
-            ->resize(100, 100, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
+    
+        $logo = Image::make(public_path('uploads/images/logo.png'))
+            ->resize(100, 100, function ($c) {
+                $c->aspectRatio();
+                $c->upsize();
             });
-
-        // Delete old main image if updating
+    
         if ($request->hasFile('image') && $audio->image) {
             File::delete(public_path('uploads/images/' . $audio->image));
             $audio->image = null;
         }
-
-        // Handle new main image
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = 'main_' . time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('uploads/images/' . $imageName);
-
-            // Resize và đóng dấu logo
-            $img = Image::make($image)
-                ->resize(600, 600, function ($constraint) {
-                    $constraint->aspectRatio();
+    
+            Image::make($image)
+                ->resize(600, 600, function ($c) {
+                    $c->aspectRatio();
                 })
                 ->insert($logo, 'top-right', 20, 20)
                 ->save($imagePath);
-
+    
             $audio->image = $imageName;
         }
-
-        // Delete old additional images if updating
+    
         if ($request->hasFile('images') && $audio->filenames) {
-            $oldImages = json_decode($audio->filenames, true);
-            foreach ($oldImages as $oldImage) {
-                File::delete(public_path('uploads/images/' . $oldImage));
+            foreach (json_decode($audio->filenames, true) as $img) {
+                File::delete(public_path('uploads/images/' . $img));
             }
             $audio->filenames = null;
         }
-
-        // Handle new additional images
+    
         if ($request->hasFile('images')) {
+            $imagesArray = [];
             foreach ($request->file('images') as $file) {
                 $imageName = 'sub_' . time() . '_' . $file->getClientOriginalName();
                 $imagePath = public_path('uploads/images/' . $imageName);
-
-                // Resize và đóng dấu logo
-                $img = Image::make($file)
-                    ->resize(600, 600, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
+    
+                Image::make($file)
+                    ->resize(600, 600, function ($c) {
+                        $c->aspectRatio();
+                        $c->upsize();
                     })
                     ->insert($logo, 'top-right', 10, 10)
                     ->save($imagePath);
-
+    
                 $imagesArray[] = $imageName;
             }
-
-            $audio->filenames = $imagesArray; // Lưu dưới dạng JSON
+            $audio->filenames = json_encode($imagesArray);
         }
-
-        // Update basic info
-        $audio->slug = $request->input('slug');
-        $audio->ten = $request->input('ten');
-        $audio->tacgia = $request->input('tacgia');
-        $audio->tomtat = $request->input('tomtat');
-        $audio->theloai_id = $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id');
-        $audio->is_series = $request->boolean('is_series');
-        $audio->keyword_focus = $request->input('keyword_focus');
-        $audio->seo_title = $request->input('seo_title');
-        $audio->seo_keywords = $request->input('seo_keywords');
-        $audio->seo_description = $request->input('seo_description');
-        $audio->display = $request->boolean('display');
-        $audio->nghenhieu = $request->boolean('nghenhieu');
-        $audio->moi = $request->boolean('moi');
-
+    
+        $audio->fill([
+            'slug' => $request->input('slug'),
+            'ten' => $request->input('ten'),
+            'tacgia' => $request->input('tacgia'),
+            'tomtat' => $request->input('tomtat'),
+            'theloai_id' => $request->input('menu_id3') ?: $request->input('menu_id2') ?: $request->input('menu_id'),
+            'is_series' => $request->boolean('is_series'),
+            'keyword_focus' => $request->input('keyword_focus'),
+            'seo_title' => $request->input('seo_title'),
+            'seo_keywords' => $request->input('seo_keywords'),
+            'seo_description' => $request->input('seo_description'),
+            'display' => $request->boolean('display'),
+            'nghenhieu' => $request->boolean('nghenhieu'),
+            'moi' => $request->boolean('moi')
+        ]);
+    
         $audio->save();
-
-        // Handle chapters
+    
         if ($request->boolean('is_series')) {
-            // Delete old chapters that are not in the update
             $keepChapterIds = array_filter($request->input('chapter_ids', []));
             foreach ($audio->chapters as $chapter) {
                 if (!in_array($chapter->id, $keepChapterIds)) {
@@ -432,41 +418,28 @@ class AudioController extends Controller
                     $chapter->delete();
                 }
             }
-
-            // Update/Create chapters
+    
             if ($request->has('chapter_titles')) {
                 foreach ($request->chapter_titles as $key => $title) {
                     $chapterId = $request->input("chapter_ids.$key");
-
+    
                     if ($chapterId) {
-                        // Update existing chapter
                         $chapter = Chapter::find($chapterId);
                         if ($chapter) {
                             $chapter->title = $title;
-
                             if ($request->hasFile("chapter_files.$key")) {
-                                // Delete old file
                                 File::delete(public_path('uploads/audio/' . $chapter->audio_path));
-
-                                // Upload new file
                                 $file = $request->file("chapter_files.$key");
-                                $audioName = time() . '_chapter_' . ($key + 1) . '_' .
-                                    Str::slug($title) . '.' . $file->getClientOriginalExtension();
-
+                                $audioName = time() . '_chapter_' . ($key + 1) . '_' . Str::slug($title) . '.' . $file->getClientOriginalExtension();
                                 $file->move(public_path('uploads/audio/chapters'), $audioName);
                                 $chapter->audio_path = 'chapters/' . $audioName;
                             }
-
                             $chapter->save();
                         }
-                    } else if ($request->hasFile("chapter_files.$key")) {
-                        // Create new chapter
+                    } elseif ($request->hasFile("chapter_files.$key")) {
                         $file = $request->file("chapter_files.$key");
-                        $audioName = time() . '_chapter_' . ($key + 1) . '_' .
-                            Str::slug($title) . '.' . $file->getClientOriginalExtension();
-
+                        $audioName = time() . '_chapter_' . ($key + 1) . '_' . Str::slug($title) . '.' . $file->getClientOriginalExtension();
                         $file->move(public_path('uploads/audio/chapters'), $audioName);
-
                         $audio->chapters()->create([
                             'chapter_number' => $key + 1,
                             'title' => $title,
@@ -476,20 +449,19 @@ class AudioController extends Controller
                     }
                 }
             }
-
-            // Update total chapters
+    
             $audio->update(['total_chapters' => $audio->chapters()->count()]);
         } else {
-            // Delete all chapters if switching from series to single
             foreach ($audio->chapters as $chapter) {
                 File::delete(public_path('uploads/audio/' . $chapter->audio_path));
                 $chapter->delete();
             }
             $audio->update(['total_chapters' => 0]);
         }
-
+    
         return response()->json(['message' => 'Audio đã được cập nhật thành công']);
     }
+    
     public function update_status(Request $request, $id)
     {
         $request->validate([
@@ -528,7 +500,7 @@ class AudioController extends Controller
 
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
-                'audio_file' => 'required|file|mimes:mp3,wav|max:51200'
+                'audio_file' => 'required|file'
             ]);
 
             $chapterNumber = $audio->chapters()->count() + 1;
@@ -688,3 +660,4 @@ class AudioController extends Controller
         return response()->json(['success' => true]);
     }
 }
+

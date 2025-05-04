@@ -137,6 +137,7 @@
     playPauseBtn.addEventListener("click", togglePlayPause);
     const audioDataElement = document.getElementById("audioData");
     const chapters = JSON.parse(audioDataElement.getAttribute("data-chapters"));
+    const audioData = JSON.parse(audioDataElement.getAttribute("data-audio"));
 
     let tracks = [];
 
