@@ -16,14 +16,23 @@
         rgba(200, 161, 37, 0.2) 0px 3px 13px -3px;
     overflow: hidden;
     border-radius: 20px;
+    margin-bottom: 25px;
 }
-@media only screen and (max-width: 767px) {
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
     .ct-container {
         padding: 0.5rem;
-        margin-top: 5px;
-        max-width: 100%;
-        border-radius: 10px;
-        box-shadow: none;
+        border-radius: 12px;
+        box-shadow: rgba(200, 161, 37, 0.6) 0px 0 12px -2px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .ct-container {
+        padding: 0.75rem;
+        border-radius: 16px;
+        box-shadow: rgba(200, 161, 37, 0.8) 0px 0 16px -2px;
     }
 }
 .ct-detail {
@@ -105,7 +114,34 @@
     align-items: center;
     font-size: 1rem;
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .ct-episode-list h2,
+    .ct-related h2 {
+        font-size: 1.2rem;
+        margin: 10px;
+    }
 
+    .ct-episode {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .ct-episode-list h2,
+    .ct-related h2 {
+        font-size: 1.4rem;
+    }
+
+    .ct-episode {
+        font-size: 0.95rem;
+        padding: 0.9rem;
+    }
+}
 .ct-related {
     margin-top: 2rem;
 }
@@ -129,8 +165,51 @@
     margin-bottom: 0.5rem;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .ct-detail {
         flex-direction: column;
+    }
+} */
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .ct-info h1 {
+        font-size: 1.8rem;
+        margin: 10px;
+    }
+
+    .ct-meta {
+        font-size: 0.8rem;
+        margin: 10px;
+    }
+
+    .ct-info p {
+        font-size: 0.9rem;
+        margin: 10px;
+    }
+
+    .ct-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        margin: 10px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .ct-info h1 {
+        font-size: 2.2rem;
+    }
+
+    .ct-meta {
+        font-size: 0.85rem;
+    }
+
+    .ct-info p {
+        font-size: 1rem;
+    }
+
+    .ct-btn {
+        padding: 0.45rem 0.9rem;
+        font-size: 1rem;
     }
 }

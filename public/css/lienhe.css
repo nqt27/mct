@@ -19,6 +19,21 @@
     overflow: hidden;
     border-radius: 20px;
 }
+/* Responsive */
+@media (max-width: 768px) {
+    #contact-root {
+        padding: 1.5rem;
+        margin: 20px 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #contact-root {
+        padding: 1rem;
+        margin: 15px 1rem;
+        border-radius: 12px;
+    }
+}
 #contact-root h2 {
     text-align: center;
     font-size: 2.5rem;

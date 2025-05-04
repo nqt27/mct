@@ -24,7 +24,66 @@ html {
 body {
     background-color: #4d586b;
 }
+/* Cha cần position: relative để con định vị */
+.menu-item.drop,
+.menu-item2.drop,
+.menu-item3.drop {
+    position: relative;
+}
 
+/* Ẩn tất cả menu con ban đầu */
+.sub-menu,
+.sub-menu2,
+.sub-menu3 {
+    display: none;
+    position: absolute;
+    background: #222;
+    color: white;
+    min-width: 200px;
+    z-index: 999;
+    padding: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cấp 1 hiển thị xuống dưới */
+.sub-menu {
+    top: 100%;
+    left: 0;
+}
+
+/* Cấp 2 hiển thị sang phải */
+.sub-menu2 {
+    top: 0;
+    left: 100%;
+}
+
+/* Cấp 3 cũng hiển thị sang phải từ cấp 2 */
+.sub-menu3 {
+    top: 0;
+    left: 100%;
+}
+
+/* Style các item con */
+.sub-menu li,
+.sub-menu2 li,
+.sub-menu3 li {
+    padding: 8px 15px;
+}
+
+.sub-menu li a,
+.sub-menu2 li a,
+.sub-menu3 li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sub-menu li:hover,
+.sub-menu2 li:hover,
+.sub-menu3 li:hover {
+    background-color: #333;
+}
 .header__nav-close {
     display: none; /* Mặc định ẩn */
 }
@@ -591,8 +650,24 @@ body {
     background-color: #000;
     align-items: center;
 }
-.snake-top-view .logo {
-    /* margin: 20px; */
+@media (min-width: 480px) and (max-width: 767px) {
+    .snake-top-view {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 16px;
+    }
+}
+
+@media (min-width: 768px) {
+    .snake-top-view {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        gap: 24px;
+        padding: 15px 32px;
+    }
 }
 .snake-top-view .logo img {
     max-height: 76px;
@@ -925,10 +1000,10 @@ marquee li {
     float: left;
 }
 @media only screen and (min-width: 1200px) {
-    .snake-search-mobile{
+    .snake-search-mobile {
         display: none;
     }
-    .logo-mobile{
+    .logo-mobile {
         display: none;
     }
     .v-col-lg-3 {
@@ -954,26 +1029,36 @@ marquee li {
     justify-content: space-between;
     align-items: center;
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .block-title span {
+        font-size: 16px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .block-title span {
+        font-size: 20px;
+        padding: 7px 18px;
+    }
+}
 @media (max-width: 480px) {
     .block-title {
         font-size: 14px; /* Giảm font nhỏ nữa cho điện thoại bé */
     }
-    .block-title span {
-        padding: 0px;
-        margin-left: 10px;
-        margin-bottom: 10px;
-    }
-    .slider-wrapper{
+
+    .slider-wrapper {
         margin: 0 10px !important;
         padding: 0;
     }
-    .nav-btn{
+    .nav-btn {
         width: 0 !important;
     }
-    .prev-btn{
+    .prev-btn {
         left: 0 !important;
     }
-    .next-btn{
+    .next-btn {
         right: 0 !important;
     }
 }
@@ -1193,21 +1278,15 @@ img.scale-05:hover {
         border-radius: 20px;
         margin: 0;
     }
-    .snake-search-desktop{
+    .snake-search-desktop {
         display: none;
     }
-.logo-mobile{
-    display: flex;
-    align-items: center;
-    padding: 5px;
-}
-    .snake-top-view {
+    .logo-mobile {
         display: flex;
+        padding: 5px;
+        text-align: center;
         align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        padding: 10px;
-        flex-wrap: nowrap;
+        justify-content: space-evenly;
     }
 
     .logo-box img {
@@ -1265,13 +1344,14 @@ img.scale-05:hover {
         height: 100vh;
         top: 0;
     }
-    
+
     .show {
         display: block;
         opacity: 1;
 
         transform: translateY(0);
     }
+
     .snake-topview-banner img {
         display: none;
     }
@@ -1338,9 +1418,8 @@ img.scale-05:hover {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
-    .post .content-left-item-content{
+    .post .content-left-item-content {
         grid-template-columns: repeat(2, 1fr) !important;
-        
     }
 }
 
@@ -1357,7 +1436,7 @@ img.scale-05:hover {
     .slide-group {
         gap: 10px;
     }
-    .slider .card img{
+    .slider .card img {
         height: auto !important;
     }
 }
@@ -1385,6 +1464,7 @@ img.scale-05:hover {
         transform: none; /* Loại bỏ hiệu ứng 3D để tránh giật lag hoặc lỗi cảm ứng */
         backdrop-filter: blur(5px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 380.17px;
     }
 }
 .slider .card:hover {
@@ -1557,7 +1637,7 @@ img.scale-05:hover {
         display: grid;
         grid-template-columns: 1fr;
         gap: 20px;
-        margin: 30px 80px 80px 80px;
+        margin: 10px;
     }
 }
 
@@ -1583,19 +1663,21 @@ img.scale-05:hover {
     transition: width 0.6s ease-in-out;
     width: 120%;
 }
-/* Responsive cho màn hình nhỏ hơn 768px */
-@media (max-width: 768px) {
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
     .post .card-body {
         flex-direction: column;
-        align-items: flex-start;
+        width: 100%;
         padding-top: 20px;
+        gap: 10px;
     }
 }
 
-/* Responsive cho màn hình rất nhỏ (dưới 480px) */
-@media (max-width: 480px) {
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
     .post .card-body {
-        padding-top: 15px;
+        width: 110%;
+        padding-top: 25px;
     }
 }
 
@@ -1604,6 +1686,21 @@ img.scale-05:hover {
     height: 200px;
     object-fit: cover;
     z-index: 5;
+}
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .post .card img {
+        height: 140px;
+        border-radius: 6px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .post .card img {
+        height: 160px;
+        border-radius: 8px;
+    }
 }
 .vertical-button {
     transition: transform 0.6s ease;
@@ -1636,7 +1733,19 @@ img.scale-05:hover {
     color: white;
     text-align: center;
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .post h3 {
+        font-size: 1.1rem;
+    }
+}
 
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .post h3 {
+        font-size: 1.3rem;
+    }
+}
 figure.snip1156 {
     font-family: "Raleway", Arial, sans-serif;
     color: #fff;
@@ -1736,7 +1845,8 @@ figure.snip1156.hover figcaption p {
 @media (max-width: 480px) {
     .info {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        margin: 10px;
     }
 }
 .snake-audio-content {
@@ -1760,7 +1870,23 @@ figure.snip1156.hover figcaption p {
     padding-bottom: 20px;
     /* width: 40%; */
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .app-container {
+        border-radius: 12px;
+        padding-bottom: 15px;
+        margin: 9px;
+    }
+}
 
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .app-container {
+        border-radius: 16px;
+        padding-bottom: 18px;
+        margin: 12px;
+    }
+}
 #uiWrap {
     position: relative;
     padding: 0 40px;
@@ -1777,7 +1903,7 @@ figure.snip1156.hover figcaption p {
     margin-bottom: -100px;
     margin-top: 15px;
 }
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 768px) {
     #albumArt {
         width: 90%;
         height: auto;
@@ -1798,6 +1924,19 @@ figure.snip1156.hover figcaption p {
         rgba(38, 40, 44, 1) 82%
     );
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    #fade {
+        height: 60px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #fade {
+        height: 80px;
+    }
+}
 #trackTitle {
     font-size: 1.7rem;
 }
@@ -1817,7 +1956,23 @@ figure.snip1156.hover figcaption p {
     box-shadow: 4px 4px 8px var(--shadow-dark),
         -4px -4px 8px var(--shadow-light);
 }
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
+    .snake-audio-content button {
+        height: 2rem;
+        width: 2rem;
+        font-size: 0.8em;
+    }
+}
 
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .snake-audio-content button {
+        height: 2.25rem;
+        width: 2.25rem;
+        font-size: 0.9em;
+    }
+}
 .snake-audio-content button:hover {
     box-shadow: 2px 2px 5px var(--shadow-dark),
         -2px -2px 5px var(--shadow-light);
@@ -1838,11 +1993,21 @@ figure.snip1156.hover figcaption p {
     width: 60px;
     margin: 0 20px 20px;
 }
-@media (max-width: 768px) {
+/* Dưới 480px (mobile nhỏ) */
+@media (max-width: 479px) {
     #playPauseBtn {
         height: 40px;
         width: 40px;
         margin: 0 10px 15px;
+    }
+}
+
+/* Từ 480px đến 768px (tablet và mobile lớn) */
+@media (min-width: 480px) and (max-width: 768px) {
+    #playPauseBtn {
+        height: 50px;
+        width: 50px;
+        margin: 0 15px 18px;
     }
 }
 

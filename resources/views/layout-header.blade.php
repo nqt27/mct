@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('css/lienhe.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/dvsx.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/allTMa.css') }}" type="text/css">
-    <title>MCT | MCT Media</title>
+    <title>Machuteam | Machuteam Media</title>
 </head>
 
 <body>
@@ -57,59 +57,60 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('podcast/' . $m->slug) }}">{{ $m->ten }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item3 drop" par="4"><a
-                                            href="{{ url('podcast/' . $sm->slug) }}">{{ $sm->ten }}</a>
-                                        @if ($sm->submenu->isNotEmpty())
-                                        <ul class="sub-menu3 sub-menu-1">
-                                            @foreach ($sm->submenu as $sm)
-                                            <li class="menu-item3" par="4">
-                                                <a
-                                                    href="{{ url('podcast/' . $sm->slug) }}">{{ $sm->ten }}</a>
-                                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('podcast/' . $m->slug) }}">{{ $m->ten }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item3 drop" par="4"><a
+                                                        href="{{ url('podcast/' . $sm->slug) }}">{{ $sm->ten }}</a>
+                                                    @if ($sm->submenu->isNotEmpty())
+                                                        <ul class="sub-menu3 sub-menu-1">
+                                                            @foreach ($sm->submenu as $sm)
+                                                                <li class="menu-item3" par="4">
+                                                                    <a
+                                                                        href="{{ url('podcast/' . $sm->slug) }}">{{ $sm->ten }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </li>
                                             @endforeach
                                         </ul>
-                                        @endif
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
 
                     </li>
+
                     <li class="menu-item drop" par="2">
                         <a href="{{ route('dvsx.index') }}">Dịch vụ sản xuất</a>
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_dv as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('dich-vu-san-xuat/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item3 drop" par="4"><a
-                                            href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                        @if ($sm->submenu->isNotEmpty())
-                                        <ul class="sub-menu3 sub-menu-1">
-                                            @foreach ($sm->submenu as $sm)
-                                            <li class="menu-item3" par="4">
-                                                <a
-                                                    href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('dich-vu-san-xuat/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item3 drop" par="4"><a
+                                                        href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                    @if ($sm->submenu->isNotEmpty())
+                                                        <ul class="sub-menu3 sub-menu-1">
+                                                            @foreach ($sm->submenu as $sm)
+                                                                <li class="menu-item3" par="4">
+                                                                    <a
+                                                                        href="{{ url('dich-vu-san-xuat/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </li>
                                             @endforeach
                                         </ul>
-                                        @endif
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
@@ -118,28 +119,28 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_review as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('reviews/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item3 drop" par="4"><a
-                                            href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                        @if ($sm->submenu->isNotEmpty())
-                                        <ul class="sub-menu3 sub-menu-1">
-                                            @foreach ($sm->submenu as $sm)
-                                            <li class="menu-item3" par="4">
-                                                <a
-                                                    href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('reviews/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item3 drop" par="4"><a
+                                                        href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                    @if ($sm->submenu->isNotEmpty())
+                                                        <ul class="sub-menu3 sub-menu-1">
+                                                            @foreach ($sm->submenu as $sm)
+                                                                <li class="menu-item3" par="4">
+                                                                    <a
+                                                                        href="{{ url('reviews/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </li>
                                             @endforeach
                                         </ul>
-                                        @endif
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
@@ -148,27 +149,27 @@
                         <span class="menu-arrow menu-arrow-1" par="1"></span>
                         <ul class="sub-menu sub-menu-1" par="1">
                             @foreach ($menu_blog as $m)
-                            <li class="menu-item2 drop" par="4"><a
-                                    href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
-                                @if ($m->submenu->isNotEmpty())
-                                <ul class="sub-menu2 sub-menu-1">
-                                    @foreach ($m->submenu as $sm)
-                                    <li class="menu-item3 drop" par="4"><a
-                                            href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                        @if ($sm->submenu->isNotEmpty())
-                                        <ul class="sub-menu3 sub-menu-1">
-                                            @foreach ($sm->submenu as $sm)
-                                            <li class="menu-item3" par="4">
-                                                <a
-                                                    href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
-                                            </li>
+                                <li class="menu-item2 drop" par="4"><a
+                                        href="{{ url('blogs/' . $m->slug) }}">{{ $m->name }}</a>
+                                    @if ($m->submenu->isNotEmpty())
+                                        <ul class="sub-menu2 sub-menu-1">
+                                            @foreach ($m->submenu as $sm)
+                                                <li class="menu-item3 drop" par="4"><a
+                                                        href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                    @if ($sm->submenu->isNotEmpty())
+                                                        <ul class="sub-menu3 sub-menu-1">
+                                                            @foreach ($sm->submenu as $sm)
+                                                                <li class="menu-item3" par="4">
+                                                                    <a
+                                                                        href="{{ url('blogs/' . $sm->slug) }}">{{ $sm->name }}</a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
                                             @endforeach
                                         </ul>
-                                        @endif
-                                        @endforeach
-                                </ul>
-                                @endif
-                            </li>
+                                    @endif
+                                </li>
                             @endforeach
                         </ul>
                     </li>
