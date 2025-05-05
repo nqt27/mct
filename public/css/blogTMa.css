@@ -59,6 +59,27 @@
         margin-bottom: 1.6rem;
     }
 }
+.haunted-blog-header {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #f1c40f;
+}
+/* Mobile nhỏ (dưới 480px) */
+@media (max-width: 479px) {
+    .haunted-blog-header {
+        font-size: 1.8rem;
+        margin-bottom: 1.2rem;
+    }
+}
+
+/* Tablet (480px - 768px) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .haunted-blog-header {
+        font-size: 2.4rem;
+        margin-bottom: 1.6rem;
+    }
+}
 @keyframes flicker {
     0%,
     18%,
