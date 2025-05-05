@@ -59,12 +59,24 @@
     </section>
     <section class="ct-episode-list">
         <h2 id="audioData" data-chapters="{{ json_encode($audio->chapters) }}">Danh Sách Tập</h2>
-        @foreach($audio->chapters as $chapter)
-        <div class="ct-episode">
-            <span> {{$chapter->title}}</span>
-            <button class="ct-btn" data-src="{{$chapter->chapter_number}}">Nghe</button>
-        </div>
+        @foreach ($audio->chapters as $chapter)
+            <div class="ct-episode">
+                <span> {{ $chapter->title }}</span>
+                <button class="ct-btn" data-src="{{ $chapter->chapter_number }}">Nghe</button>
+            </div>
         @endforeach
+        <div class="ct-episode">
+            <span>Chương 1: Bắt đầu hành trình</span>
+            <button class="ct-btn" data-src="1">Nghe</button>
+        </div>
+        <div class="ct-episode">
+            <span>Chương 2: Bí mật được tiết lộ</span>
+            <button class="ct-btn" data-src="2">Nghe</button>
+        </div>
+        <div class="ct-episode">
+            <span>Chương 3: Cuộc truy đuổi</span>
+            <button class="ct-btn" data-src="3">Nghe</button>
+        </div>
 
     </section>
 
@@ -93,14 +105,14 @@
                 </section>
             </div>
         </div>
-        <div class="ct-more">
-            <a title="Mới nhất" href="{{ route('allTMa.index') }}">
-                <div class="text_container">
-                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                    <p>XEM THÊM <i class="fa-solid fa-angles-right"></i></p>
-                </div>
+        <div class="see-more-container">
+            <a href="#" class="see-more-button" title="Xem thêm">
+                <span>XEM THÊM</span>
+                <i class="fa-solid fa-angles-right"></i>
             </a>
         </div>
+
+
     </section>
 </div>
 @include('layout-footer')

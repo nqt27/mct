@@ -123,10 +123,11 @@
     }
 
     .ct-episode {
-        flex-direction: column;
-        align-items: flex-start;
+        display: flex;
         font-size: 0.9rem;
         padding: 0.75rem;
+        align-items: center;
+        flex-direction: row;
     }
 }
 
@@ -211,5 +212,55 @@
     .ct-btn {
         padding: 0.45rem 0.9rem;
         font-size: 1rem;
+    }
+}
+.see-more-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.see-more-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #4d586b;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.see-more-button:hover {
+    background-color: #4d586b;
+    transform: scale(1.05);
+}
+
+.see-more-button i {
+    transition: transform 0.3s ease;
+}
+
+.see-more-button:hover i {
+    transform: translateX(5px);
+}
+
+/* Mobile nhỏ (dưới 480px) */
+@media (max-width: 479px) {
+    .see-more-button {
+        padding: 10px 18px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+}
+
+/* Tablet (480px - 768px) */
+@media (min-width: 480px) and (max-width: 768px) {
+    .see-more-button {
+        padding: 11px 22px;
+        font-size: 15px;
     }
 }
